@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBG"
+    tools:context=".ui.video.video_preview.VideoCreateActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_ads_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/space1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/layout_ads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:minHeight="50dp"
+                app:cardBackgroundColor="@color/transparent"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="2dp"
+                android:text="@string/loading_ads"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
+        <View
+            android:id="@+id/space2"
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_ads_parent"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/btn_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_ads_parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_check"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_ads_parent" />
+
+    <TextView
+        android:id="@+id/tv_header_title"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:text="@string/editor"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btn_check"
+        app:layout_constraintStart_toEndOf="@id/btn_back"
+        app:layout_constraintTop_toBottomOf="@id/layout_ads_parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_effect"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_frame"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_music"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_duration"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_video_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_text_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_group_control"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:weightSum="7"
+        app:layout_constraintBottom_toTopOf="@id/frame_video_effect"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_transition"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_edit_button_transition" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_duration"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_edit_button_duration"
+            app:layout_constraintBottom_toTopOf="@id/frame_video_effect" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_edit_images"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_edit_button_edit_images" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_add_music"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_edit_button_music" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_text_to_video" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_select_frame"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_edit_button_frame" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_emoji"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_sticker_video" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_sticker_video"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_group_control" />
+
+    <FrameLayout
+        android:id="@+id/frame_emoji_video"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_group_control" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@id/ll_group_control">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_toggle_video"
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_start_time"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:gravity="center"
+            android:text="@string/time_video_start"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_toggle_video"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_end_time"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/time_video_start"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:progressBackgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_end_time"
+            app:layout_constraintStart_toEndOf="@id/tv_start_time"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_preview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toTopOf="@id/layout_control"
+        app:layout_constraintDimensionRatio="9:6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_title">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:src="@color/colorViolet" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_bg_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.example.slide.framework.texttovideo.TextListToVideoView
+            android:id="@+id/text_list_to_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            app:showBorder="true"
+            app:showIcons="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/progress_loading"
+        style="@style/SpinKitView.Small.Circle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@id/layout_preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/layout_preview" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_vip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_vip"
+        android:minHeight="40dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_title"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_vip"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_vip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/msg_vip_notification"
+            android:textColor="#E5E5E5"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_vip"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/btn_vip"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?android:selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <FrameLayout
+            android:id="@+id/frame_txt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

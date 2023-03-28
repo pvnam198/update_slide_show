@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_text_title">16sp</dimen>
+    <dimen name="progress_width">56dp</dimen>
+    <dimen name="bottom_text_layout">@dimen/_150sdp</dimen>
+    <dimen name="bottom_text_height">@dimen/_175sdp</dimen>
+    <dimen name="edt_height">48dp</dimen>
+    <dimen name="top_add_text_height">88dp</dimen>
+    <dimen name="crop_line_stroke">1dp</dimen>
+    <dimen name="text_size_1">1sp</dimen>
+    <dimen name="start_padding">10dp</dimen>
+    <dimen name="exit_height">52dp</dimen>
+    <dimen name="check_width">60dp</dimen>
+
+</resources>

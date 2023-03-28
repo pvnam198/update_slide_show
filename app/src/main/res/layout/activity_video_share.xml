@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBG">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/btn_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back"
+        app:layout_constraintEnd_toEndOf="@id/iv_back"
+        app:layout_constraintStart_toStartOf="@id/iv_back"
+        app:layout_constraintTop_toTopOf="@id/iv_back" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_home"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_home"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/btn_home"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?selectableItemBackground"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_home"
+        app:layout_constraintEnd_toEndOf="@+id/iv_home"
+        app:layout_constraintStart_toStartOf="@+id/iv_home"
+        app:layout_constraintTop_toTopOf="@+id/iv_home" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_header_title"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:text="@string/saving_video"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/iv_home"
+        app:layout_constraintStart_toEndOf="@+id/iv_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_saving"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="9:6"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back"
+        tools:visibility="visible">
+
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="9:6"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:layout_constraintTop_toBottomOf="@id/video_view">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_toggle_video"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:src="@drawable/ic_play"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/btn_toggle_video"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="?selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="@id/iv_toggle_video"
+                app:layout_constraintEnd_toEndOf="@id/iv_toggle_video"
+                app:layout_constraintStart_toStartOf="@id/iv_toggle_video"
+                app:layout_constraintTop_toTopOf="@id/iv_toggle_video" />
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="center"
+                android:text="@string/time_video_start"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_toggle_video"
+                app:layout_constraintStart_toEndOf="@id/iv_toggle_video"
+                app:layout_constraintTop_toTopOf="@+id/iv_toggle_video" />
+
+            <TextView
+                android:id="@+id/tv_end_time"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                android:text="@string/time_video_start"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_start_time" />
+
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:progressBackgroundTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
+                app:layout_constraintEnd_toStartOf="@id/tv_end_time"
+                app:layout_constraintStart_toEndOf="@id/tv_start_time"
+                app:layout_constraintTop_toTopOf="@+id/tv_start_time" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/control_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#121420"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_control"
+        tools:visibility="visible">
+
+        <View
+            android:id="@+id/view_center_guid_line"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/frame_rename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rename_group"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_rename"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:src="@drawable/ic_sucess_rename"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/rename"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/iv_rename" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/btn_rename"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackground" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/delete_group"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_delete"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:src="@drawable/ic_sucess_delete"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/delete"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/iv_delete" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/btn_delete"
+                    android:layout_width="76dp"
+                    android:layout_height="76dp"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackground" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/share_group"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/layout_action">
+
+            <include layout="@layout/video_share" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

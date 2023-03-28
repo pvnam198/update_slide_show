@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_twitter"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:src="@drawable/bg_tw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_instagram"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/bg_instagram"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_twitter"
+        app:layout_constraintEnd_toStartOf="@+id/btn_twitter"
+        app:layout_constraintTop_toTopOf="@+id/btn_twitter" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_facebook"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/bg_facebook"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_instagram"
+        app:layout_constraintEnd_toStartOf="@+id/btn_instagram"
+        app:layout_constraintTop_toTopOf="@+id/btn_instagram" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_youtube"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/bg_youtube"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_twitter"
+        app:layout_constraintStart_toEndOf="@+id/btn_twitter"
+        app:layout_constraintTop_toTopOf="@+id/btn_twitter" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_share_more"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/bg_share_more"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_youtube"
+        app:layout_constraintStart_toEndOf="@+id/btn_youtube"
+        app:layout_constraintTop_toTopOf="@+id/btn_youtube" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

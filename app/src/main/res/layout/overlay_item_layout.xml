@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.slide.framework.view.WidthFitSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:layout_marginStart="10dp"
+    android:padding="1dp">
+
+    <View
+        android:id="@+id/layout_selected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_overlay_image_selected" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="2dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="?selectableItemBackground"
+            tools:src="@color/colorViolet" />
+
+    </androidx.cardview.widget.CardView>
+
+</com.example.slide.framework.view.WidthFitSquareLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="96dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:padding="3dp">
+
+    <LinearLayout
+        android:id="@+id/layout_folder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#3E4261"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image_album"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_album_name"
+            android:layout_width="wrap_content"
+            android:layout_height="16sp"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Album" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="16sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="1dp"
+            android:textColor="#A2A2A2"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="6 imgs" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/btn_folder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="@id/layout_folder"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

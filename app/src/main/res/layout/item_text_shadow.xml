@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cst_photo_view"
+    android:layout_width="42dp"
+    android:layout_height="42dp"
+    android:background="@color/black">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="abc"
+        android:textColor="@color/white" />
+
+    <View
+        android:id="@+id/border"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_color_item" />
+
+</FrameLayout>

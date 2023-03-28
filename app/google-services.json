@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "554544109102",
+    "firebase_url": "https://video-maker---photo-slideshow.firebaseio.com",
+    "project_id": "video-maker---photo-slideshow",
+    "storage_bucket": "video-maker---photo-slideshow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554544109102:android:ced11b443eec1f971031bf",
+        "android_client_info": {
+          "package_name": "com.slideshow.photomusic.videomaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554544109102-om1pjrk25de8i019o0p94k15sco1llku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs9IDs35-0e_X3S-1HihP_B9hCN7JnJ54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554544109102-om1pjrk25de8i019o0p94k15sco1llku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

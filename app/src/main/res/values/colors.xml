@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#360050</color>
+    <color name="colorPrimaryDark">#0B0D19</color>
+    <color name="colorAccent">#8A0194</color>
+    <color name="colorSecondaryPurple">#8A0194</color>
+    <color name="white">#FFFFFF</color>
+    <color name="item_dark">#1B1D29</color>
+    <color name="background_dark">#121420</color>
+    <color name="background_title_dark">#0B0D19</color>
+    <color name="selected_color">#8A0194</color>
+
+    <color name="text_lv1">#E5E5E5</color>
+
+    <color name="white_transparent_5">#0DFFFFFF</color>
+    <color name="white_transparent_10">#1AFFFFFF</color>
+    <color name="white_transparent_70">#B3FFFFFF</color>
+
+    <color name="black_transparent_5">#0D000000</color>
+    <color name="black_transparent_10">#1A000000</color>
+    <color name="black_transparent_15">#26000000</color>
+    <color name="black_transparent_20">#33000000</color>
+    <color name="black_transparent_25">#40000000</color>
+    <color name="black_transparent_30">#4D000000</color>
+    <color name="black_transparent_35">#59000000</color>
+    <color name="black_transparent_38">#62000000</color>
+    <color name="black_transparent_40">#66000000</color>
+    <color name="black_transparent_45">#73000000</color>
+    <color name="black_transparent_50">#80000000</color>
+    <color name="black_transparent_55">#8C000000</color>
+    <color name="black_transparent_60">#99000000</color>
+    <color name="black_transparent_65">#A6000000</color>
+    <color name="black_transparent_70">#B3000000</color>
+    <color name="black_transparent_75">#BF000000</color>
+    <color name="black_transparent_80">#CC000000</color>
+    <color name="black_transparent_85">#D9000000</color>
+    <color name="black_transparent_90">#E6000000</color>
+
+    <color name="itemTextLevel1">#E5E5E5</color>
+    <color name="itemTextLevel2">#7A7A7A</color>
+
+    <color name="colorPurple">#360050</color>
+    <color name="app_tranparent">#00000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorBackground">#360050</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorBlue">#76FF03</color>
+    <color name="colorBG">#0B0D19</color>
+    <color name="colorItemBG">#232637</color>
+    <color name="colorViolet">#E040FB</color>
+    <color name="colorItemSelected">#66707070</color>
+    <color name="black">#000000</color>
+    <color name="pink">#FF4081</color>
+    <color name="videotimeduration">#98000000</color>
+
+
+    <color name="filter_0">#00ffffff</color>
+    <color name="filter_1">#1effffff</color>
+    <color name="filter_10">#e1ffffff</color>
+    <color name="filter_2">#37ffffff</color>
+    <color name="filter_3">#50ffffff</color>
+    <color name="filter_4">#69ffffff</color>
+    <color name="filter_5">#82ffffff</color>
+    <color name="filter_6">#9bffffff</color>
+    <color name="filter_7">#b4ffffff</color>
+    <color name="filter_8">#c8ffffff</color>
+    <color name="filter_9">#dcffffff</color>
+    <color name="colorOrigin">#D5A000</color>
+    <color name="colorGray">#7A7A7A</color>
+    <color name="colorSelectedCount">#76FF03</color>
+    <color name="colorTextDialog">#535353</color>
+    <color name="colorGuidelineBackgound">#C9C9C9</color>
+    <color name="colorCardGray">#BFCED8</color>
+    <color name="colorCardYellow">#FFCC29</color>
+    <color name="colorCardBlue">#3784B7</color>
+
+    <color name="dialogWhiteColor">#FFFFFF</color>
+    <color name="dialogVipColor">#D5A000</color>
+    <color name="dialogTopHeaderColor">#232637</color>
+    <color name="dialogBodyColor">#2A2E41</color>
+    <color name="dialogGuidelineColor">#E5E5E5</color>
+    <color name="dialogRedColor">#FF3939</color>
+    <color name="dialogYellowColor">#FFCC29</color>
+    <color name="dialogTextBlackColor">#121420</color>
+    <color name="dialogTextGrayColor">#7A7A7A</color>
+    <color name="dialogCoverColor">#80000000</color>
+    <color name="dialogVioletColor">#8A0194</color>
+    <color name="dialogGreenColor">#00B454</color>
+    <color name="dialogOriginColor">#FF9800</color>
+    <color name="dialogGrayBg">#404040</color>
+    <color name="dialogGrayText">#B8B8B8</color>
+    <color name="dialogBlackColor">#121420</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="red_color_picker">#ED0A3F</color>
+
+</resources>

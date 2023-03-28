@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="#121420"
+    tools:context=".ui.video.video_preview.fragments.TransitionFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/duration"
+            android:textColor="@color/colorBlue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.jaygoo.widget.RangeSeekBar
+            android:id="@+id/rangeSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="26dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label"
+            app:rsb_gravity="bottom"
+            app:rsb_max="5"
+            app:rsb_mode="single"
+            app:rsb_progress_color="@color/white"
+            app:rsb_step_auto_bonding="true"
+            app:rsb_step_color="@color/white"
+            app:rsb_step_height="12dp"
+            app:rsb_step_radius="4dp"
+            app:rsb_step_width="4dp"
+            app:rsb_steps="5"
+            app:rsb_thumb_drawable="@drawable/thumb_violet"
+            app:rsb_thumb_height="14dp"
+            app:rsb_thumb_width="14dp"
+            app:rsb_tick_mark_layout_gravity="top"
+            app:rsb_tick_mark_mode="other"
+            app:rsb_tick_mark_text_margin="20dp"
+            app:rsb_tick_mark_text_selected_color="@color/md_purple_A200" />
+
+        <View
+            android:id="@+id/view_guid_line"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_duration_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/view_guid_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSeekBar"
+            tools:text="Speed: 3s/pic" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_duration_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="2dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/rangeSeekBar"
+            app:layout_constraintStart_toEndOf="@+id/view_guid_line"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSeekBar"
+            tools:text="Total: 30s" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

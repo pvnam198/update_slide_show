@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cst_photo_view"
+    android:layout_width="42dp"
+    android:layout_height="42dp"
+    android:layout_margin="2dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/color_picker_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryDark" />
+
+    <View
+        android:id="@+id/border"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_color_item"
+        tools:background="@color/white" />
+
+</FrameLayout>

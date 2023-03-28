@@ -1,0 +1,46 @@
+<resources>
+    <string name="ad_attribution" translatable="false">Ad</string>
+    <string name="no_price" translatable="false">-------</string>
+    <string name="planks" translatable="false">Planks</string>
+    <string name="screen" translatable="false">Screen</string>
+    <string name="dissolve" translatable="false">Dissolve</string>
+    <string name="freedom_inspired_cinematic_background_music_for_video" translatable="false">Freedom inspired cinematic background music for video</string>
+    <string name="ambient_atmospheric" translatable="false">Ambient atmospheric</string>
+    <string name="adventure" translatable="false">Adventure</string>
+    <string name="clear_day" translatable="false">Clear day</string>
+    <string name="endless_motion" translatable="false">Endless motion</string>
+    <string name="energy" translatable="false">Energy</string>
+    <string name="epic" translatable="false">Epic</string>
+    <string name="funny_song" translatable="false">Funny song</string>
+    <string name="going_higher" translatable="false">Going higher</string>
+    <string name="inspire" translatable="false">Inspire</string>
+    <string name="love" translatable="false">Love</string>
+    <string name="moose" translatable="false">Moose</string>
+    <string name="once_again" translatable="false">Once again</string>
+    <string name="perception" translatable="false">Perception</string>
+    <string name="retro_soul" translatable="false">Retro soul</string>
+    <string name="rumble" translatable="false">Rumble</string>
+    <string name="smile" translatable="false">Smile</string>
+    <string name="straight" translatable="false">Straight</string>
+    <string name="sunny" translatable="false">Sunny</string>
+    <string name="sweet" translatable="false">Sweet</string>
+    <string name="tenderness" translatable="false">Tenderness</string>
+    <string name="the_jazz_piano" translatable="false">The jazz piano</string>
+    <string name="email_address" translatable="false">sharkstudio.imusic@gmail.com</string>
+    <string name="time_video_start" translatable="false">00:00</string>
+    <string name="facebook_app_id" translatable="false">675445523371308</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb675445523371308</string>
+    <string name="unknown_artist_album" translatable="false"><![CDATA[<unknown>]]></string>
+    <string name="msg_notification_1">Great videos are waiting for you to create! Start immediately</string>
+    <string name="msg_notification_2">Let\'s create videos with amazing effects with us! Start now</string>
+    <string name="msg_notification_3">Hundreds of cool stickers just created for you!</string>
+    <string name="msg_notification_4">A music video is waiting for you to make! Start now</string>
+    <string name="msg_notification_5">An unfinished video is waiting for your completion! Continue implementation</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="try_again">Try again</string>
+    <string name="manager_your_subscriptions">Manage your subscriptions on <a href="https://play.google.com/store/account/subscriptions">Google Play</a></string>
+    <string name="copy">Copy</string>
+
+    //start translate
+
+</resources>

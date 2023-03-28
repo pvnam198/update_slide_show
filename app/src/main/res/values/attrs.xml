@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MyAudioCutting">
+
+        <attr name="valueLabelTextColor" format="color"/>
+        <attr name="valueLabelTextSize" format="dimension"/>
+        <attr name="count" format="integer"/>
+
+        <attr name="progress1" format="integer"/>
+
+        <attr name="minProgress" format="integer"/>
+        <attr name="maxProgress" format="integer"/>
+
+    </declare-styleable>
+
+</resources>
