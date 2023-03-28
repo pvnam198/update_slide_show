@@ -6,16 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioAllTrackBinding
 import com.example.slide.ui.select_music.SelectMusicActivity
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
 import com.example.slide.ui.select_music.search.SearchFragment
-import kotlinx.android.synthetic.main.fragment_audio_all_track.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class AudioAllTrackFragment : BaseFragment() {
+class AudioAllTrackFragment : BaseFragment<FragmentAudioAllTrackBinding>() {
+    override fun bindingView(): FragmentAudioAllTrackBinding {
+        return FragmentAudioAllTrackBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_all_track }, { true })
 
@@ -31,8 +34,8 @@ class AudioAllTrackFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSongLoading(event: SongLoadingEvent) {
         initialState()
-        fast_scroll_recycler_view.setFastScrollEnabled(false)
-        fast_scroll_recycler_view.setHideScrollbar(true)
+        binding.fastScrollRecyclerView.setFastScrollEnabled(false)
+        binding.fastScrollRecyclerView.setHideScrollbar(true)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -42,40 +45,40 @@ class AudioAllTrackFragment : BaseFragment() {
             it.notifyDataSetChanged()
             val size = it.itemCount
             if (size == 0) {
-                noSongLayout.visibility =
+                binding.noSongLayout.visibility =
                     View.VISIBLE
-                fast_scroll_recycler_view.setFastScrollEnabled(false)
-                fast_scroll_recycler_view.setHideScrollbar(true)
+                binding.fastScrollRecyclerView.setFastScrollEnabled(false)
+                binding.fastScrollRecyclerView.setHideScrollbar(true)
             }
             if (size <= 12) {
-                fast_scroll_recycler_view.setFastScrollEnabled(false)
-                fast_scroll_recycler_view.setHideScrollbar(true)
+                binding.fastScrollRecyclerView.setFastScrollEnabled(false)
+                binding.fastScrollRecyclerView.setHideScrollbar(true)
             }
         }
     }
 
     override fun initConfiguration() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        fast_scroll_recycler_view.layoutManager = layoutManager
+        binding.fastScrollRecyclerView.layoutManager = layoutManager
         adapter = TrackAdapter(requireActivity() as SelectMusicActivity)
-        fast_scroll_recycler_view.adapter = adapter
+        binding.fastScrollRecyclerView.adapter = adapter
         val size = adapter!!.itemCount
         if (size == 0) {
-            fast_scroll_recycler_view.setFastScrollEnabled(false)
-            fast_scroll_recycler_view.setHideScrollbar(true)
-            noSongLayout.visibility = View.VISIBLE
+            binding.fastScrollRecyclerView.setFastScrollEnabled(false)
+            binding.fastScrollRecyclerView.setHideScrollbar(true)
+            binding.noSongLayout.visibility = View.VISIBLE
         }
         if (size < 12) {
-            fast_scroll_recycler_view.setFastScrollEnabled(false)
-            fast_scroll_recycler_view.setHideScrollbar(true)
+            binding.fastScrollRecyclerView.setFastScrollEnabled(false)
+            binding.fastScrollRecyclerView.setHideScrollbar(true)
         }
         initialState()
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { requireActivity().onBackPressed() }
-        btn_search.setOnClickListener {
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnSearch.setOnClickListener {
             parentFragmentManager.beginTransaction().add(R.id.root_view, SearchFragment())
                 .addToBackStack(null).commit()
         }
@@ -83,18 +86,18 @@ class AudioAllTrackFragment : BaseFragment() {
 
     private fun initialState() {
         if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADING) {
-            progress.visibility = View.VISIBLE
-            fast_scroll_recycler_view.visibility = View.INVISIBLE
-            noSongLayout.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
+            binding.fastScrollRecyclerView.visibility = View.INVISIBLE
+            binding.noSongLayout.visibility = View.GONE
         } else {
             if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED && LocalMusicProvider.getInstance().albums.size == 0) {
-                progress.visibility = View.GONE
-                fast_scroll_recycler_view.visibility = View.INVISIBLE
-                noSongLayout.visibility = View.VISIBLE
+                binding.progress.visibility = View.GONE
+                binding.fastScrollRecyclerView.visibility = View.INVISIBLE
+                binding.noSongLayout.visibility = View.VISIBLE
             } else {
-                progress.visibility = View.GONE
-                fast_scroll_recycler_view.visibility = View.VISIBLE
-                noSongLayout.visibility = View.GONE
+                binding.progress.visibility = View.GONE
+                binding.fastScrollRecyclerView.visibility = View.VISIBLE
+                binding.noSongLayout.visibility = View.GONE
             }
         }
     }

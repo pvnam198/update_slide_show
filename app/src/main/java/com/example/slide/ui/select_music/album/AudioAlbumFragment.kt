@@ -5,16 +5,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioAlbumBinding
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.model.MusicAlbum
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
 import com.example.slide.ui.select_music.search.SearchFragment
-import kotlinx.android.synthetic.main.fragment_audio_album.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class AudioAlbumFragment : BaseFragment() {
+class AudioAlbumFragment : BaseFragment<FragmentAudioAlbumBinding>() {
+    override fun bindingView(): FragmentAudioAlbumBinding {
+        return FragmentAudioAlbumBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_album },{true})
 
@@ -38,31 +41,31 @@ class AudioAlbumFragment : BaseFragment() {
         intialState()
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        albumRecycleView.setLayoutManager(layoutManager)
-        albumRecycleView.setHasFixedSize(true)
+        binding.albumRecycleView.setLayoutManager(layoutManager)
+        binding.albumRecycleView.setHasFixedSize(true)
         adapter = AlbumAdapter(this)
-        albumRecycleView.setAdapter(adapter)
+        binding.albumRecycleView.setAdapter(adapter)
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { requireActivity().onBackPressed() }
-        btn_search.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnSearch.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
     }
     private fun intialState() {
         if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADING) {
-            progress.visibility = View.VISIBLE
-            albumRecycleView.visibility = View.INVISIBLE
-            noAlbumLayout.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
+            binding.albumRecycleView.visibility = View.INVISIBLE
+            binding.noAlbumLayout.visibility = View.GONE
         } else {
             if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED && LocalMusicProvider.getInstance().albums.size == 0) {
-                progress.visibility = View.GONE
-                albumRecycleView.visibility = View.INVISIBLE
-                noAlbumLayout.visibility = View.VISIBLE
+                binding.progress.visibility = View.GONE
+                binding.albumRecycleView.visibility = View.INVISIBLE
+                binding.noAlbumLayout.visibility = View.VISIBLE
             } else {
-                progress.visibility = View.GONE
-                albumRecycleView.visibility = View.VISIBLE
-                noAlbumLayout.visibility = View.GONE
+                binding.progress.visibility = View.GONE
+                binding.albumRecycleView.visibility = View.VISIBLE
+                binding.noAlbumLayout.visibility = View.GONE
             }
         }
     }

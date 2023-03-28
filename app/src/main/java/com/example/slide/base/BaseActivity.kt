@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.example.slide.MyApplication
 import org.greenrobot.eventbus.EventBus
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
+
+    val binding by lazy { bindingView() }
 
     val myApplication by lazy { application as MyApplication }
 
     protected var saveInstanceStateCalled: Boolean = false
 
     private val initViewTools by lazy { initViewTools() }
+    abstract fun bindingView(): T
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val bundle = savedInstanceState ?: intent.extras
         bundle?.let { extractData(it) }
         saveInstanceStateCalled = false
-        val layoutRes = initViewTools.layoutRes.invoke()
-        if (layoutRes != 0)
-            setContentView(layoutRes)
+        setContentView(binding.root)
         if (initViewTools.hasEventBus.invoke())
             EventBus.getDefault().register(this)
         initConfiguration(savedInstanceState)

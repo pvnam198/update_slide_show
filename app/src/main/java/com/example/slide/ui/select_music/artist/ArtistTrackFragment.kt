@@ -8,17 +8,20 @@ import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioArtistTrackBinding
 import com.example.slide.ui.select_music.SelectMusicActivity
 import com.example.slide.ui.select_music.SubTrackAdapter
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.model.Artist
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
-import kotlinx.android.synthetic.main.fragment_audio_artist_track.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class ArtistTrackFragment : BaseFragment() {
+class ArtistTrackFragment : BaseFragment<FragmentAudioArtistTrackBinding>() {
+    override fun bindingView(): FragmentAudioArtistTrackBinding {
+        return FragmentAudioArtistTrackBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_artist_track }, { true })
 
@@ -66,43 +69,43 @@ class ArtistTrackFragment : BaseFragment() {
         super.initConfiguration()
         initState()
         val layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        trackRecycleView.layoutManager = layoutManager
-        trackRecycleView.setHasFixedSize(true)
+        binding.trackRecycleView.layoutManager = layoutManager
+        binding.trackRecycleView.setHasFixedSize(true)
         adapter = SubTrackAdapter(requireActivity() as SelectMusicActivity)
-        trackRecycleView.adapter = adapter
+        binding.trackRecycleView.adapter = adapter
         artist?.let {
             if (LocalMusicProvider.getInstance().isSongLoaded)
                 adapter?.updateData(LocalMusicProvider.getInstance().getSongsByArtist(it.name))
 
             if (it.art.isNotEmpty())
                 Glide.with(this).load(it.art).placeholder(R.drawable.ic_audio_artists)
-                    .into(iv_artist)
-            tv_title.text = it.name
-            tv_song_count.text = getString(R.string.song_number_format, it.songNumber)
+                    .into(binding.ivArtist)
+            binding.tvTitle.text = it.name
+            binding.tvSongCount.text = getString(R.string.song_number_format, it.songNumber)
         }
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }
 
     private fun initState() {
         if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADING) {
-            progress.visibility = View.VISIBLE
-            trackRecycleView.visibility = View.INVISIBLE
-            noSongLayout.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
+            binding.trackRecycleView.visibility = View.INVISIBLE
+            binding.noSongLayout.visibility = View.GONE
         } else {
             if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED && LocalMusicProvider.getInstance().albums.size == 0) {
-                progress.visibility = View.GONE
-                trackRecycleView.visibility = View.INVISIBLE
-                noSongLayout.visibility = View.VISIBLE
+                binding.progress.visibility = View.GONE
+                binding.trackRecycleView.visibility = View.INVISIBLE
+                binding.noSongLayout.visibility = View.VISIBLE
             } else {
-                progress.visibility = View.GONE
-                trackRecycleView.visibility = View.VISIBLE
-                noSongLayout.visibility = View.GONE
+                binding.progress.visibility = View.GONE
+                binding.trackRecycleView.visibility = View.VISIBLE
+                binding.noSongLayout.visibility = View.GONE
             }
 
         }

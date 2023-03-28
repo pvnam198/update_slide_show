@@ -11,20 +11,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivitySearchBinding
 import com.example.slide.ui.select_music.TrimMusicDialogFragment
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.model.Track
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment<ActivitySearchBinding>() {
+    override fun bindingView(): ActivitySearchBinding {
+        return ActivitySearchBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_search }, { true })
 
@@ -52,7 +55,7 @@ class SearchFragment : BaseFragment() {
 
     override fun initListener() {
         super.initListener()
-        edt_search.addTextChangedListener(object : TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -69,23 +72,23 @@ class SearchFragment : BaseFragment() {
             }
         })
 
-        btn_back.setOnClickListener {
-            closeKeyboard(btn_back)
+        binding.btnBack.setOnClickListener {
+            closeKeyboard(binding.btnBack)
             requireActivity().onBackPressed()
         }
 
-        btn_clear_text.setOnClickListener { edt_search.setText("") }
+        binding.btnClearText.setOnClickListener { binding.edtSearch.setText("") }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSongLoading(event: SongLoadingEvent) {
         //loading
-        progress.visibility = View.VISIBLE
+        binding.progress.visibility = View.VISIBLE
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSongLoaded(event: SongLoadedEvent) {
-        progress.visibility = View.GONE
+        binding.progress.visibility = View.GONE
         searchAdapter.updateData()
         searchAdapter.filter.filter(searchFromUser)
     }
@@ -93,12 +96,12 @@ class SearchFragment : BaseFragment() {
     private fun initSearch() {
 
         if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED)
-            progress.visibility = View.INVISIBLE
+            binding.progress.visibility = View.INVISIBLE
         else
-            progress.visibility = View.VISIBLE
+            binding.progress.visibility = View.VISIBLE
 
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rv_search.layoutManager = layoutManager
+        binding.rvSearch.layoutManager = layoutManager
         searchAdapter = SearchAdapter(
             itemSelected = {
                 if (isBind) trimMusic(it)
@@ -106,7 +109,7 @@ class SearchFragment : BaseFragment() {
             resultsFound = { if (isBind) showResults() },
             noResultsFound = { if (isBind) noResults() }
         )
-        rv_search.adapter = searchAdapter
+        binding.rvSearch.adapter = searchAdapter
     }
 
     private fun trimMusic(track: Track) {
@@ -117,13 +120,13 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun noResults() {
-        rv_search.visibility = View.INVISIBLE
-        tv_no_results.visibility = View.VISIBLE
+        binding.rvSearch.visibility = View.INVISIBLE
+        binding.tvNoResults.visibility = View.VISIBLE
     }
 
     private fun showResults() {
-        rv_search.visibility = View.VISIBLE
-        tv_no_results.visibility = View.INVISIBLE
+        binding.rvSearch.visibility = View.VISIBLE
+        binding.tvNoResults.visibility = View.INVISIBLE
     }
 
     private fun trimMMusicDone(track: Track) {
