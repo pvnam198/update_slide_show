@@ -20,7 +20,6 @@ abstract class BaseBindingDialog<T : ViewBinding> : BaseDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bindingView()
         return binding.root
     }
 }

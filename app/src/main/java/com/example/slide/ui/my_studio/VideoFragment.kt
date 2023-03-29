@@ -11,26 +11,24 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
-import com.example.slide.data.SharkVideoDao
+import com.example.slide.databinding.FragmentVideoBinding
 import com.example.slide.ui.select_image.SelectActivity
 import com.example.slide.ui.video.video_share.ShareVideoActivity
-import com.example.slide.util.FileUtils
 import com.example.slide.util.Utils
 import com.example.slide.util.VideoTagUtils
-import kotlinx.android.synthetic.main.dialog_rename_video.view.*
-import kotlinx.android.synthetic.main.fragment_video.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.util.*
 
-class VideoFragment : BaseFragment() {
+class VideoFragment : BaseFragment<FragmentVideoBinding>() {
 
     private lateinit var adapter: VideoAdapter
 
@@ -59,21 +57,25 @@ class VideoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateVideoData()
-        rv_videos.layoutManager =
+        binding.rvVideos.layoutManager =
             GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false)
-        rv_videos.adapter = adapter
+        binding.rvVideos.adapter = adapter
 
-        btn_create_video.setOnClickListener {
+        binding.btnCreateVideo.setOnClickListener {
             startActivity(SelectActivity.getIntent(requireContext(), SelectActivity.MODE_START))
         }
+    }
+
+    override fun bindingView(): FragmentVideoBinding {
+        return FragmentVideoBinding.inflate(layoutInflater)
     }
 
     private fun updateVideoData() {
         val videos = VideoProvider.getCreatedVideo(requireContext())
         if (videos.isEmpty()) {
-            layout_no_videos.visibility = View.VISIBLE
+            binding.layoutNoVideos.visibility = View.VISIBLE
         } else {
-            layout_no_videos.visibility = View.GONE
+            binding.layoutNoVideos.visibility = View.GONE
         }
         adapter.updateData(videos)
     }
@@ -131,7 +133,7 @@ class VideoFragment : BaseFragment() {
                 R.string.cancel
             ) { dialog, whichButton -> dialog.cancel() }.create()
 
-        val titleEditText = view.edt_name
+        val titleEditText = view.findViewById<EditText>(R.id.edt_name)
         titleEditText.setText(video.name)
 
         dialog.setCancelable(true)

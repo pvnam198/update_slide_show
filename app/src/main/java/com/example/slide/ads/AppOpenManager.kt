@@ -93,7 +93,7 @@ class AppOpenManager(private val myApplication: MyApplication) :
             Ads.getOpenAppAdsId(),
             request,
             AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-            loadCallback
+            loadCallback!!
         )
     }
 

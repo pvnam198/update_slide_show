@@ -4,18 +4,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.base.BaseRecyclerViewAdapter
 import com.example.slide.database.entities.Draft
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.item_draft.view.*
 
-class DraftAdapter(private val onDraftClicked: (draft: Draft) -> Unit,
-                   private val onRenameClicked: (draft: Draft) -> Unit,
-                   private val onCopyClicked: (draft: Draft) -> Unit,
-                   private val onDeleteClicked: (draft: Draft) -> Unit) : BaseRecyclerViewAdapter<Draft>() {
+class DraftAdapter(
+    private val onDraftClicked: (draft: Draft) -> Unit,
+    private val onRenameClicked: (draft: Draft) -> Unit,
+    private val onCopyClicked: (draft: Draft) -> Unit,
+    private val onDeleteClicked: (draft: Draft) -> Unit
+) : BaseRecyclerViewAdapter<Draft>() {
 
     private inner class DraftViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -30,11 +32,12 @@ class DraftAdapter(private val onDraftClicked: (draft: Draft) -> Unit,
         holder as DraftViewHolder
         val draft = mDataList[position]
         with(holder.itemView) {
-            Glide.with(this).load(draft.images[0].url).into(imgPhotoDraft)
-            tvDraftTitle.text = draft.title
-            tvTotalDuration.text = StringUtils.getDurationDisplayFromSeconds(draft.totalDuration)
+            Glide.with(this).load(draft.images[0].url).into(findViewById(R.id.imgPhotoDraft))
+            findViewById<TextView>(R.id.tvDraftTitle).text = draft.title
+            findViewById<TextView>(R.id.tvTotalDuration).text =
+                StringUtils.getDurationDisplayFromSeconds(draft.totalDuration)
             setOnClickListener { onDraftClicked.invoke(draft) }
-            btnMore.setOnClickListener {
+            findViewById<View>(R.id.btnMore).setOnClickListener {
                 selectedIndex = position
                 openMenu(it, draft)
             }

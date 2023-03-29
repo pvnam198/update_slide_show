@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.model.Image
-import kotlinx.android.synthetic.main.item_image_selected_layout.view.*
 
 class ImageSelectedAdapter(
     val images: ArrayList<Image>,
@@ -39,7 +39,7 @@ class ImageSelectedAdapter(
     }
 
     class ImageSelectedHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image = view.btn_icon
-        val btn_remove_image = view.btn_remove_image
+        val image = view.findViewById<ImageView>(R.id.btn_icon)
+        val btn_remove_image = view.findViewById<View>(R.id.btn_remove_image)
     }
 }

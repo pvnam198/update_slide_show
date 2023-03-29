@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.base.BaseRecyclerViewAdapter
 import com.example.slide.database.entities.Draft
-import kotlinx.android.synthetic.main.item_video.view.*
 
 class DraftAdapter(private val onDraftClicked: (draft: Draft) -> Unit,
                    private val onRenameClicked: (draft: Draft) -> Unit,
@@ -28,10 +28,10 @@ class DraftAdapter(private val onDraftClicked: (draft: Draft) -> Unit,
         holder as DraftViewHolder
         val draft = mDataList[position]
         with(holder.itemView) {
-            Glide.with(this).load(draft.images[0].url).into(iv_thumb)
-            tv_duration.text = draft.title
+            Glide.with(this).load(draft.images[0].url).into(findViewById(R.id.iv_thumb))
+            findViewById<TextView>(R.id.tv_duration).text = draft.title
             setOnClickListener { onDraftClicked.invoke(draft) }
-            btn_more.setOnClickListener {
+            findViewById<View>(R.id.btn_more).setOnClickListener {
                 openMenu(it, draft)
             }
         }

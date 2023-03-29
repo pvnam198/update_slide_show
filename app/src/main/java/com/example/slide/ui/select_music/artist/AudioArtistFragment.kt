@@ -5,15 +5,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioArtistBinding
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.model.Artist
 import com.example.slide.ui.select_music.search.SearchFragment
-import kotlinx.android.synthetic.main.fragment_audio_artist.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class AudioArtistFragment : BaseFragment() {
+class AudioArtistFragment : BaseFragment<FragmentAudioArtistBinding>() {
+    override fun bindingView(): FragmentAudioArtistBinding {
+        return FragmentAudioArtistBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_artist },{true})
 
@@ -35,15 +38,15 @@ class AudioArtistFragment : BaseFragment() {
 
     override fun initConfiguration() {
         adapter = ArtistAdapter(this)
-        rv_artist.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rv_artist.adapter = adapter
+        binding.rvArtist.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.rvArtist.adapter = adapter
         initialState()
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { requireActivity().onBackPressed() }
-        btn_search.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnSearch.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
     }
 
     private fun initialState() {

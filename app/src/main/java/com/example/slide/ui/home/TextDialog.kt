@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.slide.R
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogTextBinding
 import com.example.slide.framework.thirdparty.DialogApp
-import kotlinx.android.synthetic.main.dialog_text.view.*
 
 
-class TextDialog : DialogFragment() {
+class TextDialog : BaseBindingDialog<DialogTextBinding>() {
     companion object {
 
         private const val EXTRA_DIALOG = "dialog"
@@ -32,6 +33,10 @@ class TextDialog : DialogFragment() {
         outState.putSerializable(EXTRA_DIALOG, dialogApp)
     }
 
+    override fun bindingView(): DialogTextBinding {
+        return DialogTextBinding.inflate(layoutInflater)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,12 +50,12 @@ class TextDialog : DialogFragment() {
         val bundle = arguments ?: savedInstanceState
         bundle ?: return
         dialogApp = bundle.getSerializable(EXTRA_DIALOG) as DialogApp
-        view.btn_close.setOnClickListener { dismiss() }
+        binding.btnClose.setOnClickListener { dismiss() }
         dialogApp?.let { dialogInfo ->
-            Glide.with(this).load(dialogInfo.icon).into(view.iv_icon)
-            view.tv_title.text = dialogInfo.name
-            view.tv_content.text = dialogInfo.content
-            view.btn_install.setOnClickListener {
+            Glide.with(this).load(dialogInfo.icon).into(binding.ivIcon)
+            binding.tvTitle.text = dialogInfo.name
+            binding.tvContent.text = dialogInfo.content
+            binding.btnInstall.setOnClickListener {
                 (activity as MainActivity?)?.goToAppFromDialog(dialogInfo)
             }
         }

@@ -8,23 +8,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentOverlayBinding
 import com.example.slide.event.EditImageLoadedEvent
 import com.example.slide.ui.edit_image.EditImageActivity
 import com.example.slide.ui.edit_image.adapter.OverlayAdapter
 import com.example.slide.ui.edit_image.utils.FilterUtils
-import kotlinx.android.synthetic.main.fragment_overlay.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class OverlayFragment : BaseFragment(), View.OnClickListener {
+class OverlayFragment : BaseFragment<FragmentOverlayBinding>(), View.OnClickListener {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
     private val editImageActivity by lazy {
         activity as EditImageActivity
+    }
+
+    override fun bindingView(): FragmentOverlayBinding {
+        return FragmentOverlayBinding.inflate(layoutInflater)
     }
 
     override fun initViewTools() = InitViewTools({
@@ -33,7 +37,7 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
 
     override fun initConfiguration() {
         super.initConfiguration()
-            progress_bar.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
         loadOverlayBitmap()
         seekBarConfig()
     }
@@ -44,9 +48,9 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun seekBarConfig() {
-        seek_bar.max = 100
-        seek_bar.progress = 100
-        seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seekBar.max = 100
+        binding.seekBar.progress = 100
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
                 seekBar: SeekBar?,
                 currentProcess: Int,
@@ -70,8 +74,8 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
 
     override fun initListener() {
         super.initListener()
-        btn_close.setOnClickListener(this)
-        btn_check.setOnClickListener(this)
+        binding.btnClose.setOnClickListener(this)
+        binding.btnCheck.setOnClickListener(this)
     }
 
     override fun releaseData() {
@@ -95,8 +99,8 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
             val bitmap = ThumbnailUtils.extractThumbnail(it, 150, 150)
             bitmapOverlays.addAll(FilterUtils.getLstBitmapWithOverlay(bitmap))
             CoroutineScope(Dispatchers.Main).launch {
-                recycler_view_blur?.let {
-                    recycler_view_blur.layoutManager =
+                binding.recyclerViewBlur.let {
+                    binding.recyclerViewBlur.layoutManager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     val overlayAdapter =
                         OverlayAdapter(
@@ -110,9 +114,9 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
                                 }
                                 editImageActivity.setImageOverlay(config)
                             })
-                    recycler_view_blur.adapter = overlayAdapter
+                    binding.recyclerViewBlur.adapter = overlayAdapter
                     overlayAdapter.notifyDataSetChanged()
-                    progress_bar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         }
@@ -120,9 +124,9 @@ class OverlayFragment : BaseFragment(), View.OnClickListener {
 
     private fun toggleSeekBar(visible: Boolean) {
         if (visible) {
-            seek_bar.visibility = View.VISIBLE
+            binding.seekBar.visibility = View.VISIBLE
         } else {
-            seek_bar.visibility = View.INVISIBLE
+            binding.seekBar.visibility = View.INVISIBLE
         }
     }
 }

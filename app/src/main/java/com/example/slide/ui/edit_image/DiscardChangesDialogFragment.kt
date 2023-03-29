@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
 import com.example.slide.R
-import kotlinx.android.synthetic.main.dialog_stop_export.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogStopExportBinding
 
-class DiscardChangesDialogFragment : DialogFragment(), View.OnClickListener {
+class DiscardChangesDialogFragment : BaseBindingDialog<DialogStopExportBinding>(), View.OnClickListener {
 
     companion object{
 
@@ -22,6 +22,10 @@ class DiscardChangesDialogFragment : DialogFragment(), View.OnClickListener {
             return DiscardChangesDialogFragment()
         }
 
+    }
+
+    override fun bindingView(): DialogStopExportBinding {
+        return DialogStopExportBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -55,16 +59,16 @@ class DiscardChangesDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_cancel.setOnClickListener(this)
-        btn_ok.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnOk.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> {
+            binding.btnCancel -> {
                 dismiss()
             }
-            btn_ok -> {
+            binding.btnOk -> {
                 dismiss()
                 (requireActivity() as EditImageActivity).discardChanges()
             }

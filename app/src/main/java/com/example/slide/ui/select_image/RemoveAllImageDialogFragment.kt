@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.slide.R
-import kotlinx.android.synthetic.main.dialog_clear_image_selected.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogClearImageSelectedBinding
 
-class RemoveAllImageDialogFragment : DialogFragment(), View.OnClickListener {
+class RemoveAllImageDialogFragment : BaseBindingDialog<DialogClearImageSelectedBinding>(), View.OnClickListener {
 
     companion object {
         fun getInstance(): RemoveAllImageDialogFragment {
@@ -21,6 +22,9 @@ class RemoveAllImageDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private lateinit var selectFragment: SelectFragment
+    override fun bindingView(): DialogClearImageSelectedBinding {
+        return DialogClearImageSelectedBinding.inflate(layoutInflater)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +49,8 @@ class RemoveAllImageDialogFragment : DialogFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         selectFragment =
             requireActivity().supportFragmentManager.findFragmentByTag(SelectFragment::class.java.name) as SelectFragment
-        btn_yes.setOnClickListener(this)
-        btn_no.setOnClickListener(this)
+        binding.btnYes.setOnClickListener(this)
+        binding.btnNo.setOnClickListener(this)
     }
 
     override fun onStart() {
@@ -61,11 +65,11 @@ class RemoveAllImageDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view) {
-            btn_yes -> {
+            binding.btnYes -> {
                 selectFragment.removeAllSelectedImage()
                 dismiss()
             }
-            btn_no -> {
+            binding.btnNo -> {
                 dismiss()
             }
         }

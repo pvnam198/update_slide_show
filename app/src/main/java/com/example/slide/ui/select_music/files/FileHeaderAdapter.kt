@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.util.MyStatic
-import kotlinx.android.synthetic.main.item_audio_file_header.view.*
 import java.io.File
 import java.util.*
 
@@ -68,11 +67,11 @@ class FileHeaderAdapter(private var fragment: AudioFilesFragment) :
 
     class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val tv_title: TextView = itemView.tv_title
+        val tv_title: TextView = itemView.findViewById(R.id.tv_title)
 
-        val iv_next: ImageView = itemView.iv_next
+        val iv_next: ImageView = itemView.findViewById(R.id.iv_next)
 
-        val btn_file_header: View = itemView.btn_file_header
+        val btn_file_header: View = itemView.findViewById(R.id.btn_file_header)
 
     }
 

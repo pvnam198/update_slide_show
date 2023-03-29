@@ -12,12 +12,13 @@ import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.slide.R
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogRemoveVideoBinding
 import com.example.slide.util.FileUtils
-import kotlinx.android.synthetic.main.dialog_remove_video.*
 import org.greenrobot.eventbus.EventBus
 
 class RemoveVideoDialogFragment :
-    DialogFragment(),
+    BaseBindingDialog<DialogRemoveVideoBinding>(),
     View.OnClickListener {
 
     companion object {
@@ -30,6 +31,10 @@ class RemoveVideoDialogFragment :
             this.video = video
             return RemoveVideoDialogFragment()
         }
+    }
+
+    override fun bindingView(): DialogRemoveVideoBinding {
+        return DialogRemoveVideoBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -64,18 +69,18 @@ class RemoveVideoDialogFragment :
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_no.setOnClickListener(this)
-        btn_yes.setOnClickListener(this)
+        binding.btnNo.setOnClickListener(this)
+        binding.btnYes.setOnClickListener(this)
 
-        tv_header.text = requireContext().getString(R.string.delete_video) + video.name
+        binding.tvHeader.text = requireContext().getString(R.string.delete_video) + video.name
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_no -> {
+            binding.btnNo -> {
                 dismiss()
             }
-            btn_yes -> {
+            binding.btnYes -> {
                 dismiss()
                 val success = FileUtils.deleteVideoFromDevice(requireContext(), video.id)
                 if (success) {

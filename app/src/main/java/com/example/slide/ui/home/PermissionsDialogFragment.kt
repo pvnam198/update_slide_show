@@ -13,10 +13,11 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.slide.R
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogPermissionBinding
 import com.example.slide.util.Utils
-import kotlinx.android.synthetic.main.dialog_permission.*
 
-class PermissionsDialogFragment : DialogFragment(), View.OnClickListener {
+class PermissionsDialogFragment : BaseBindingDialog<DialogPermissionBinding>(), View.OnClickListener {
 
     companion object {
 
@@ -25,6 +26,10 @@ class PermissionsDialogFragment : DialogFragment(), View.OnClickListener {
         fun getInstance(): PermissionsDialogFragment {
             return PermissionsDialogFragment()
         }
+    }
+
+    override fun bindingView(): DialogPermissionBinding {
+        return DialogPermissionBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -59,18 +64,18 @@ class PermissionsDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_open_settings.setOnClickListener(this)
-        btn_quit.setOnClickListener(this)
+        binding.btnOpenSettings.setOnClickListener(this)
+        binding.btnQuit.setOnClickListener(this)
         if (Utils.isScopeStorage()) {
-            tv_description2.visibility = View.GONE
+            binding.tvDescription2.visibility = View.GONE
         } else {
-            tv_description2.visibility = View.VISIBLE
+            binding.tvDescription2.visibility = View.VISIBLE
         }
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_open_settings -> {
+            binding.btnOpenSettings -> {
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
@@ -78,7 +83,7 @@ class PermissionsDialogFragment : DialogFragment(), View.OnClickListener {
                 dismiss()
                 requireContext().startActivity(intent)
             }
-            btn_quit -> {
+            binding.btnQuit -> {
                 dismiss()
             }
         }

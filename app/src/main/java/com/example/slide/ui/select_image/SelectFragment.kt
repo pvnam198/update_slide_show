@@ -1,19 +1,21 @@
 package com.example.slide.ui.select_image
 
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentSelectBinding
 import com.example.slide.event.ImageLoadStateChangedEvent
 import com.example.slide.event.ImageSelectedChangedEvent
-import kotlinx.android.synthetic.main.fragment_select.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SelectFragment : BaseFragment(), View.OnClickListener {
+class SelectFragment : BaseFragment<FragmentSelectBinding>(), View.OnClickListener {
+    override fun bindingView(): FragmentSelectBinding {
+        return FragmentSelectBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.fragment_select
@@ -49,9 +51,9 @@ class SelectFragment : BaseFragment(), View.OnClickListener {
 
     override fun initListener() {
         super.initListener()
-        iv_check.setOnClickListener(this)
-        btn_remove_all_image.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
+        binding.ivCheck.setOnClickListener(this)
+        binding.btnRemoveAllImage.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
     }
 
     override fun initTask() {
@@ -78,23 +80,23 @@ class SelectFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initSelectedImages() {
-        rv_colors.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rv_colors.adapter = selectedImagesAdapter
+        binding.rvColors.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvColors.adapter = selectedImagesAdapter
     }
 
     private fun initImagesAdapter() {
         imagesAdapter = ImageAdapter(requireActivity() as SelectActivity)
-        recyclerview_image.layoutManager =
-                GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
-        recyclerview_image.adapter = imagesAdapter
+        binding.recyclerviewImage.layoutManager =
+            GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
+        binding.recyclerviewImage.adapter = imagesAdapter
     }
 
     private fun initAlbumsAdapter() {
         folderAdapter = FolderAdapter(selectActivity.albums, requireContext(), this)
-        recyclerview_album.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerview_album.adapter = folderAdapter
+        binding.recyclerviewAlbum.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerviewAlbum.adapter = folderAdapter
     }
 
     fun onSelectedImageChanged() {
@@ -111,40 +113,40 @@ class SelectFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setAmountSelectedImage(amount: Int) {
-        tv_requite_images.visibility = if (amount == 0) View.VISIBLE else View.INVISIBLE
-        tv_amount.text = resources.getQuantityString(
-                R.plurals.format_selected_images,
-                amount, amount
+        binding.tvRequiteImages.visibility = if (amount == 0) View.VISIBLE else View.INVISIBLE
+        binding.tvAmount.text = resources.getQuantityString(
+            R.plurals.format_selected_images,
+            amount, amount
         )
     }
 
     override fun releaseData() {}
 
     private fun imagesLoading() {
-        progress_bar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun imagesLoaded() {
-        progress_bar.visibility = View.INVISIBLE
+        binding.progressBar.visibility = View.INVISIBLE
         folderAdapter.updateData(selectActivity.albums)
         if (selectActivity.albums.isNotEmpty()) {
             imagesAdapter.updateData(
-                    selectActivity.albums[0].imageList,
-                    selectActivity.selectedImages
+                selectActivity.albums[0].imageList,
+                selectActivity.selectedImages
             )
         }
     }
 
     override fun onClick(view: View) {
         when (view) {
-            iv_check -> {
+            binding.ivCheck -> {
                 selectActivity.doneSelectImages()
             }
-            btn_remove_all_image -> {
+            binding.btnRemoveAllImage -> {
                 if (selectActivity.selectedImages.size > 0)
                     RemoveAllImageDialogFragment.getInstance().show(parentFragmentManager, TAG)
             }
-            btn_back -> {
+            binding.btnBack -> {
                 requireActivity().onBackPressed()
             }
         }
@@ -154,7 +156,7 @@ class SelectFragment : BaseFragment(), View.OnClickListener {
         selectedImagesAdapter.removeAllData()
         imagesAdapter.updateSelectedData(selectActivity.selectedImages)
         setAmountSelectedImage(0)
-        tv_requite_images.visibility = View.VISIBLE
+        binding.tvRequiteImages.visibility = View.VISIBLE
     }
 
     fun removeSelectedImageAt(position: Int) {
@@ -167,8 +169,8 @@ class SelectFragment : BaseFragment(), View.OnClickListener {
 
     fun onAlbumSelected(position: Int) {
         imagesAdapter.updateData(
-                selectActivity.albums[position].imageList,
-                selectActivity.selectedImages
+            selectActivity.albums[position].imageList,
+            selectActivity.selectedImages
         )
     }
 

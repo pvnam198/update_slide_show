@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentTextBinding
+import com.example.slide.lib.keyboardheightprovider.KeyboardHeightProvider
 import com.example.slide.ui.edit_image.EditImageActivity
 import com.example.slide.ui.edit_image.adapter.ColorTextAdapter
 import com.example.slide.ui.edit_image.adapter.FontPickerAdapter
@@ -31,23 +33,13 @@ import com.example.slide.ui.edit_image.utils.SystemUtil
 import com.example.slide.util.ColorProvider
 import com.example.slide.util.FontProvider
 import com.example.slide.util.Utils
-import com.example.slide.lib.keyboardheightprovider.KeyboardHeightProvider
-import kotlinx.android.synthetic.main.fragment_text.*
-import kotlinx.android.synthetic.main.fragment_text.btn_close
-import kotlinx.android.synthetic.main.fragment_text.btn_color
-import kotlinx.android.synthetic.main.fragment_text.btn_font
-import kotlinx.android.synthetic.main.fragment_text.btn_qwerty
-import kotlinx.android.synthetic.main.fragment_text.btn_submit
-import kotlinx.android.synthetic.main.fragment_text.edt_text
-import kotlinx.android.synthetic.main.fragment_text.font_layout
-import kotlinx.android.synthetic.main.fragment_text.tv_preview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class TextFragment : BaseFragment(), View.OnClickListener {
+class TextFragment : BaseFragment<FragmentTextBinding>(), View.OnClickListener {
 
     private lateinit var fontPickerAdapter: FontPickerAdapter
 
@@ -107,6 +99,10 @@ class TextFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    override fun bindingView(): FragmentTextBinding {
+        return FragmentTextBinding.inflate(layoutInflater)
+    }
+
     override fun initViewTools() = InitViewTools({
         R.layout.fragment_text
     })
@@ -130,16 +126,16 @@ class TextFragment : BaseFragment(), View.OnClickListener {
     private fun initTextShadow() {
         addTextProperties?.let {
             textShadowAdapter = ShadowAdapter(requireContext(), it.textShadow)
-            rvShadow.adapter = textShadowAdapter
+            binding.rvShadow.adapter = textShadowAdapter
             textShadowAdapter.setShadowItemClickListener { textShadow, textShadowIndex ->
                 Log.d("hehe", "initTextShadow: $textShadowIndex")
-                tv_preview.setShadowLayer(
+                binding.tvPreview.setShadowLayer(
                     textShadow.radius.toFloat(),
                     textShadow.dx.toFloat(),
                     textShadow.dy.toFloat(),
                     textShadow.colorShadow
                 )
-                tv_preview.invalidate()
+                binding.tvPreview.invalidate()
                 it.textShadow = textShadow
                 it.setTextShadowIndex(textShadowIndex)
             }
@@ -150,15 +146,15 @@ class TextFragment : BaseFragment(), View.OnClickListener {
         colorTextBackgroundAdapter = ColorTextAdapter { color, position ->
             addTextProperties?.let {
                 it.isShowBackground = true
-                if (!switchBackground.isChecked) {
-                    switchBackground.isChecked = true
+                if (!binding.switchBackground.isChecked) {
+                    binding.switchBackground.isChecked = true
                 }
                 updateBackgroundPreview(color)
                 it.backgroundColor = color
                 it.backgroundColorIndex = position
             }
         }
-        rvTextBackground.adapter = colorTextBackgroundAdapter
+        binding.rvTextBackground.adapter = colorTextBackgroundAdapter
     }
 
     private fun updateBackgroundPreview(color: Int = 0) {
@@ -171,21 +167,21 @@ class TextFragment : BaseFragment(), View.OnClickListener {
                 shade.setColor(Color.argb(it.backgroundAlpha, red, green, blue))
                 shade.cornerRadius =
                     SystemUtil.dpToPx(requireContext(), it.backgroundBorder).toFloat()
-                tv_preview.background = shade
+                binding.tvPreview.background = shade
             } else {
-                tv_preview.background = null
+                binding.tvPreview.background = null
                 updatePaddingHeight(2)
                 updatePaddingWidth(8)
             }
-            updateFullScreenBackgroundPreview(switchFullScreenBackground.isChecked)
+            updateFullScreenBackgroundPreview(binding.switchFullScreenBackground.isChecked)
         }
     }
 
     private fun initTextColors() {
 
         colorTextAdapter = ColorTextAdapter { color, position ->
-            tv_preview.setTextColor(color)
-            tv_preview.paint.shader = null
+            binding.tvPreview.setTextColor(color)
+            binding.tvPreview.paint.shader = null
             addTextProperties?.textShader = null
             addTextProperties?.textColor = color
             addTextProperties?.textColorIndex = position
@@ -195,53 +191,53 @@ class TextFragment : BaseFragment(), View.OnClickListener {
 
         textureAdapter = TextureAdapter { color, position ->
             shader = BitmapShader(color, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR)
-            tv_preview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            tv_preview.paint.shader = shader
+            binding.tvPreview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            binding.tvPreview.paint.shader = shader
             addTextProperties?.textShader = shader
             addTextProperties?.textShaderIndex = position
             setTextColor()
             colorTextAdapter.disableSelected()
         }
 
-        rv_colors.adapter = colorTextAdapter
+        binding.rvColors.adapter = colorTextAdapter
 
-        rv_texture.adapter = textureAdapter
+        binding.rvTexture.adapter = textureAdapter
 
     }
 
     private fun initTextFonts() {
-        rv_fonts.layoutManager =
+        binding.rvFonts.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         fontPickerAdapter = FontPickerAdapter(FontProvider.fonts(), requireContext()) { font ->
             addTextProperties?.fontName = font
-            Utils.setTypeface(requireContext(), tv_preview, font)
+            Utils.setTypeface(requireContext(), binding.tvPreview, font)
         }
-        rv_fonts.adapter = fontPickerAdapter
+        binding.rvFonts.adapter = fontPickerAdapter
     }
 
     override fun initListener() {
 
-        btn_close.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
-        btn_qwerty.setOnClickListener(this)
-        btn_color.setOnClickListener(this)
-        btn_font.setOnClickListener(this)
-        btn_submit.setOnClickListener(this)
-        btn_add_new_text.setOnClickListener(this)
-        btn_size_down.setOnClickListener(this)
-        btn_size_up.setOnClickListener(this)
+        binding.btnClose.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.btnQwerty.setOnClickListener(this)
+        binding.btnColor.setOnClickListener(this)
+        binding.btnFont.setOnClickListener(this)
+        binding.btnSubmit.setOnClickListener(this)
+        binding.btnAddNewText.setOnClickListener(this)
+        binding.btnSizeDown.setOnClickListener(this)
+        binding.btnSizeUp.setOnClickListener(this)
 
         keyboardHeightTest = KeyboardHeightProvider(requireActivity())
         keyboardHeightTest!!.addKeyboardListener(keyboardListener)
 
-        edt_text.addTextChangedListener(object : TextWatcher {
+        binding.edtText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val text = charSequence.toString()
-                tv_preview.text = text
+                binding.tvPreview.text = text
                 addTextProperties?.text = text
             }
 
@@ -250,7 +246,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
-        edt_text.setOnFocusChangeListener { v, hasFocus ->
+        binding.edtText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) openQueryTab()
         }
 
@@ -262,7 +258,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
 
         paddingHeightListener()
 
-        switchBackground.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchBackground.setOnCheckedChangeListener { _, isChecked ->
             addTextProperties?.let {
                 it.isShowBackground = isChecked
                 if (!isChecked) {
@@ -273,14 +269,14 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             }
         }
 
-        switchFullScreenBackground.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchFullScreenBackground.setOnCheckedChangeListener { _, isChecked ->
             updateFullScreenBackgroundPreview(isChecked)
         }
 
     }
 
     private fun paddingWidthListener() {
-        sbPaddingWidth.setOnSeekBarChangeListener(object :
+        binding.sbPaddingWidth.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -299,7 +295,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun paddingHeightListener() {
-        sbPaddingHeight.setOnSeekBarChangeListener(object :
+        binding.sbPaddingHeight.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -319,11 +315,11 @@ class TextFragment : BaseFragment(), View.OnClickListener {
     private fun updatePaddingWidth(progress: Int) {
         addTextProperties?.let {
             if (it.isShowBackground) {
-                tv_preview.setPadding(
+                binding.tvPreview.setPadding(
                     SystemUtil.dpToPx(requireContext(), progress),
-                    tv_preview.paddingTop,
+                    binding.tvPreview.paddingTop,
                     SystemUtil.dpToPx(requireContext(), progress),
-                    tv_preview.paddingBottom
+                    binding.tvPreview.paddingBottom
                 )
                 it.paddingWidth = progress
             }
@@ -333,10 +329,10 @@ class TextFragment : BaseFragment(), View.OnClickListener {
     private fun updatePaddingHeight(progress: Int) {
         addTextProperties?.let {
             if (it.isShowBackground) {
-                tv_preview.setPadding(
-                    tv_preview.paddingLeft,
+                binding.tvPreview.setPadding(
+                    binding.tvPreview.paddingLeft,
                     SystemUtil.dpToPx(requireContext(), progress),
-                    tv_preview.paddingRight,
+                    binding.tvPreview.paddingRight,
                     SystemUtil.dpToPx(requireContext(), progress)
                 )
                 it.paddingHeight = progress
@@ -349,12 +345,12 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             if (it.isShowBackground) {
                 it.isFullScreen = isFullScreen
                 if (isFullScreen) {
-                    tv_preview.layoutParams = LinearLayoutCompat.LayoutParams(
+                    binding.tvPreview.layoutParams = LinearLayoutCompat.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
                 } else {
-                    tv_preview.layoutParams = LinearLayoutCompat.LayoutParams(
+                    binding.tvPreview.layoutParams = LinearLayoutCompat.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
@@ -364,7 +360,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun backgroundTextTransparentListener() {
-        sbBackgroundTextTransparent.setOnSeekBarChangeListener(object :
+        binding.sbBackgroundTextTransparent.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -395,14 +391,15 @@ class TextFragment : BaseFragment(), View.OnClickListener {
                     it.backgroundBorder
                 )
                     .toFloat()
-                tv_preview.background = shade
+                binding.tvPreview.background = shade
             }
 
         }
     }
 
     private fun textTransparentListener() {
-        sbTextTransparent.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.sbTextTransparent.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     addTextProperties?.let {
@@ -426,30 +423,30 @@ class TextFragment : BaseFragment(), View.OnClickListener {
         if (currentMode == EDIT_MODE) {
             addTextProperties?.let {
                 textSizePreView = it.textSize
-                tv_preview.textSize = textSizePreView.toFloat()
-                tv_size_content.text = textSizePreView.toString()
+                binding.tvPreview.textSize = textSizePreView.toFloat()
+                binding.tvSizeContent.text = textSizePreView.toString()
                 it.fontName?.let { fontName ->
                     fontPickerAdapter.setCurrentTextFont(fontName)
                 }
-                edt_text.setText(it.text)
-                edt_text.text?.let { text ->
-                    edt_text.setSelection(text.length)
+                binding.edtText.setText(it.text)
+                binding.edtText.text?.let { text ->
+                    binding.edtText.setSelection(text.length)
                 }
-                tv_preview.typeface = it.getTypeface(requireContext())
+                binding.tvPreview.typeface = it.getTypeface(requireContext())
 
                 if (it.isColor) {
-                    tv_preview.setTextColor(it.textColor)
+                    binding.tvPreview.setTextColor(it.textColor)
                 } else {
-                    tv_preview.paint.shader = it.textShader
+                    binding.tvPreview.paint.shader = it.textShader
                 }
                 setTextColor()
-                sbTextTransparent.progress = 255 - it.textAlpha
-                sbBackgroundTextTransparent.progress = 255 - it.backgroundAlpha
+                binding.sbTextTransparent.progress = 255 - it.textAlpha
+                binding.sbBackgroundTextTransparent.progress = 255 - it.backgroundAlpha
                 if (it.isShowBackground) {
-                    switchFullScreenBackground.isSelected = it.isFullScreen
-                    switchFullScreenBackground.isChecked = it.isFullScreen
-                    switchBackground.isSelected = it.isShowBackground
-                    switchBackground.isSelected = it.isShowBackground
+                    binding.switchFullScreenBackground.isSelected = it.isFullScreen
+                    binding.switchFullScreenBackground.isChecked = it.isFullScreen
+                    binding.switchBackground.isSelected = it.isShowBackground
+                    binding.switchBackground.isSelected = it.isShowBackground
                     updateBackgroundPreview(it.backgroundColor)
                     if (it.paddingWidth > 0) {
                         updatePaddingWidth(it.paddingWidth)
@@ -459,8 +456,8 @@ class TextFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 updateFullScreenBackgroundPreview(it.isFullScreen)
-                sbPaddingWidth.progress = it.paddingWidth
-                sbPaddingHeight.progress = it.paddingHeight
+                binding.sbPaddingWidth.progress = it.paddingWidth
+                binding.sbPaddingHeight.progress = it.paddingHeight
             }
         } else {
             addTextProperties?.textSize = textSizePreView
@@ -470,7 +467,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             val bitmapTextures = ColorProvider.getTextureBitmaps(requireContext())
             uiScope.launch {
                 textureAdapter.updateData(bitmapTextures)
-                layoutLoading.visibility = View.GONE
+                binding.layoutLoading.visibility = View.GONE
             }
         }
 
@@ -481,7 +478,7 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             val red = Color.red(it.textColor)
             val green = Color.green(it.textColor)
             val blue = Color.blue(it.textColor)
-            tv_preview.setTextColor(Color.argb(it.textAlpha, red, green, blue))
+            binding.tvPreview.setTextColor(Color.argb(it.textAlpha, red, green, blue))
         }
     }
 
@@ -503,55 +500,55 @@ class TextFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun openColorTab() {
-        edt_text.clearFocus()
-        activeTab(btn_color)
-        layoutColor.visibility = View.VISIBLE
-        font_layout.visibility = View.GONE
-        closeKeyboard(btn_color)
+        binding.edtText.clearFocus()
+        activeTab(binding.btnColor)
+        binding.layoutColor.visibility = View.VISIBLE
+        binding.fontLayout.visibility = View.GONE
+        closeKeyboard(binding.btnColor)
 
         addTextProperties?.let {
             handler.postDelayed({
-                switchBackground.isSelected = it.isShowBackground
-                switchBackground.isChecked = it.isShowBackground
-                switchFullScreenBackground.isSelected = it.isFullScreen
-                switchFullScreenBackground.isChecked = it.isFullScreen
+                binding.switchBackground.isSelected = it.isShowBackground
+                binding.switchBackground.isChecked = it.isShowBackground
+                binding.switchFullScreenBackground.isSelected = it.isFullScreen
+                binding.switchFullScreenBackground.isChecked = it.isFullScreen
             }, 100)
             if (it.isColor) {
                 colorTextAdapter.updateSelectedColor(it.textColorIndex)
                 textureAdapter.updateSelectedColor(-1)
                 handler.postDelayed({
-                    rv_colors.smoothScrollToPosition(it.textColorIndex)
+                    binding.rvColors.smoothScrollToPosition(it.textColorIndex)
                 }, 100)
             } else {
                 colorTextAdapter.disableSelected()
                 textureAdapter.updateSelectedColor(it.textShaderIndex)
                 handler.postDelayed({
-                    rv_texture.smoothScrollToPosition(it.textShaderIndex)
+                    binding.rvTexture.smoothScrollToPosition(it.textShaderIndex)
                 }, 100)
             }
             if (it.isShowBackground) {
                 colorTextBackgroundAdapter.updateSelectedColor(it.backgroundColorIndex)
                 handler.postDelayed({
-                    rvTextBackground.smoothScrollToPosition(it.backgroundColorIndex)
+                    binding.rvTextBackground.smoothScrollToPosition(it.backgroundColorIndex)
                 }, 100)
             }
         }
     }
 
     private fun addText() {
-        activeTab(btn_submit)
-        closeKeyboard(btn_submit)
-        text_properties_layout.visibility = View.INVISIBLE
-        btn_add_new_text.visibility = View.VISIBLE
-        rv_fonts.visibility = View.INVISIBLE
-        layoutColor.visibility = View.INVISIBLE
+        activeTab(binding.btnSubmit)
+        closeKeyboard(binding.btnSubmit)
+        binding.textPropertiesLayout.visibility = View.INVISIBLE
+        binding.btnAddNewText.visibility = View.VISIBLE
+        binding.rvFonts.visibility = View.INVISIBLE
+        binding.layoutColor.visibility = View.INVISIBLE
 
-        val previewText = tv_preview.text.toString()
+        val previewText = binding.tvPreview.text.toString()
         if (TextUtils.isEmpty(previewText)) return
 
         addTextProperties?.let {
-            it.textWidth = tv_preview.width
-            it.textHeight = tv_preview.height
+            it.textWidth = binding.tvPreview.width
+            it.textHeight = binding.tvPreview.height
             if (currentMode == ADD_MODE)
                 activity.addText(
                     TextFloatingItem(
@@ -567,8 +564,8 @@ class TextFragment : BaseFragment(), View.OnClickListener {
             }
         }
         addTextProperties = null
-        edt_text.setText("")
-        edt_text.visibility = View.INVISIBLE
+        binding.edtText.setText("")
+        binding.edtText.visibility = View.INVISIBLE
         activity.onBackPressed()
     }
 
@@ -581,9 +578,9 @@ class TextFragment : BaseFragment(), View.OnClickListener {
                 handler.postDelayed({
                     if (!isShowKeyboard) {
                         isShowKeyboard = true
-                        val layoutParams = layoutGroup.layoutParams
+                        val layoutParams = binding.layoutGroup.layoutParams
                         layoutParams.height = heightKeyboard
-                        layoutGroup.layoutParams = layoutParams
+                        binding.layoutGroup.layoutParams = layoutParams
                     }
                 }, 100)
             }
@@ -592,97 +589,101 @@ class TextFragment : BaseFragment(), View.OnClickListener {
 
     private fun initPreviewText() {
         addTextProperties?.let {
-            Utils.setTypeface(requireContext(), tv_preview)
-            tv_preview.setTextColor(Color.parseColor("#000000"))
-            tv_preview.text = it.text
-            tv_preview.typeface = it.getTypeface(requireContext())
-            tv_preview.setTextColor(it.textColor)
+            Utils.setTypeface(requireContext(), binding.tvPreview)
+            binding.tvPreview.setTextColor(Color.parseColor("#000000"))
+            binding.tvPreview.text = it.text
+            binding.tvPreview.typeface = it.getTypeface(requireContext())
+            binding.tvPreview.setTextColor(it.textColor)
 
             if (it.paddingHeight > 0) {
-                tv_preview.setPadding(
-                    tv_preview.paddingLeft,
+                binding.tvPreview.setPadding(
+                    binding.tvPreview.paddingLeft,
                     it.paddingHeight,
-                    tv_preview.paddingRight,
+                    binding.tvPreview.paddingRight,
                     it.paddingHeight
                 )
             }
             if (it.paddingWidth > 0) {
-                tv_preview.setPadding(
+                binding.tvPreview.setPadding(
                     it.paddingWidth,
-                    tv_preview.paddingTop,
+                    binding.tvPreview.paddingTop,
                     it.paddingWidth,
-                    tv_preview.paddingBottom
+                    binding.tvPreview.paddingBottom
                 )
             }
             if (it.textShader != null) {
-                tv_preview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-                tv_preview.paint.shader = it.textShader
+                binding.tvPreview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                binding.tvPreview.paint.shader = it.textShader
             }
 
-            tv_preview.setPadding(
+            binding.tvPreview.setPadding(
                 SystemUtil.dpToPx(requireContext(), it.paddingWidth),
-                tv_preview.paddingTop,
+                binding.tvPreview.paddingTop,
                 SystemUtil.dpToPx(requireContext(), it.paddingWidth),
-                tv_preview.paddingBottom
+                binding.tvPreview.paddingBottom
             )
-            tv_preview.textAlignment = it.textAlign
-            tv_preview.textSize = it.textSize.toFloat()
+            binding.tvPreview.textAlignment = it.textAlign
+            binding.tvPreview.textSize = it.textSize.toFloat()
             textSizePreView = it.textSize
-            tv_preview.invalidate()
+            binding.tvPreview.invalidate()
         }
     }
 
     private fun openFontTab() {
-        edt_text.clearFocus()
-        activeTab(btn_font)
-        layoutColor.visibility = View.GONE
-        font_layout.visibility = View.VISIBLE
+        binding.edtText.clearFocus()
+        activeTab(binding.btnFont)
+        binding.layoutColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.VISIBLE
         handler.postDelayed({
-            rv_fonts?.smoothScrollToPosition(fontPickerAdapter.getSelectedPos())
+            try {
+                binding.rvFonts.smoothScrollToPosition(fontPickerAdapter.getSelectedPos())
+            } catch (ignore: Exception) { }
         }, 300)
-        closeKeyboard(btn_color)
+        closeKeyboard(binding.btnColor)
         addTextProperties?.let {
             handler.postDelayed({
-                rvShadow?.smoothScrollToPosition(it.textShadowIndex)
+                try {
+                    binding.rvShadow.smoothScrollToPosition(it.textShadowIndex)
+                } catch (ignore: Exception) { }
             }, 300)
         }
-        closeKeyboard(btn_color)
+        closeKeyboard(binding.btnColor)
     }
 
     private fun closeTextFragment() {
-        activeTab(btn_close)
-        closeKeyboard(btn_close)
+        activeTab(binding.btnClose)
+        closeKeyboard(binding.btnClose)
         (requireActivity() as EditImageActivity).onBackPressed()
     }
 
     private fun backPress() {
-        activeTab(btn_back)
-        closeKeyboard(btn_back)
+        activeTab(binding.btnBack)
+        closeKeyboard(binding.btnBack)
         (requireActivity() as EditImageActivity).onBackPressed()
     }
 
     private fun addNewText() {
-        text_properties_layout.visibility = View.VISIBLE
-        btn_add_new_text.visibility = View.INVISIBLE
-        activeTab(btn_add_new_text)
+        binding.textPropertiesLayout.visibility = View.VISIBLE
+        binding.btnAddNewText.visibility = View.INVISIBLE
+        activeTab(binding.btnAddNewText)
         openQueryTab()
     }
 
     private fun openQueryTab() {
         openKeyboard()
-        edt_text.requestFocus()
-        activeTab(btn_qwerty)
-        edt_text.visibility = View.VISIBLE
-        layoutColor.visibility = View.GONE
-        font_layout.visibility = View.GONE
+        binding.edtText.requestFocus()
+        activeTab(binding.btnQwerty)
+        binding.edtText.visibility = View.VISIBLE
+        binding.layoutColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.GONE
     }
 
     private fun activeTab(view: View) {
-        fl_qwerty.isSelected = btn_qwerty == view
-        fl_color.isSelected = btn_color == view
-        fl_font.isSelected = btn_font == view
-        fl_submit.isSelected = btn_submit == view
-        fl_close.isSelected = btn_close == view
+        binding.flQwerty.isSelected = binding.btnQwerty == view
+        binding.flColor.isSelected = binding.btnColor == view
+        binding.flFont.isSelected = binding.btnFont == view
+        binding.flSubmit.isSelected = binding.btnSubmit == view
+        binding.flClose.isSelected = binding.btnClose == view
     }
 
     private fun openKeyboard() {
@@ -699,34 +700,34 @@ class TextFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view) {
-            btn_submit -> {
+            binding.btnSubmit -> {
                 addText()
             }
-            btn_back -> {
+            binding.btnBack -> {
                 backPress()
             }
-            btn_close -> {
+            binding.btnClose -> {
                 closeTextFragment()
             }
-            btn_qwerty -> {
+            binding.btnQwerty -> {
                 openQueryTab()
             }
-            btn_color -> {
+            binding.btnColor -> {
                 openColorTab()
             }
-            btn_font -> {
+            binding.btnFont -> {
                 openFontTab()
             }
-            btn_add_new_text -> {
+            binding.btnAddNewText -> {
                 addNewText()
             }
-            btn_size_up -> {
-                tv_preview.textSize = (++textSizePreView).toFloat()
-                tv_size_content.text = textSizePreView.toString()
+            binding.btnSizeUp -> {
+                binding.tvPreview.textSize = (++textSizePreView).toFloat()
+                binding.tvSizeContent.text = textSizePreView.toString()
             }
-            btn_size_down -> {
-                tv_preview.textSize = (--textSizePreView).toFloat()
-                tv_size_content.text = textSizePreView.toString()
+            binding.btnSizeDown -> {
+                binding.tvPreview.textSize = (--textSizePreView).toFloat()
+                binding.tvSizeContent.text = textSizePreView.toString()
             }
         }
     }

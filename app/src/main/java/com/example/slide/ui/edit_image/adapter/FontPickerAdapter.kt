@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.util.FontProvider
-import kotlinx.android.synthetic.main.item_recyler_font.view.*
 
 class FontPickerAdapter(
     listFonts: ArrayList<String>,
@@ -71,7 +70,7 @@ class FontPickerAdapter(
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvFont: TextView = view.tv_font
-        val border: View = view.border
+        val tvFont: TextView = view.findViewById(R.id.tv_font)
+        val border: View = view.findViewById(R.id.border)
     }
 }

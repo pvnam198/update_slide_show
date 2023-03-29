@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.slide.R
@@ -18,9 +19,6 @@ import com.example.slide.repository.DraftRepository
 import com.example.slide.ui.my_studio.MyStudioActivity
 import com.example.slide.ui.select_image.SelectActivity
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import com.example.slide.util.FileUtils
-import com.example.slide.util.copyFolder
-
 import timber.log.Timber
 import java.io.File
 
@@ -151,7 +149,7 @@ class CreateVideoDialog : BaseBindingDialog<DialogCreateVideoBinding>(), View.On
                 R.string.cancel
             ) { dialog, whichButton -> dialog.cancel() }.create()
 
-        val titleEditText = view.edt_name
+        val titleEditText = view.findViewById<EditText>(R.id.edt_name)
         titleEditText.setText(draft.title)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)

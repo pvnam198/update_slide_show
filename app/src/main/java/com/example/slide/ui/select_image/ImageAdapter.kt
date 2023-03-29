@@ -3,13 +3,13 @@ package com.example.slide.ui.select_image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.model.Image
-import kotlinx.android.synthetic.main.item_image_layout.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ImageAdapter(
     val activity: SelectActivity
@@ -26,17 +26,17 @@ class ImageAdapter(
         images.forEach { image ->
             image.resetCount()
             selectedImages.forEach {
-                if(image.id == it.id) image.increaseSelectCount()
+                if (image.id == it.id) image.increaseSelectCount()
             }
         }
         notifyDataSetChanged()
     }
 
-    fun updateSelectedData(selectedImages : ArrayList<Image>) {
+    fun updateSelectedData(selectedImages: ArrayList<Image>) {
         images.forEach { image ->
             image.resetCount()
             selectedImages.forEach {
-                if(image.id == it.id) image.increaseSelectCount()
+                if (image.id == it.id) image.increaseSelectCount()
             }
         }
         notifyDataSetChanged()
@@ -56,7 +56,7 @@ class ImageAdapter(
         if (image.isSelected()) {
             holder.view_color.visibility = View.VISIBLE
             holder.tv_count.visibility = View.VISIBLE
-            holder.tv_count.text = String.format(Locale.US,"%02d", image.countNumber)
+            holder.tv_count.text = String.format(Locale.US, "%02d", image.countNumber)
         } else {
             holder.tv_count.visibility = View.GONE
             holder.view_color.visibility = View.GONE
@@ -69,12 +69,12 @@ class ImageAdapter(
 
     class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val image = view.btn_icon
+        val image = view.findViewById<ImageView>(R.id.btn_icon)
 
-        val tv_count = view.tv_count
+        val tv_count = view.findViewById<TextView>(R.id.tv_count)
 
-        val view_image = view.view_image
+        val view_image = view.findViewById<View>(R.id.view_image)
 
-        val view_color = view.view_color
+        val view_color = view.findViewById<View>(R.id.view_color)
     }
 }

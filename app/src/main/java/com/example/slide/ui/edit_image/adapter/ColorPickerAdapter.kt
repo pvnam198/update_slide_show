@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.util.ColorProvider
-import kotlinx.android.synthetic.main.item_recyler_color.view.*
 
 class ColorPickerAdapter(
     private val onColorSelected: (Int) -> Unit
@@ -68,8 +67,8 @@ class ColorPickerAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val colorPickerView: View = view.color_picker_view
-        val border: View = view.border
+        val colorPickerView: View = view.findViewById(R.id.color_picker_view)
+        val border: View = view.findViewById(R.id.border)
     }
 
 }

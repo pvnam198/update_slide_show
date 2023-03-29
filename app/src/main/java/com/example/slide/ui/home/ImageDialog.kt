@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.framework.thirdparty.DialogApp
-import kotlinx.android.synthetic.main.dialog_image.view.*
 
 
 class ImageDialog : DialogFragment() {
@@ -45,13 +45,13 @@ class ImageDialog : DialogFragment() {
         val bundle = arguments ?: savedInstanceState
         bundle ?: return
         dialogApp = bundle.getSerializable(EXTRA_DIALOG) as DialogApp
-        view.btn_close.setOnClickListener { dismiss() }
+        view.findViewById<View>(R.id.btn_close).setOnClickListener { dismiss() }
         dialogApp?.let { dialogInfo ->
-            Glide.with(this).load(dialogInfo.banner).into(view.iv_banner)
-            Glide.with(this).load(dialogInfo.icon).into(view.iv_icon)
-            view.tv_title.text = dialogInfo.name
-            view.tv_content.text = dialogInfo.content
-            view.btn_install.setOnClickListener {
+            Glide.with(this).load(dialogInfo.banner).into(view.findViewById(R.id.iv_banner))
+            Glide.with(this).load(dialogInfo.icon).into(view.findViewById(R.id.iv_icon))
+            view.findViewById<TextView>(R.id.tv_title).text = dialogInfo.name
+            view.findViewById<TextView>(R.id.tv_content).text = dialogInfo.content
+            view.findViewById<View>(R.id.btn_install).setOnClickListener {
                 (activity as MainActivity?)?.goToAppFromDialog(dialogInfo)
             }
         }

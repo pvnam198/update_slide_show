@@ -11,7 +11,6 @@ import com.example.slide.R
 import com.example.slide.framework.thirdparty.NavApp
 import com.example.slide.framework.thirdparty.ThirdPartyRequest
 import com.example.slide.util.isPackageInstalled
-import kotlinx.android.synthetic.main.item_app.view.*
 
 class MoreAppAdapter(private val onInstallClicked: (app: NavApp) -> Unit) :
     RecyclerView.Adapter<MoreAppAdapter.ViewHolder>() {
@@ -19,9 +18,9 @@ class MoreAppAdapter(private val onInstallClicked: (app: NavApp) -> Unit) :
     private var navApps: List<NavApp> = ThirdPartyRequest.apps
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivIcon: ImageView = view.iv_icon
-        val tvTitle: TextView = view.tv_title
-        val btnInstall: View = view.btn_install
+        val ivIcon: ImageView = view.findViewById(R.id.iv_icon)
+        val tvTitle: TextView = view.findViewById(R.id.tv_title)
+        val btnInstall: View = view.findViewById(R.id.btn_install)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

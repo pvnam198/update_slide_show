@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.ui.edit_image.utils.FilterUtils
-import kotlinx.android.synthetic.main.overlay_item_layout.view.*
 
 class OverlayAdapter(
     private var bitmaps: ArrayList<Bitmap>,
@@ -45,8 +44,8 @@ class OverlayAdapter(
 
     class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
-        val ivIcon: AppCompatImageView = view.btn_icon
-        val btnIcon: View = view.btn_icon
-        val layoutSelected: View = view.layout_selected
+        val ivIcon: AppCompatImageView = view.findViewById(R.id.btn_icon)
+        val btnIcon: View = view.findViewById(R.id.btn_icon)
+        val layoutSelected: View = view.findViewById(R.id.layout_selected)
     }
 }

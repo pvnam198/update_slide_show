@@ -4,13 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.model.Album
-import kotlinx.android.synthetic.main.item_folder_layout.view.*
 
-class FolderAdapter(folderList: ArrayList<Album>,
+class FolderAdapter(
+    folderList: ArrayList<Album>,
     private val context: Context,
     private val fragment: SelectFragment
 ) : RecyclerView.Adapter<FolderAdapter.FolderHolder>() {
@@ -45,7 +47,8 @@ class FolderAdapter(folderList: ArrayList<Album>,
         Glide.with(context).load(album.imageUrl)
             .into(holder.image_album)
         holder.tv_album_name.text = album.name
-        holder.tv_count.text = context.getString(R.string.format_folder_images,album.imageList.size)
+        holder.tv_count.text =
+            context.getString(R.string.format_folder_images, album.imageList.size)
 
         holder.btn_folder.setOnClickListener {
             fragment.onAlbumSelected(position)
@@ -62,12 +65,12 @@ class FolderAdapter(folderList: ArrayList<Album>,
 
     class FolderHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val image_album = view.image_album
+        val image_album = view.findViewById<ImageView>(R.id.image_album)
 
-        val tv_album_name = view.tv_album_name
+        val tv_album_name = view.findViewById<TextView>(R.id.tv_album_name)
 
-        val tv_count = view.tv_count
+        val tv_count = view.findViewById<TextView>(R.id.tv_count)
 
-        val btn_folder = view.btn_folder
+        val btn_folder = view.findViewById<View>(R.id.btn_folder)
     }
 }

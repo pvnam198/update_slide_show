@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioFilesBinding
 import com.example.slide.ui.select_music.SelectMusicActivity
 import com.example.slide.ui.select_music.event.SongLoadedEvent
 import com.example.slide.ui.select_music.event.SongLoadingEvent
@@ -14,12 +15,14 @@ import com.example.slide.ui.select_music.search.SearchFragment
 import com.example.slide.util.MusicUtils
 import com.example.slide.util.MyStatic
 import com.example.slide.util.Utils
-import kotlinx.android.synthetic.main.fragment_audio_files.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.ArrayList
 
-class AudioFilesFragment : BaseFragment() {
+class AudioFilesFragment : BaseFragment<FragmentAudioFilesBinding>() {
+    override fun bindingView(): FragmentAudioFilesBinding {
+        return FragmentAudioFilesBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_files },{true})
 
@@ -43,13 +46,13 @@ class AudioFilesFragment : BaseFragment() {
 
     override fun initConfiguration() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rv_files.layoutManager = layoutManager
+        binding.rvFiles.layoutManager = layoutManager
         val layoutManager2 = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        rv_files_header.layoutManager = layoutManager2
+        binding.rvFilesHeader.layoutManager = layoutManager2
         adapter = FileAdapter(this)
-        rv_files.adapter = adapter
+        binding.rvFiles.adapter = adapter
         headerAdapter = FileHeaderAdapter(this)
-        rv_files_header.adapter = headerAdapter
+        binding.rvFilesHeader.adapter = headerAdapter
         showSongsForFolder(MyStatic.EXTERNAL_STORAGE_PATH)
         initialState()
     }
@@ -61,19 +64,19 @@ class AudioFilesFragment : BaseFragment() {
         headerAdapter?.updateData(Utils.getListFileHeaderFromPath(path))
         headerAdapter?.let {
             if (it.itemCount > 0)
-                rv_files_header.scrollToPosition(it.itemCount - 1)
+                binding.rvFilesHeader.scrollToPosition(it.itemCount - 1)
 
         }
         if (path == MyStatic.EXTERNAL_STORAGE_PATH) {
             tabContentIndex = 0
         } else {
-            tv_title.text = path.substring(path.lastIndexOf("/") + 1, path.length)
+            binding.tvTitle.text = path.substring(path.lastIndexOf("/") + 1, path.length)
             tabContentIndex = 1
         }
         if (files.isEmpty()) {
-            layout_no_folder.visibility = View.VISIBLE
+            binding.layoutNoFolder.visibility = View.VISIBLE
         } else {
-            layout_no_folder.visibility = View.GONE
+            binding.layoutNoFolder.visibility = View.GONE
         }
         adapter?.updateData(files)
     }
@@ -85,8 +88,8 @@ class AudioFilesFragment : BaseFragment() {
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { requireActivity().onBackPressed() }
-        btn_search.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnSearch.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.root_view, SearchFragment()).addToBackStack(null).commit() }
     }
 
     override fun releaseData() {

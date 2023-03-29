@@ -11,18 +11,21 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentEmojistickerContainerBinding
 import com.example.slide.ui.edit_image.EditImageActivity
 import com.example.slide.ui.edit_image.adapter.ContentEmojiAdapter
 import com.example.slide.ui.edit_image.adapter.EmojiAdapter
 import com.example.slide.ui.edit_image.model.EmojiSticker
 import com.example.slide.util.EmojiProvider
-import kotlinx.android.synthetic.main.fragment_emojisticker_container.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class StickerFragment : BaseFragment(), EmojiAdapter.IOnItemClicked,
+class StickerFragment : BaseFragment<FragmentEmojistickerContainerBinding>(), EmojiAdapter.IOnItemClicked,
         ContentEmojiAdapter.IOnItemClicked {
+    override fun bindingView(): FragmentEmojistickerContainerBinding {
+        return FragmentEmojistickerContainerBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_emojisticker_container })
 
@@ -35,7 +38,7 @@ class StickerFragment : BaseFragment(), EmojiAdapter.IOnItemClicked,
         CoroutineScope(Dispatchers.IO).launch {
             val emojiStickers = EmojiProvider.getEmojiStickers(requireContext())
             CoroutineScope(Dispatchers.Main).launch {
-                progress_bar.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
                 representEmojiInit(emojiStickers)
                 emojisInit(emojiStickers)
             }
@@ -44,27 +47,27 @@ class StickerFragment : BaseFragment(), EmojiAdapter.IOnItemClicked,
 
     private fun emojisInit(emojiStickers: ArrayList<EmojiSticker>) {
         contentEmojiAdapter = ContentEmojiAdapter(editImageActivity, emojiStickers[0])
-        emojis_contents.layoutManager =
+        binding.emojisContents.layoutManager =
                 GridLayoutManager(requireContext(), 5, GridLayoutManager.VERTICAL, false)
-        emojis_contents.adapter = contentEmojiAdapter
+        binding.emojisContents.adapter = contentEmojiAdapter
         contentEmojiAdapter.setIOnItemClicked(this)
     }
 
     private fun representEmojiInit(emojiStickers: ArrayList<EmojiSticker>) {
         val emojiAdapter = EmojiAdapter(emojiStickers)
         emojiAdapter.setIOnItemClicked(this)
-        recycler_view_list_emoji.layoutManager =
+        binding.recyclerViewListEmoji.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycler_view_list_emoji.adapter = emojiAdapter
+        binding.recyclerViewListEmoji.adapter = emojiAdapter
     }
 
     override fun initTask() {
         super.initTask()
-        iv_close.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             editImageActivity.removeSticker()
         }
 
-        iv_check.setOnClickListener {
+        binding.ivCheck.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
             editImageActivity.saveAndContinueEditImage()
         }

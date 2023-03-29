@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.ui.edit_image.BlurProvider
-import kotlinx.android.synthetic.main.overlay_item_layout.view.*
 
 class BlurAdapter(
     private val bitmap: Bitmap,
@@ -49,9 +47,9 @@ class BlurAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivIcon: AppCompatImageView = view.btn_icon
-        val layoutSelected: View = view.layout_selected
-        val rootView: View = view.root_view
+        val ivIcon: AppCompatImageView = view.findViewById(R.id.btn_icon)
+        val layoutSelected: View = view.findViewById(R.id.layout_selected)
+        val rootView: View = view.findViewById(R.id.root_view)
     }
 
 }

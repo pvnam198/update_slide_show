@@ -1,15 +1,12 @@
 package com.example.slide.ui.edit_image.adapter
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
-import com.example.slide.util.ColorProvider
-import kotlinx.android.synthetic.main.item_recyler_color.view.*
 
 class TextureAdapter(
     private val onColorSelected: (Bitmap, Int) -> Unit
@@ -58,8 +55,8 @@ class TextureAdapter(
     override fun getItemCount() = colorList.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val colorPickerView: AppCompatImageView = view.color_picker_view
-        val border: View = view.border
+        val colorPickerView: AppCompatImageView = view.findViewById(R.id.color_picker_view)
+        val border: View = view.findViewById(R.id.border)
     }
 
 }

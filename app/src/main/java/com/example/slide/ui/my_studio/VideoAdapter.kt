@@ -13,8 +13,6 @@ import com.example.slide.ui.select_image.SelectActivity
 import com.example.slide.util.ShareUtils
 import com.example.slide.util.StringUtils
 import com.example.slide.util.Utils
-import kotlinx.android.synthetic.main.item_video.view.*
-import kotlinx.android.synthetic.main.item_video_create.view.*
 import java.io.File
 
 class VideoAdapter(
@@ -102,10 +100,10 @@ class VideoAdapter(
     }
 
     class VideoHolder(itemView: View, val viewType: Int) : RecyclerView.ViewHolder(itemView) {
-        val btnVideo: View? = itemView.btn_video
-        val btnCreateNewVideo: View? = itemView.btn_create_new_video
-        val btnMore: View? = itemView.btn_more
-        val ivThumb: ImageView? = itemView.iv_thumb
-        val tvDuration: TextView? = itemView.tv_duration
+        val btnVideo: View? = itemView.findViewById(R.id.btn_video)
+        val btnCreateNewVideo: View? = itemView.findViewById(R.id.btn_create_new_video)
+        val btnMore: View? = itemView.findViewById(R.id.btn_more)
+        val ivThumb: ImageView? = itemView.findViewById(R.id.iv_thumb)
+        val tvDuration: TextView? = itemView.findViewById(R.id.tv_duration)
     }
 }

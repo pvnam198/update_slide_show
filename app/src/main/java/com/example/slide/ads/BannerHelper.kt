@@ -13,7 +13,7 @@ object BannerHelper {
         parentView.visibility = View.VISIBLE
         loadingView.visibility = View.VISIBLE
         adView.adUnitId = Ads.getBannerAdsId()
-        adView.adSize = getAdsSize(activity,childView)
+        adView.setAdSize(getAdsSize(activity,childView))
         adView.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
