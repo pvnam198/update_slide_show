@@ -9,8 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.slide.R
 import com.example.slide.ads.InterstitialHelperV2
 import com.example.slide.ads.OnInterstitialCallback
-import com.example.slide.base.BaseDialogFragment
+import com.example.slide.base.BaseBindingDialog
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.DialogCreateVideoBinding
 import com.example.slide.exception.MissingFileException
 import com.example.slide.exception.RestoreDraftException
 import com.example.slide.repository.DraftRepository
@@ -19,15 +20,18 @@ import com.example.slide.ui.select_image.SelectActivity
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.util.FileUtils
 import com.example.slide.util.copyFolder
-import kotlinx.android.synthetic.main.dialog_create_video.*
-import kotlinx.android.synthetic.main.dialog_rename_video.view.*
+
 import timber.log.Timber
 import java.io.File
 
-class CreateVideoDialog : BaseDialogFragment(), View.OnClickListener {
+class CreateVideoDialog : BaseBindingDialog<DialogCreateVideoBinding>(), View.OnClickListener {
 
     override val layoutId: Int
         get() = R.layout.dialog_create_video
+
+    override fun bindingView(): DialogCreateVideoBinding {
+        return DialogCreateVideoBinding.inflate(layoutInflater)
+    }
 
     override val isClearFlag = false
 
@@ -71,7 +75,7 @@ class CreateVideoDialog : BaseDialogFragment(), View.OnClickListener {
         }, onDeleteClicked = {
             showDialogDeleteVideo(it)
         })
-        rcv_draft.adapter = draftAdapter
+        binding.rcvDraft.adapter = draftAdapter
     }
 
     private fun deleteDraft(draft: Draft) {
@@ -185,9 +189,9 @@ class CreateVideoDialog : BaseDialogFragment(), View.OnClickListener {
     }
 
     override fun initListener() {
-        root.setOnClickListener(this)
-        btn_create_new_video.setOnClickListener(this)
-        btnTotalDraft.setOnClickListener {
+        binding.root.setOnClickListener(this)
+        binding.btnCreateNewVideo.setOnClickListener(this)
+        binding.btnTotalDraft.setOnClickListener {
             openActivity(
                 MyStudioActivity.getCallingIntent(
                     requireContext(),
@@ -205,14 +209,14 @@ class CreateVideoDialog : BaseDialogFragment(), View.OnClickListener {
         lifecycleScope.launchWhenCreated {
             draftCount = draftRepository.getDraftCount()
             draftAdapter.set(draftRepository.getListDraft(3))
-            tvDraftNumber.text = draftCount.toString().plus(" DRAFTS")
+            binding.tvDraftNumber.text = draftCount.toString().plus(" DRAFTS")
         }
     }
 
     override fun onClick(v: View?) {
         when (v) {
-            root -> dismiss()
-            btn_create_new_video -> {
+            binding.root -> dismiss()
+            binding.btnCreateNewVideo -> {
                 openActivity(
                     SelectActivity.getIntent(
                         requireContext(),

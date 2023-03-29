@@ -17,6 +17,7 @@ import com.example.slide.ads.OnInterstitialCallback
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.ActivitySelectBinding
 import com.example.slide.event.ImageLoadStateChangedEvent
 import com.example.slide.event.ImageSelectedChangedEvent
 import com.example.slide.local.PreferencesHelper
@@ -39,7 +40,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SelectActivity : BaseActivity(), SaveDraftDialog.OnSaveDraftListener {
+class SelectActivity : BaseActivity<ActivitySelectBinding>(), SaveDraftDialog.OnSaveDraftListener {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
@@ -103,6 +104,11 @@ class SelectActivity : BaseActivity(), SaveDraftDialog.OnSaveDraftListener {
 
     }
 
+    override fun bindingView(): ActivitySelectBinding {
+        return ActivitySelectBinding.inflate(layoutInflater)
+    }
+
+
     private val selectFragment by lazy {
         SelectFragment.getInstance()
     }
@@ -128,7 +134,6 @@ class SelectActivity : BaseActivity(), SaveDraftDialog.OnSaveDraftListener {
     private var imageListSize = 0
 
     private var isFirstTime = true
-
     override fun extractData(bundle: Bundle) {
         super.extractData(bundle)
         mode = bundle.getInt(EXTRA_START_MODE)

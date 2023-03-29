@@ -14,6 +14,7 @@ import com.example.slide.ads.OnRewardAdCallback
 import com.example.slide.ads.RewardHelper
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivitySubBinding
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.util.BillingConstants.MONTHLY
@@ -24,16 +25,20 @@ import com.playbilling.BillingListener
 import com.playbilling.BillingRepository
 import com.playbilling.ProductInfo
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_sub.*
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
+class VipActivity : BaseActivity<ActivitySubBinding>(), View.OnClickListener, OnRewardAdCallback {
 
     override fun initViewTools() = InitViewTools({
         R.layout.activity_sub
     })
+
+    override fun bindingView(): ActivitySubBinding {
+        return ActivitySubBinding.inflate(layoutInflater)
+    }
+    
 
     companion object {
 
@@ -70,12 +75,12 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
             lifecycleScope.launchWhenResumed {
                 val timeRemaining = PreferencesHelper(this@VipActivity).getTrailTime()
                 if (PreferencesHelper(this@VipActivity).isVipTrail()) {
-                    tv_watch_ads.visibility = View.GONE
-                    vip_trial_countdown.visibility = View.VISIBLE
-                    tv_count_down_time.text = Utils.convertingMillisecondsToHours(timeRemaining)
+                    binding.tvWatchAds.visibility = View.GONE
+                    binding.vipTrialCountdown.visibility = View.VISIBLE
+                    binding.tvCountDownTime.text = Utils.convertingMillisecondsToHours(timeRemaining)
                 } else {
-                    tv_watch_ads.visibility = View.VISIBLE
-                    vip_trial_countdown.visibility = View.GONE
+                    binding.tvWatchAds.visibility = View.VISIBLE
+                    binding.vipTrialCountdown.visibility = View.GONE
                 }
             }
         }
@@ -94,7 +99,7 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
     override fun initConfiguration(savedInstanceState: Bundle?) {
         super.initConfiguration(savedInstanceState)
         sharedPref = PreferencesHelper(this)
-        tv_manager_subscriptions.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvManagerSubscriptions.movementMethod = LinkMovementMethod.getInstance()
         if (sharedPref.isVip()) {
             updateVipUI()
         } else {
@@ -104,8 +109,8 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
 
     private fun updateVipUI() {
         vipTrialTimer.cancel()
-        layout_vip.visibility = View.VISIBLE
-        layout_buy_vip.visibility = View.GONE
+        binding.layoutVip.visibility = View.VISIBLE
+        binding.layoutBuyVip.visibility = View.GONE
     }
 
     private fun updateBillingUI() {
@@ -126,16 +131,16 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
                 loading.visibility = View.GONE
                 lifecycleScope.launchWhenResumed {
                     if (listProductDetails.isEmpty()) {
-                        layout_billing.visibility = View.GONE
-                        layout_error.visibility = View.VISIBLE
+                        binding.layoutBilling.visibility = View.GONE
+                        binding.layoutError.visibility = View.VISIBLE
                     } else {
-                        layout_billing.visibility = View.VISIBLE
-                        layout_error.visibility = View.GONE
+                        binding.layoutBilling.visibility = View.VISIBLE
+                        binding.layoutError.visibility = View.GONE
                         listProductDetails.find { it.getProductId() == MONTHLY }?.let {
-                            tv_price_monthly.text = it.getFormatPrice()
+                            binding.tvPriceMonthly.text = it.getFormatPrice()
                         }
                         listProductDetails.find { it.getProductId() == YEARLY }?.let {
-                            tv_price_yearly.text = it.getFormatPrice()
+                            binding.tvPriceYearly.text = it.getFormatPrice()
                         }
                     }
                 }
@@ -158,9 +163,9 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
             override fun onBillingSetupFailed() {
                 super.onBillingSetupFailed()
                 lifecycleScope.launchWhenResumed {
-                    loading.visibility = View.GONE
-                    layout_billing.visibility = View.GONE
-                    layout_error.visibility = View.VISIBLE
+                    binding.loading.visibility = View.GONE
+                    binding.layoutBilling.visibility = View.GONE
+                    binding.layoutError.visibility = View.VISIBLE
                 }
             }
 
@@ -204,13 +209,13 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
 
     override fun initListener() {
         super.initListener()
-        btn_cancel.setOnClickListener(this)
-        btn_one_hour.setOnClickListener(this)
-        btn_watch_ads.setOnClickListener(this)
-        btn_purchase_monthly.setOnClickListener(this)
-        btn_purchase_yearly.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnOneHour.setOnClickListener(this)
+        binding.btnWatchAds.setOnClickListener(this)
+        binding.btnPurchaseMonthly.setOnClickListener(this)
+        binding.btnPurchaseYearly.setOnClickListener(this)
         RewardHelper.onRewardAdCallback = this
-        btn_reload.setOnClickListener {
+        binding.btnReload.setOnClickListener {
             connectToPlayBillingService()
         }
     }
@@ -222,14 +227,14 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> onBackPressed()
-            btn_purchase_monthly -> {
+            binding.btnCancel -> onBackPressed()
+            binding.btnPurchaseMonthly -> {
                 billingRepository.buy(this, MONTHLY)
             }
-            btn_purchase_yearly -> {
+            binding.btnPurchaseYearly -> {
                 billingRepository.buy(this, YEARLY)
             }
-            btn_watch_ads -> {
+            binding.btnWatchAds -> {
                 if (!PreferencesHelper(this).isVipOrVipTrialMember()) {
                     if (NetworkHelper.isConnected) {
                         adLoadingDialog = AdLoadingDialog.getInstance()
@@ -251,7 +256,7 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
     }
 
     fun tryPurchaseAgain() {
-        loading.visibility = View.VISIBLE
+        binding.loading.visibility = View.VISIBLE
         billingRepository.reconnect()
     }
 
@@ -288,7 +293,7 @@ class VipActivity : BaseActivity(), View.OnClickListener, OnRewardAdCallback {
     }
 
     fun connectToPlayBillingService() {
-        loading.visibility = View.VISIBLE
+        binding.loading.visibility = View.VISIBLE
         billingRepository.reconnect()
     }
 

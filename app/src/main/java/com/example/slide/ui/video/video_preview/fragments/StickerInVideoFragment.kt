@@ -5,17 +5,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentStickerInVideoBinding
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.adapter.StickerInVideoAdapter
 import com.example.slide.ui.video.video_preview.callback.HandleFloatItem
-import kotlinx.android.synthetic.main.fragment_sticker_in_video.*
 
-class StickerInVideoFragment : BaseFragment(), HandleFloatItem {
+class StickerInVideoFragment : BaseFragment<FragmentStickerInVideoBinding>(), HandleFloatItem {
 
     private lateinit var stickerInVideoAdapter: StickerInVideoAdapter
 
     companion object {
         private const val TAG = "StickerInVideoFragment"
+    }
+
+    override fun bindingView(): FragmentStickerInVideoBinding {
+        return FragmentStickerInVideoBinding.inflate(layoutInflater)
     }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_sticker_in_video })
@@ -30,9 +34,9 @@ class StickerInVideoFragment : BaseFragment(), HandleFloatItem {
                 removeItem = {
                     (requireActivity() as VideoCreateActivity).removeDrawableVideoSticker(it)
                 })
-        rv_sticker.layoutManager =
+        binding.rvSticker.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        rv_sticker.adapter = stickerInVideoAdapter
+        binding.rvSticker.adapter = stickerInVideoAdapter
     }
 
     override fun onResume() {
@@ -42,7 +46,7 @@ class StickerInVideoFragment : BaseFragment(), HandleFloatItem {
 
     override fun initListener() {
         super.initListener()
-        btn_add.setOnClickListener {
+        binding.btnAdd.setOnClickListener {
             (requireActivity() as VideoCreateActivity).openStickerFragment()
         }
     }

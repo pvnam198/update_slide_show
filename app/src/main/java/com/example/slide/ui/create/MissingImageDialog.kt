@@ -8,15 +8,15 @@ import androidx.lifecycle.lifecycleScope
 import com.example.slide.R
 import com.example.slide.ads.InterstitialHelperV2
 import com.example.slide.ads.OnInterstitialCallback
-import com.example.slide.base.BaseDialogFragment
+import com.example.slide.base.BaseBindingDialog
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.DialogMissingImageBinding
 import com.example.slide.repository.DraftRepository
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import kotlinx.android.synthetic.main.dialog_missing_image.*
 import timber.log.Timber
 import java.io.File
 
-class MissingImageDialog : BaseDialogFragment() {
+class MissingImageDialog : BaseBindingDialog<DialogMissingImageBinding>() {
 
     companion object {
 
@@ -38,6 +38,10 @@ class MissingImageDialog : BaseDialogFragment() {
     override val layoutId: Int
         get() = R.layout.dialog_missing_image
 
+    override fun bindingView(): DialogMissingImageBinding {
+        return DialogMissingImageBinding.inflate(layoutInflater)
+    }
+
     override fun initConfiguration() {
         super.initConfiguration()
         draftRepository = DraftRepository(requireContext())
@@ -50,11 +54,11 @@ class MissingImageDialog : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
 
-        btn_ok.setOnClickListener {
+        binding.btnOk.setOnClickListener {
             deleteMissingFileFromDraft()
             openActivity(
                     VideoCreateActivity.getIntent(

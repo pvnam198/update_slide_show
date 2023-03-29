@@ -9,10 +9,10 @@ import android.view.animation.Animation
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.slide.R
-import com.example.slide.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_save_draft.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogSaveDraftBinding
 
-class SaveDraftDialog : BaseDialogFragment() {
+class SaveDraftDialog : BaseBindingDialog<DialogSaveDraftBinding>() {
 
     private lateinit var onSaveDraftListener: OnSaveDraftListener
 
@@ -20,6 +20,10 @@ class SaveDraftDialog : BaseDialogFragment() {
 
     override val layoutId: Int
         get() = R.layout.dialog_save_draft
+
+    override fun bindingView(): DialogSaveDraftBinding {
+        return DialogSaveDraftBinding.inflate(layoutInflater)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,29 +39,29 @@ class SaveDraftDialog : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        root.setOnClickListener { dismiss() }
-        btn_exit_directly.setOnClickListener {
+        binding.root.setOnClickListener { dismiss() }
+        binding.btnExitDirectly.setOnClickListener {
             val checkWidth = resources.getDimensionPixelSize(R.dimen.check_width).toFloat()
             if (isCheck) {
-                btn_exit_directly.animate().translationX(0f).setDuration(200)
+                binding.btnExitDirectly.animate().translationX(0f).setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator()).start()
-                btn_check.animate().alpha(0f).setDuration(200).start()
+                binding.btnCheck.animate().alpha(0f).setDuration(200).start()
             } else {
-                btn_exit_directly.animate().translationX(-checkWidth).setDuration(200)
+                binding.btnExitDirectly.animate().translationX(-checkWidth).setDuration(200)
                     .setInterpolator(AccelerateDecelerateInterpolator()).start()
-                btn_check.alpha = 0f
-                btn_check.animate().alpha(1f).setDuration(200).start()
+                binding.btnCheck.alpha = 0f
+                binding.btnCheck.animate().alpha(1f).setDuration(200).start()
             }
             isCheck = !isCheck
         }
 
-        btn_save.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             lifecycleScope.launchWhenResumed {
                 onSaveDraftListener.onSaveAsDraft()
             }
 
         }
-        btn_check.setOnClickListener {
+        binding.btnCheck.setOnClickListener {
             lifecycleScope.launchWhenResumed { onSaveDraftListener.onDiscard() }
         }
     }

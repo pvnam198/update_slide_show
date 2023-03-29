@@ -3,9 +3,12 @@ package com.example.slide.ui.vip
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
-import kotlinx.android.synthetic.main.activity_vip_member.*
+import com.example.slide.databinding.ActivityVipMemberBinding
 
-class VipMemberActivity : BaseActivity() {
+class VipMemberActivity : BaseActivity<ActivityVipMemberBinding>() {
+    override fun bindingView(): ActivityVipMemberBinding {
+        return ActivityVipMemberBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.activity_vip_member
@@ -16,7 +19,7 @@ class VipMemberActivity : BaseActivity() {
 
     override fun initListener() {
         super.initListener()
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
     }

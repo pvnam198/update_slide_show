@@ -4,12 +4,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.base.InitViewTools
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
+import com.example.slide.databinding.FragmentEditVideoImageBinding
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.adapter.ImageSelectedAdapter
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager
-import kotlinx.android.synthetic.main.fragment_edit_video_image.*
 
-class EditImageFragment : BaseFragment() {
+class EditImageFragment : BaseFragment<FragmentEditVideoImageBinding>() {
+    override fun bindingView(): FragmentEditVideoImageBinding {
+        return FragmentEditVideoImageBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_edit_video_image })
 
@@ -23,10 +26,10 @@ class EditImageFragment : BaseFragment() {
 
     override fun initListener() {
         super.initListener()
-        btn_add_new_images.setOnClickListener {
+        binding.btnAddNewImages.setOnClickListener {
             createVideoActivity.goAddNewImages()
         }
-        btn_edit_images.setOnClickListener {
+        binding.btnEditImages.setOnClickListener {
             createVideoActivity.goSwapImages()
         }
     }
@@ -34,11 +37,11 @@ class EditImageFragment : BaseFragment() {
     private fun imageSelected() {
         val dragDropManager = RecyclerViewDragDropManager()
         imageSelectedAdapter = ImageSelectedAdapter((activity as VideoCreateActivity))
-        recycler_view_selected.layoutManager =
+        binding.recyclerViewSelected.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycler_view_selected.adapter = dragDropManager.createWrappedAdapter(imageSelectedAdapter!!)
+        binding.recyclerViewSelected.adapter = dragDropManager.createWrappedAdapter(imageSelectedAdapter!!)
         imageSelectedAdapter?.notifyDataSetChanged()
-        dragDropManager.attachRecyclerView(recycler_view_selected)
+        dragDropManager.attachRecyclerView(binding.recyclerViewSelected)
     }
 
     fun notifyAdapter() {

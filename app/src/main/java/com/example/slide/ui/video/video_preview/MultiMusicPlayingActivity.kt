@@ -16,6 +16,7 @@ import com.bumptech.glide.signature.MediaStoreSignature
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.ActivityVideoCreateBinding
 import com.example.slide.event.MusicStateChangedEvent
 import com.example.slide.music_engine.CropMusic
 import com.example.slide.music_engine.DefaultMusic
@@ -25,10 +26,9 @@ import com.example.slide.ui.select_music.model.Track
 import com.example.slide.ui.video.video_preview.model.DataPreview
 import com.example.slide.util.StringUtils
 import com.example.slide.videolib.VideoConfig
-import kotlinx.android.synthetic.main.activity_video_create.*
 import org.greenrobot.eventbus.EventBus
 
-abstract class MultiMusicPlayingActivity : BaseActivity() {
+abstract class MultiMusicPlayingActivity : BaseActivity<ActivityVideoCreateBinding>() {
 
     companion object {
         val TAG = "kimkakavideoplaying"
@@ -74,29 +74,29 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
     fun pauseVideo() {
         if (displayImageRunnable.isPlaying()) {
             displayImageRunnable.pause()
-            iv_toggle_video.setImageResource(R.drawable.ic_play)
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
         }
     }
 
     fun toggleVideo() {
         if (displayImageRunnable.isPlaying()) {
             displayImageRunnable.pause()
-            iv_toggle_video.setImageResource(R.drawable.ic_play)
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
         } else {
             displayImageRunnable.play()
-            iv_toggle_video.setImageResource(R.drawable.ic_pause)
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
         }
     }
 
     fun playVideo(isFromSeek: Boolean = false) {
         if (!displayImageRunnable.isPlaying()) {
-            iv_toggle_video.setImageResource(R.drawable.ic_pause)
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
             displayImageRunnable.play(isFromSeek)
         }
     }
 
     fun stopVideo() {
-        iv_toggle_video.setImageResource(R.drawable.ic_play)
+        binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
         displayImageRunnable.stop()
     }
 
@@ -128,14 +128,14 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
 
     private fun displayImage() {
         try {
-            if (displayImageRunnable.getProgress() >= seek_bar.max) {
-                displayImageRunnable.setProgress(seek_bar.max)
-                tv_start_time.text =
+            if (displayImageRunnable.getProgress() >= binding.seekBar.max) {
+                displayImageRunnable.setProgress(binding.seekBar.max)
+                binding.tvStartTime.text =
                     StringUtils.getDurationDisplayFromFrame(displayImageRunnable.getProgress())
                 pauseVideo()
             } else {
-                if (displayImageRunnable.getProgress() < seek_bar.secondaryProgress) {
-                    progress_loading.visibility = View.INVISIBLE
+                if (displayImageRunnable.getProgress() < binding.seekBar.secondaryProgress) {
+                    binding.progressLoading.visibility = View.INVISIBLE
                     requestManager.asBitmap()
                         .load(myApplication.videoDataState.outputImages[displayImageRunnable.getProgress()])
                         .signature(
@@ -151,15 +151,15 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
                                 resource: Bitmap,
                                 transition: Transition<in Bitmap?>?
                             ) {
-                                iv_frame.setImageBitmap(resource)
+                                binding.ivFrame.setImageBitmap(resource)
                             }
                         } as Target<Bitmap?>)
                     displayImageRunnable.increaseProgress()
-                    seek_bar.progress = displayImageRunnable.getProgress()
-                    tv_start_time.text =
+                    binding.seekBar.progress = displayImageRunnable.getProgress()
+                    binding.tvStartTime.text =
                         StringUtils.getDurationDisplayFromFrame(displayImageRunnable.getProgress())
                 } else {
-                    progress_loading.visibility = View.VISIBLE
+                    binding.progressLoading.visibility = View.VISIBLE
                 }
             }
         } catch (e: Exception) {
@@ -181,7 +181,7 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
 
         override fun run() {
             if (!isPause) {
-                text_list_to_video_view.setCurrentTime(getCurrentPlayingTimeInSecond())
+                binding.textListToVideoView.setCurrentTime(getCurrentPlayingTimeInSecond())
                 displayImage()
                 handler.postDelayed(
                     displayImageRunnable,
@@ -211,7 +211,7 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
             if (sProgress == myApplication.videoDataState.totalImageFrame){
                 playBack.seekFromPlayingDone()
             }
-            if (!isFromSeek && sProgress == seek_bar.max) {
+            if (!isFromSeek && sProgress == binding.seekBar.max) {
                 playBack.stop()
                 sProgress = 0
             }
@@ -232,14 +232,14 @@ abstract class MultiMusicPlayingActivity : BaseActivity() {
             pause()
             handler.removeCallbacksAndMessages(null)
             sProgress = 0
-            seek_bar.progress = 0
-            seek_bar.secondaryProgress = 0
+            binding.seekBar.progress = 0
+            binding.seekBar.secondaryProgress = 0
         }
 
         fun release() {
             pause()
             sProgress = 0
-            seek_bar.progress = sProgress
+            binding.seekBar.progress = sProgress
             playBack.release()
         }
 

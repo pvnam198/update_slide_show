@@ -1,13 +1,17 @@
 package com.example.slide.ui.video.video_export
 
 import com.example.slide.R
-import com.example.slide.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_export_fail.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogExportFailBinding
 
-class ExportFailedDialog : BaseDialogFragment() {
+class ExportFailedDialog : BaseBindingDialog<DialogExportFailBinding>() {
 
     override val layoutId: Int
         get() = R.layout.dialog_export_fail
+
+    override fun bindingView(): DialogExportFailBinding {
+        return DialogExportFailBinding.inflate(layoutInflater)
+    }
 
     companion object {
         const val TAG = "ExportFailedDialog"
@@ -15,7 +19,7 @@ class ExportFailedDialog : BaseDialogFragment() {
 
     override fun initListener() {
         super.initListener()
-        btn_ok.setOnClickListener { (requireActivity() as ExportVideoActivity).finish() }
+        binding.btnOk.setOnClickListener { (requireActivity() as ExportVideoActivity).finish() }
     }
 
 }

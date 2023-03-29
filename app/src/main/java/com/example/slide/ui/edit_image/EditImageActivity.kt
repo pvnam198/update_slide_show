@@ -17,6 +17,7 @@ import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.ActivityEditImageBinding
 import com.example.slide.event.EditImageLoadedEvent
 import com.example.slide.ui.edit_image.crop.CropImageFragment
 import com.example.slide.ui.edit_image.fragment.*
@@ -30,8 +31,6 @@ import com.example.slide.util.BitmapUtil
 import com.example.slide.util.FileUtils
 import com.example.slide.util.StickerProvider
 import com.example.slide.videolib.VideoConfig
-import kotlinx.android.synthetic.main.activity_edit_image.*
-import kotlinx.android.synthetic.main.edit_image_action_layout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +42,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 
-class EditImageActivity : BaseActivity(), View.OnClickListener {
+class EditImageActivity : BaseActivity<ActivityEditImageBinding>(), View.OnClickListener {
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
@@ -79,6 +78,10 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
         outState.putParcelable(EXTRA_DRAFT, draft)
     }
 
+    override fun bindingView(): ActivityEditImageBinding {
+        return ActivityEditImageBinding.inflate(layoutInflater)
+    }
+
     override fun extractData(bundle: Bundle) {
         super.extractData(bundle)
         urlImage = bundle.getString(EXTRA_IMAGES) as String
@@ -91,20 +94,20 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
         super.initConfiguration(savedInstanceState)
         loadBitmap()
         CGENativeLibrary.setLoadImageCallback(loadImageCallback, null)
-        mPhotoEditor = PhotoEditor.Builder(photo_editor_view)
+        mPhotoEditor = PhotoEditor.Builder(binding.photoEditorView)
             .build()
     }
 
     override fun initListener() {
         super.initListener()
-        btn_submit.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
-        btn_crop.setOnClickListener(this)
-        btn_adjust.setOnClickListener(this)
-        btn_overlay.setOnClickListener(this)
-        btn_text.setOnClickListener(this)
-        btn_emoji.setOnClickListener(this)
-        btn_blur.setOnClickListener(this)
+        binding.btnSubmit.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.editImageAction.btnCrop.setOnClickListener(this)
+        binding.editImageAction.btnAdjust.setOnClickListener(this)
+        binding.editImageAction.btnOverlay.setOnClickListener(this)
+        binding.editImageAction.btnText.setOnClickListener(this)
+        binding.editImageAction.btnEmoji.setOnClickListener(this)
+        binding.editImageAction.btnBlur.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -151,12 +154,12 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     fun discardChanges() {
         val inputMethodManager: InputMethodManager =
             this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(btn_back.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(binding.btnBack.windowToken, 0)
         finish()
     }
 
     private fun openOverlayTab() {
-        photo_editor_view.setHandlingFloatingItem(null)
+        binding.photoEditorView.setHandlingFloatingItem(null)
         imageEditMode()
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_full, OverlayFragment(), OverlayFragment::class.java.name)
@@ -165,7 +168,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun openAdjustTab() {
-        photo_editor_view.setHandlingFloatingItem(null)
+        binding.photoEditorView.setHandlingFloatingItem(null)
         imageEditMode()
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_full, AdjustFragment(), AdjustFragment::class.java.name)
@@ -175,8 +178,8 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     private fun openTextFragment() {
         imageEditMode()
-        photo_editor_view.setHandlingFloatingItem(null)
-        photo_editor_view.setLocked(false)
+        binding.photoEditorView.setHandlingFloatingItem(null)
+        binding.photoEditorView.setLocked(false)
         supportFragmentManager.beginTransaction()
             .add(R.id.root_view, TextFragment(), TextFragment::class.java.name)
             .addToBackStack(null)
@@ -184,23 +187,23 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun addText(textSticker: TextFloatingItem) {
-        iv_submit.visibility = View.VISIBLE
-        btn_submit.visibility = View.VISIBLE
+        binding.ivSubmit.visibility = View.VISIBLE
+        binding.btnSubmit.visibility = View.VISIBLE
         if (textSticker.addTextProperties.text.isNotEmpty()) {
-            photo_editor_view.addSticker(textSticker)
+            binding.photoEditorView.addSticker(textSticker)
         }
     }
 
     fun updateText(textSticker: TextFloatingItem) {
-        iv_submit.visibility = View.VISIBLE
-        btn_submit.visibility = View.VISIBLE
+        binding.ivSubmit.visibility = View.VISIBLE
+        binding.btnSubmit.visibility = View.VISIBLE
         if (textSticker.addTextProperties.text.isNotEmpty()) {
-            photo_editor_view.setHandlingFloatingItem(textSticker)
+            binding.photoEditorView.setHandlingFloatingItem(textSticker)
         }
     }
 
     private fun openEmojiTab() {
-        photo_editor_view.setHandlingFloatingItem(null)
+        binding.photoEditorView.setHandlingFloatingItem(null)
         imageEditMode()
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_full, StickerFragment(), StickerFragment::class.java.name)
@@ -210,11 +213,11 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     override fun initTask() {
         super.initTask()
-        photo_editor_view.icons = StickerProvider.getTextStickerIcons(this)
-        photo_editor_view.setBackgroundColor(Color.BLACK)
-        photo_editor_view.setLocked(false)
-        photo_editor_view.isConstrained = true
-        photo_editor_view.onStickerOperationListener =
+        binding.photoEditorView.icons = StickerProvider.getTextStickerIcons(this)
+        binding.photoEditorView.setBackgroundColor(Color.BLACK)
+        binding.photoEditorView.setLocked(false)
+        binding.photoEditorView.isConstrained = true
+        binding.photoEditorView.onStickerOperationListener =
             object : StickerView.OnStickerOperationListener {
                 override fun onStickerAdded(floatingItem: FloatingItem) {}
 
@@ -230,8 +233,8 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                 override fun onStickerClicked(floatingItem: FloatingItem) {
                     if (floatingItem is TextFloatingItem) {
                         floatingItem.setTextColor(Color.RED)
-                        photo_editor_view.replace(floatingItem)
-                        photo_editor_view.invalidate()
+                        binding.photoEditorView.replace(floatingItem)
+                        binding.photoEditorView.invalidate()
                     }
                 }
 
@@ -292,8 +295,8 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun setEmoji(bitmap: Bitmap) {
-        photo_editor_view.setHandlingFloatingItem(null)
-        photo_editor_view.addSticker(
+        binding.photoEditorView.setHandlingFloatingItem(null)
+        binding.photoEditorView.addSticker(
             DrawableFloatingItem(
                 BitmapDrawable(resources, bitmap)
             )
@@ -303,17 +306,17 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     fun saveAndContinueEditImage() {
         lockImageEdit()
         var bitmap: Bitmap? = null
-        photo_editor_view.glSurfaceView.alpha = 0F
-        photo_editor_view.floatingItems?.let {
+        binding.photoEditorView.glSurfaceView.alpha = 0F
+        binding.photoEditorView.floatingItems?.let {
             mPhotoEditor.saveStickerAsBitmap(object : OnSaveBitmap {
                 override fun onFailure(e: Exception?) {}
                 override fun onBitmapReady(saveBitmap: Bitmap?) {
                     saveBitmap?.let {
                         bitmap = it
                         setCurrentBitmap(it)
-                        photo_editor_view.setImageSource(bitmap)
-                        photo_editor_view.glSurfaceView.alpha = 1F
-                        photo_editor_view.floatingItems.clear()
+                        binding.photoEditorView.setImageSource(bitmap)
+                        binding.photoEditorView.glSurfaceView.alpha = 1F
+                        binding.photoEditorView.floatingItems.clear()
                         showButtonSave()
                     }
                 }
@@ -322,21 +325,21 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun lockImageEdit() {
-        photo_editor_view.setHandlingFloatingItem(null)
-        photo_editor_view.setLocked(true)
+        binding.photoEditorView.setHandlingFloatingItem(null)
+        binding.photoEditorView.setLocked(true)
     }
 
     private fun showButtonSave() {
-        btn_submit.visibility = View.VISIBLE
-        iv_submit.visibility = View.VISIBLE
-        linear_action.visibility = View.VISIBLE
+        binding.btnSubmit.visibility = View.VISIBLE
+        binding.ivSubmit.visibility = View.VISIBLE
+        binding.editImageAction.linearAction.visibility = View.VISIBLE
     }
 
     //task
     private fun saveSticker() {
-        photo_editor_view.floatingItems?.let {
-            photo_editor_view.setHandlingFloatingItem(null)
-            photo_editor_view.glSurfaceView.alpha = 0F
+        binding.photoEditorView.floatingItems?.let {
+            binding.photoEditorView.setHandlingFloatingItem(null)
+            binding.photoEditorView.glSurfaceView.alpha = 0F
             mPhotoEditor.saveStickerAsBitmap(object : OnSaveBitmap {
                 override fun onFailure(e: Exception?) {}
                 override fun onBitmapReady(saveBitmap: Bitmap?) {
@@ -350,17 +353,17 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun imageEditMode() {
-        photo_editor_view.setLocked(false)
-        btn_submit.visibility = View.INVISIBLE
-        iv_submit.visibility = View.INVISIBLE
+        binding.photoEditorView.setLocked(false)
+        binding.btnSubmit.visibility = View.INVISIBLE
+        binding.ivSubmit.visibility = View.INVISIBLE
     }
 
     fun normalMode() {
-        photo_editor_view.setHandlingFloatingItem(null)
-        photo_editor_view.setLocked(true)
-        btn_submit.visibility = View.VISIBLE
-        iv_submit.visibility = View.VISIBLE
-        linear_action.visibility = View.VISIBLE
+        binding.photoEditorView.setHandlingFloatingItem(null)
+        binding.photoEditorView.setLocked(true)
+        binding.btnSubmit.visibility = View.VISIBLE
+        binding.ivSubmit.visibility = View.VISIBLE
+        binding.editImageAction.linearAction.visibility = View.VISIBLE
     }
 
     fun popFragment(fragmentTag: String) {
@@ -375,7 +378,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     fun removeSticker() {
         onBackPressed()
         normalMode()
-        photo_editor_view.removeBitmapStickers()
+        binding.photoEditorView.removeBitmapStickers()
     }
 
     /*Adjust contents*/
@@ -384,13 +387,13 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun saveAdjustAsBitmap() {
-        photo_editor_view.saveGLSurfaceViewAsBitmap(object : OnSaveBitmap {
+        binding.photoEditorView.saveGLSurfaceViewAsBitmap(object : OnSaveBitmap {
             override fun onFailure(e: java.lang.Exception?) {}
             override fun onBitmapReady(saveBitmap: Bitmap?) {
                 uiScope.launch {
                     saveBitmap?.let {
-                        photo_editor_view.setImageSource(saveBitmap)
-                        photo_editor_view.setFilterEffect("")
+                        binding.photoEditorView.setImageSource(saveBitmap)
+                        binding.photoEditorView.setFilterEffect("")
                         setCurrentBitmap(it)
                     }
                     showButtonSave()
@@ -400,10 +403,10 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun closeAdjust() {
-        photo_editor_view.setFilterEffect("")
-        btn_submit.visibility = View.VISIBLE
-        iv_submit.visibility = View.VISIBLE
-        linear_action.visibility = View.VISIBLE
+        binding.photoEditorView.setFilterEffect("")
+        binding.btnSubmit.visibility = View.VISIBLE
+        binding.ivSubmit.visibility = View.VISIBLE
+        binding.editImageAction.linearAction.visibility = View.VISIBLE
     }
 
     /*Overlay contents*/
@@ -417,11 +420,11 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     fun setImageOverlay(config: String) {
         mPhotoEditor.setFilterEffect(config)
-        photo_editor_view.glSurfaceView.setFilterIntensity(0.7f)
+        binding.photoEditorView.glSurfaceView.setFilterIntensity(0.7f)
     }
 
     fun saveImageOverLay() {
-        photo_editor_view.saveGLSurfaceViewAsBitmap(object : OnSaveBitmap {
+        binding.photoEditorView.saveGLSurfaceViewAsBitmap(object : OnSaveBitmap {
             override fun onFailure(e: java.lang.Exception?) {
             }
 
@@ -429,19 +432,19 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                 CoroutineScope(Dispatchers.Main).launch {
                     saveBitmap?.let {
                         setCurrentBitmap(saveBitmap)
-                        photo_editor_view.setImageSource(saveBitmap)
-                        photo_editor_view.setFilterEffect("")
+                        binding.photoEditorView.setImageSource(saveBitmap)
+                        binding.photoEditorView.setFilterEffect("")
                     }
                     onBackPressed()
-                    btn_submit.visibility = View.VISIBLE
-                    iv_submit.visibility = View.VISIBLE
+                    binding.btnSubmit.visibility = View.VISIBLE
+                    binding.ivSubmit.visibility = View.VISIBLE
                 }
             }
         })
     }
 
     fun setFilterIntensity(intensity: Float) {
-        photo_editor_view.setFilterIntensity(intensity)
+        binding.photoEditorView.setFilterIntensity(intensity)
     }
 
     fun cancelOverlay() {
@@ -452,7 +455,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     /*Blur contents*/
     private fun setImageBlur(bitmap: Bitmap) {
         Log.d("kimkakaedit", "setImageBlur")
-        splash_view.setImageBitmap(bitmap)
+        binding.splashView.setImageBitmap(bitmap)
     }
 
     fun addBlurSticker(blurMask: BlurProvider.BlurMask?) {
@@ -463,7 +466,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                     val blurBitmapBackground = FilterUtils.getBlurImageFromBitmap(currentBitmap, 3F)
                     CoroutineScope(Dispatchers.Main).launch {
                         blurBitmapBackground?.let {
-                            splash_view.setImageBitmap(it)
+                            binding.splashView.setImageBitmap(it)
                         }
                     }
                 }
@@ -475,9 +478,9 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                         ), AssetUtils.loadBitmapFromAssets(this@EditImageActivity, it.shadowAsset)
                     )
                 CoroutineScope(Dispatchers.Main).launch {
-                    splash_view.addSticker(splash)
-//                    splash_view.refreshDrawableState()
-//                    splash_view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                    binding.splashView.addSticker(splash)
+//                    binding.splashView.refreshDrawableState()
+//                    binding.splashView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
                 }
             }
         }
@@ -487,17 +490,17 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     fun toggleSaveButton(visibility: Boolean) {
         if (visibility) {
-            btn_submit.visibility = View.VISIBLE
-            iv_submit.visibility = View.VISIBLE
+            binding.btnSubmit.visibility = View.VISIBLE
+            binding.ivSubmit.visibility = View.VISIBLE
         } else {
-            btn_submit.visibility = View.INVISIBLE
-            iv_submit.visibility = View.INVISIBLE
+            binding.btnSubmit.visibility = View.INVISIBLE
+            binding.ivSubmit.visibility = View.INVISIBLE
         }
     }
 
     private fun openBlurTab() {
         isBlurBackgroundLoaded = false
-        photo_editor_view.setHandlingFloatingItem(null)
+        binding.photoEditorView.setHandlingFloatingItem(null)
         toggleSaveButton(false)
         supportFragmentManager.beginTransaction()
             .add(R.id.frame_full, BlurFragment(), BlurFragment::class.java.name)
@@ -506,24 +509,24 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     private fun togglePhotoEditorView(isVisible: Boolean) {
         if (isVisible) {
-            wrap_photo_view.visibility = View.VISIBLE
+            binding.wrapPhotoView.visibility = View.VISIBLE
         } else {
-            wrap_photo_view.visibility = View.GONE
+            binding.wrapPhotoView.visibility = View.GONE
         }
     }
 
     private fun setVisibleBlurView(isVisible: Boolean) {
         if (isVisible) {
-            cst_blur.visibility = View.VISIBLE
+            binding.cstBlur.visibility = View.VISIBLE
         } else {
-            cst_blur.visibility = View.GONE
+            binding.cstBlur.visibility = View.GONE
         }
     }
 
     fun saveImageBlur() {
-        val bitmap = splash_view.getBitmap(getCurrentBitmap())
+        val bitmap = binding.splashView.getBitmap(getCurrentBitmap())
         setCurrentBitmap(bitmap)
-        photo_editor_view.setImageSource(bitmap)
+        binding.photoEditorView.setImageSource(bitmap)
         popFragment(BlurFragment::class.java.name)
         togglePhotoEditorView(true)
         setVisibleBlurView(false)
@@ -538,7 +541,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun changeValueBlur(value: Float) {
-        progress_bar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch {
             val bitmap = FilterUtils.getBlurImageFromBitmap(
                 currentBitmap,
@@ -549,13 +552,13 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                 bitmap?.let {
                     setImageBlur(it)
                 }
-                progress_bar.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.INVISIBLE
             }
         }
     }
 
     private fun openCropTab() {
-        photo_editor_view.setHandlingFloatingItem(null)
+        binding.photoEditorView.setHandlingFloatingItem(null)
         supportFragmentManager.beginTransaction().replace(
             R.id.root_view,
             CropImageFragment(),
@@ -566,7 +569,7 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
 
     fun saveImageCrop(bitmap: Bitmap) {
         setCurrentBitmap(bitmap)
-        photo_editor_view.setImageSource(bitmap)
+        binding.photoEditorView.setImageSource(bitmap)
         onBackPressed()
     }
 
@@ -594,10 +597,10 @@ class EditImageActivity : BaseActivity(), View.OnClickListener {
                 val blurBitmapBackground = FilterUtils.getBlurImageFromBitmap(currentBitmap, 3F)
                 CoroutineScope(Dispatchers.Main).launch {
                     blurBitmapBackground?.let {
-                        splash_view.setImageBitmap(it)
+                        binding.splashView.setImageBitmap(it)
                     }
-                    photo_editor_view.initialBitmap(bitmap)
-                    progress_bar.visibility = View.GONE
+                    binding.photoEditorView.initialBitmap(bitmap)
+                    binding.progressBar.visibility = View.GONE
                     EventBus.getDefault().post(EditImageLoadedEvent())
                 }
             } catch (e: Exception) {

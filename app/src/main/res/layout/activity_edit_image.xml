@@ -115,6 +115,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
+        android:id="@+id/editImageAction"
         layout="@layout/edit_image_action_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -8,10 +8,13 @@ import com.example.slide.MyApplication
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivityInvalidInstalledBinding
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.android.synthetic.main.activity_invalid_installed.*
 
-class InvalidInstalledActivity : BaseActivity() {
+class InvalidInstalledActivity : BaseActivity<ActivityInvalidInstalledBinding>() {
+    override fun bindingView(): ActivityInvalidInstalledBinding {
+        return ActivityInvalidInstalledBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_invalid_installed })
 
@@ -20,8 +23,8 @@ class InvalidInstalledActivity : BaseActivity() {
 
     override fun initConfiguration(savedInstanceState: Bundle?) {
         super.initConfiguration(savedInstanceState)
-        btn_back.setOnClickListener { onBackPressed() }
-        btn_go_to_store.setOnClickListener {
+        binding.btnBack.setOnClickListener { onBackPressed() }
+        binding.btnGoToStore.setOnClickListener {
             goToApp(packageName)
         }
     }

@@ -18,31 +18,19 @@ import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
 import com.example.slide.data.SharkVideoDao
+import com.example.slide.databinding.ActivityVideoShareBinding
 import com.example.slide.ui.home.MainActivity
 import com.example.slide.ui.my_studio.MyVideo
 import com.example.slide.util.*
-import kotlinx.android.synthetic.main.activity_export_video.*
-import kotlinx.android.synthetic.main.activity_video_share.*
-import kotlinx.android.synthetic.main.activity_video_share.btn_back
-import kotlinx.android.synthetic.main.activity_video_share.btn_delete
-import kotlinx.android.synthetic.main.activity_video_share.btn_home
-import kotlinx.android.synthetic.main.activity_video_share.btn_rename
-import kotlinx.android.synthetic.main.activity_video_share.btn_toggle_video
-import kotlinx.android.synthetic.main.activity_video_share.frame_rename
-import kotlinx.android.synthetic.main.activity_video_share.iv_toggle_video
-import kotlinx.android.synthetic.main.activity_video_share.seek_bar
-import kotlinx.android.synthetic.main.activity_video_share.tv_end_time
-import kotlinx.android.synthetic.main.activity_video_share.tv_header_title
-import kotlinx.android.synthetic.main.activity_video_share.tv_start_time
-import kotlinx.android.synthetic.main.activity_video_share.video_view
-import kotlinx.android.synthetic.main.dialog_rename_video.view.*
-import kotlinx.android.synthetic.main.video_share.*
 import java.io.File
 import java.util.*
 
-class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+class ShareVideoActivity : BaseActivity<ActivityVideoShareBinding>(), SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_video_share })
+    override fun bindingView(): ActivityVideoShareBinding {
+        return ActivityVideoShareBinding.inflate(layoutInflater)
+    }
 
     companion object {
 
@@ -64,9 +52,9 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
     private val tickRunnable = object : TimerTask() {
         override fun run() {
             runOnUiThread {
-                seek_bar.progress = video_view.currentPosition
-                tv_start_time.text =
-                    StringUtils.getDurationDisplayFromMillis(video_view.currentPosition)
+                binding.seekBar.progress = binding.videoView.currentPosition
+                binding.tvStartTime.text =
+                    StringUtils.getDurationDisplayFromMillis(binding.videoView.currentPosition)
             }
         }
     }
@@ -84,38 +72,38 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
     override fun initConfiguration(savedInstanceState: Bundle?) {
         super.initConfiguration(savedInstanceState)
         if (Utils.isScopeStorage()) {
-            frame_rename.visibility = View.GONE
+            binding.frameRename.visibility = View.GONE
         } else {
-            frame_rename.visibility = View.VISIBLE
+            binding.frameRename.visibility = View.VISIBLE
         }
-        video_view.setVideoPath(video.url)
-        btn_rename.visibility = if (Utils.isScopeStorage()) View.GONE else View.VISIBLE
-        tv_header_title.text = video.name
+        binding.videoView.setVideoPath(video.url)
+        binding.btnRename.visibility = if (Utils.isScopeStorage()) View.GONE else View.VISIBLE
+        binding.tvHeaderTitle.text = video.name
     }
 
     override fun initListener() {
         super.initListener()
 
-        btn_back.setOnClickListener(this)
-        btn_home.setOnClickListener(this)
-        btn_toggle_video.setOnClickListener(this)
-        btn_rename.setOnClickListener(this)
-        btn_delete.setOnClickListener(this)
-        btn_twitter.setOnClickListener(this)
-        btn_instagram.setOnClickListener(this)
-        btn_facebook.setOnClickListener(this)
-        btn_youtube.setOnClickListener(this)
-        btn_share_more.setOnClickListener(this)
-        seek_bar.setOnSeekBarChangeListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.btnHome.setOnClickListener(this)
+        binding.btnToggleVideo.setOnClickListener(this)
+        binding.btnRename.setOnClickListener(this)
+        binding.btnDelete.setOnClickListener(this)
+        binding.shareVideo.btnTwitter.setOnClickListener(this)
+        binding.shareVideo.btnInstagram.setOnClickListener(this)
+        binding.shareVideo.btnFacebook.setOnClickListener(this)
+        binding.shareVideo.btnYoutube.setOnClickListener(this)
+        binding.shareVideo.btnShareMore.setOnClickListener(this)
+        binding.seekBar.setOnSeekBarChangeListener(this)
 
-        video_view.setOnPreparedListener {
-            seek_bar.max = it.duration
-            tv_end_time.text = StringUtils.getDurationDisplayFromMillis(it.duration)
-            video_view.start()
-            iv_toggle_video.setImageResource(R.drawable.ic_pause)
+        binding.videoView.setOnPreparedListener {
+            binding.seekBar.max = it.duration
+            binding.tvEndTime.text = StringUtils.getDurationDisplayFromMillis(it.duration)
+            binding.videoView.start()
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
         }
-        video_view.setOnCompletionListener {
-            iv_toggle_video.setImageResource(R.drawable.ic_play)
+        binding.videoView.setOnCompletionListener {
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
         }
     }
 
@@ -168,7 +156,7 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
                                 video.url = url
                                 video.name = title
                                 VideoTagUtils.updateTag(this, video)
-                                tv_header_title.text = video.name
+                                binding.tvHeaderTitle.text = video.name
                             } else {
                                 Toast.makeText(
                                     this,
@@ -247,7 +235,7 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
 
     override fun releaseData() {
         timer.cancel()
-        video_view.stopPlayback()
+        binding.videoView.stopPlayback()
     }
 
     override fun initTask() {
@@ -257,7 +245,7 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         if (fromUser) {
-            video_view.seekTo(progress)
+            binding.videoView.seekTo(progress)
         }
     }
 
@@ -276,12 +264,12 @@ class ShareVideoActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener, View
                 startActivity(MainActivity.getCallingIntent(this))
             }
             R.id.btn_toggle_video -> {
-                if (video_view.isPlaying) {
-                    iv_toggle_video.setImageResource(R.drawable.ic_play)
-                    video_view.pause()
+                if (binding.videoView.isPlaying) {
+                    binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
+                    binding.videoView.pause()
                 } else {
-                    iv_toggle_video.setImageResource(R.drawable.ic_pause)
-                    video_view.start()
+                    binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
+                    binding.videoView.start()
                 }
             }
             R.id.btn_rename -> {

@@ -6,10 +6,12 @@ import android.os.Bundle
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
-import kotlinx.android.synthetic.main.activity_privacy_policy.*
-import kotlinx.android.synthetic.main.activity_terms_and_conditions.btn_back
+import com.example.slide.databinding.ActivityPrivacyPolicyBinding
 
-class PrivacyPolicyActivity : BaseActivity() {
+class PrivacyPolicyActivity : BaseActivity<ActivityPrivacyPolicyBinding>() {
+    override fun bindingView(): ActivityPrivacyPolicyBinding {
+        return ActivityPrivacyPolicyBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.activity_privacy_policy
@@ -23,12 +25,12 @@ class PrivacyPolicyActivity : BaseActivity() {
 
     override fun initConfiguration(savedInstanceState: Bundle?) {
         super.initConfiguration(savedInstanceState)
-        wv_policy.loadUrl("file:///android_asset/privacy_policy.html");
+        binding.wvPolicy.loadUrl("file:///android_asset/privacy_policy.html");
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }

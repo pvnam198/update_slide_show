@@ -16,6 +16,7 @@ import com.example.slide.R
 import com.example.slide.ads.*
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivityMainBinding
 import com.example.slide.framework.thirdparty.DialogApp
 import com.example.slide.framework.thirdparty.ThirdPartyRequest
 import com.example.slide.local.PreferencesHelper
@@ -41,7 +42,6 @@ import com.playbilling.BillingListener
 import com.playbilling.BillingRepository
 import com.playbilling.ProductInfo
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -49,7 +49,10 @@ import javax.inject.Inject
 var currentNativeAd: NativeAd? = null
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
+    override fun bindingView(): ActivityMainBinding {
+        return ActivityMainBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_main })
 
@@ -105,21 +108,21 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun initListener() {
         super.initListener()
-        drawer.setOnClickListener(this)
+        binding.drawer.setOnClickListener(this)
 
-        btn_create_video.setOnClickListener(this)
-        btn_studio.setOnClickListener(this)
-        btn_setting.setOnClickListener(this)
+        binding.btnCreateVideo.setOnClickListener(this)
+        binding.btnStudio.setOnClickListener(this)
+        binding.btnSetting.setOnClickListener(this)
 
-        btn_share.setOnClickListener(this)
-        btn_rate.setOnClickListener(this)
-        btn_more.setOnClickListener(this)
-        btn_privacy.setOnClickListener(this)
+        binding.btnShare.setOnClickListener(this)
+        binding.btnRate.setOnClickListener(this)
+        binding.btnMore.setOnClickListener(this)
+        binding.btnPrivacy.setOnClickListener(this)
 
-        view_menu.setOnClickListener(this)
-        btn_vip.setOnClickListener(this)
-        btn_home_ad.setOnClickListener(this)
-        card_view_settings.setOnClickListener(this)
+        binding.viewMenu.setOnClickListener(this)
+        binding.btnVip.setOnClickListener(this)
+        binding.btnHomeAd.setOnClickListener(this)
+        binding.cardViewSettings.setOnClickListener(this)
     }
 
     override fun initTask() {
@@ -150,9 +153,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private fun initHomeAdsState() {
         if (!isVip && ThirdPartyRequest.is_more_screen && ThirdPartyRequest.apps.isNotEmpty()) {
-            layout_home_ad.visibility = View.VISIBLE
+            binding.layoutHomeAd.visibility = View.VISIBLE
         } else {
-            layout_home_ad.visibility = View.GONE
+            binding.layoutHomeAd.visibility = View.GONE
         }
     }
 
@@ -181,8 +184,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.view_menu -> {
-                if (!drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.openDrawer(GravityCompat.START)
+                if (!binding.drawer.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawer.openDrawer(GravityCompat.START)
                 }
             }
             R.id.btn_create_video -> {
@@ -282,9 +285,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun initVipState() {
         isVip = PreferencesHelper(this).isVip()
         if (isVip) {
-            layout_ads_parent.visibility = View.INVISIBLE
+            binding.layoutAdsParent.visibility = View.INVISIBLE
         } else {
-            layout_ads_parent.visibility = View.VISIBLE
+            binding.layoutAdsParent.visibility = View.VISIBLE
         }
     }
 
@@ -348,8 +351,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             currentNativeAd = nativeAds
             val adView = layoutInflater.inflate(R.layout.item_ads_1, null) as NativeAdView
             populateUnifiedNativeAdView(nativeAds, adView)
-            layout_ads_parent.removeAllViews()
-            layout_ads_parent.addView(adView)
+            binding.layoutAdsParent.removeAllViews()
+            binding.layoutAdsParent.addView(adView)
         }
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(loadAdError: LoadAdError) {

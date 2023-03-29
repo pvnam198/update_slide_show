@@ -256,7 +256,9 @@
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@+id/layout_action">
 
-            <include layout="@layout/video_share" />
+            <include
+                android:id="@+id/shareVideo"
+                layout="@layout/video_share" />
 
         </LinearLayout>
 

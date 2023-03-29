@@ -4,13 +4,17 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.example.slide.R
-import com.example.slide.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_zoom_image.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogZoomImageBinding
 
-class ZoomImageDialogFragment : BaseDialogFragment() {
+class ZoomImageDialogFragment : BaseBindingDialog<DialogZoomImageBinding>() {
 
     override val layoutId: Int
         get() = R.layout.dialog_zoom_image
+
+    override fun bindingView(): DialogZoomImageBinding {
+        return DialogZoomImageBinding.inflate(layoutInflater)
+    }
 
     private var urlImage = ""
 
@@ -40,13 +44,13 @@ class ZoomImageDialogFragment : BaseDialogFragment() {
     override fun initConfiguration() {
         super.initConfiguration()
 
-        Glide.with(requireActivity()).load(urlImage).into(iv_image_display)
+        Glide.with(requireActivity()).load(urlImage).into(binding.ivImageDisplay)
     }
 
     override fun initListener() {
         super.initListener()
 
-        btn_root_view.setOnClickListener {
+        binding.btnRootView.setOnClickListener {
             dismiss()
         }
     }

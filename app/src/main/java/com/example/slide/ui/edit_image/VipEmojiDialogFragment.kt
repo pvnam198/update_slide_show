@@ -15,13 +15,13 @@ import com.example.slide.R
 import com.example.slide.ads.AdLoadingDialog
 import com.example.slide.ads.OnRewardAdCallback
 import com.example.slide.ads.RewardHelper
-import com.example.slide.base.BaseDialogFragment
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogEmojiVipFunctionsBinding
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.vip.VipActivity
 import com.google.android.gms.ads.rewarded.RewardItem
-import kotlinx.android.synthetic.main.dialog_emoji_vip_functions.*
 
-class VipEmojiDialogFragment : BaseDialogFragment(), View.OnClickListener, OnRewardAdCallback {
+class VipEmojiDialogFragment : BaseBindingDialog<DialogEmojiVipFunctionsBinding>(), View.OnClickListener, OnRewardAdCallback {
 
     var isViewCreated = false
 
@@ -36,6 +36,9 @@ class VipEmojiDialogFragment : BaseDialogFragment(), View.OnClickListener, OnRew
     }
 
     override val layoutId: Int = R.layout.dialog_emoji_vip_functions
+    override fun bindingView(): DialogEmojiVipFunctionsBinding {
+        return DialogEmojiVipFunctionsBinding.inflate(layoutInflater)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,9 +46,9 @@ class VipEmojiDialogFragment : BaseDialogFragment(), View.OnClickListener, OnRew
         isViewCreated = true
         RewardHelper.initFullScreenContentCallback()
         RewardHelper.onRewardAdCallback = this
-        btn_watch_ads.setOnClickListener(this)
-        btn_become_vip.setOnClickListener(this)
-        btn_cancel.setOnClickListener(this)
+        binding.btnWatchAds.setOnClickListener(this)
+        binding.btnBecomeVip.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
     }
 
     override fun onDestroyView() {
@@ -93,13 +96,13 @@ class VipEmojiDialogFragment : BaseDialogFragment(), View.OnClickListener, OnRew
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> {
+            binding.btnCancel -> {
                 dismiss()
             }
-            btn_watch_ads -> {
+            binding.btnWatchAds -> {
                 loadRewardedAds()
             }
-            btn_become_vip -> {
+            binding.btnBecomeVip -> {
                 startActivity(Intent(requireActivity(), VipActivity::class.java))
             }
         }

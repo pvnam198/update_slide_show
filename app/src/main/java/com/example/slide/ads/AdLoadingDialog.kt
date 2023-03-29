@@ -3,9 +3,10 @@ package com.example.slide.ads
 import android.content.DialogInterface
 import android.view.KeyEvent
 import com.example.slide.R
-import com.example.slide.base.BaseDialogFragment
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogAdLoadingBinding
 
-class AdLoadingDialog : BaseDialogFragment() {
+class AdLoadingDialog : BaseBindingDialog<DialogAdLoadingBinding>() {
 
     companion object {
 
@@ -18,6 +19,10 @@ class AdLoadingDialog : BaseDialogFragment() {
 
     override val layoutId: Int
         get() = R.layout.dialog_ad_loading
+
+    override fun bindingView(): DialogAdLoadingBinding {
+        return DialogAdLoadingBinding.inflate(layoutInflater)
+    }
 
     override fun onResume() {
         super.onResume()

@@ -4,14 +4,17 @@ import androidx.fragment.app.Fragment
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentEditVideoDurationBinding
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.dialog.CustomDurationDialogFragment
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
-import kotlinx.android.synthetic.main.fragment_edit_video_duration.*
 
-class DurationFragment : BaseFragment() {
+class DurationFragment : BaseFragment<FragmentEditVideoDurationBinding>() {
+    override fun bindingView(): FragmentEditVideoDurationBinding {
+        return FragmentEditVideoDurationBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_edit_video_duration })
 
@@ -43,9 +46,9 @@ class DurationFragment : BaseFragment() {
         processFromUser = preferencesHelper.getSharedPreferences()
             .getInt(VALUE_PROCESS_FROM_USER, processFromUser)
         val processSeekBar = processFromUser - 1f
-        rangeSeekBar.setProgress(processSeekBar)
+        binding.rangeSeekBar.setProgress(processSeekBar)
         if (processFromUser > 6)
-            rangeSeekBar.setProcessCustomValue(processFromUser)
+            binding.rangeSeekBar.setProcessCustomValue(processFromUser)
         setDurationTitle(
             (processSeekBar.toInt()+1),
             videoCreateActivity.myApplication.videoDataState.totalSecond
@@ -54,7 +57,7 @@ class DurationFragment : BaseFragment() {
 
     override fun initListener() {
         super.initListener()
-        rangeSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
+        binding.rangeSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
 
             }
@@ -69,7 +72,7 @@ class DurationFragment : BaseFragment() {
             }
 
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                val duration = rangeSeekBar.leftSeekBar.progress + 1
+                val duration = binding.rangeSeekBar.leftSeekBar.progress + 1
                 if (duration == MAX_DEFAULT_PROCESS_SEEK_BAR.toFloat())
                     CustomDurationDialogFragment.getInstance(duration.toInt()).show(
                         parentFragmentManager,
@@ -89,10 +92,10 @@ class DurationFragment : BaseFragment() {
     fun setSeekBarChange(process: Int) {
         if (process <= MAX_DEFAULT_PROCESS_SEEK_BAR) {
             customDurationDialogFragment?.dismiss()
-            rangeSeekBar.setProcessCustomValue(MAX_DEFAULT_PROCESS_SEEK_BAR)
-            rangeSeekBar.setProgress((process - 1).toFloat())
+            binding.rangeSeekBar.setProcessCustomValue(MAX_DEFAULT_PROCESS_SEEK_BAR)
+            binding.rangeSeekBar.setProgress((process - 1).toFloat())
         } else {
-            rangeSeekBar.setProcessCustomValue(process)
+            binding.rangeSeekBar.setProcessCustomValue(process)
         }
         preferencesHelper.getSharedPreferences().edit().putInt(VALUE_PROCESS_FROM_USER, process)
             .apply()
@@ -104,12 +107,12 @@ class DurationFragment : BaseFragment() {
     }
 
     private fun setDurationTitle(speed: Int, total: Int) {
-        tv_duration_speed.text = String.format(getString(R.string.format_speed_per_transition),speed)
-        tv_duration_total.text = String.format(getString(R.string.format_total_speed),total)
+        binding.tvDurationSpeed.text = String.format(getString(R.string.format_speed_per_transition),speed)
+        binding.tvDurationTotal.text = String.format(getString(R.string.format_total_speed),total)
     }
 
     override fun releaseData() {
-        rangeSeekBar.setOnRangeChangedListener(null)
+        binding.rangeSeekBar.setOnRangeChangedListener(null)
     }
 
 }

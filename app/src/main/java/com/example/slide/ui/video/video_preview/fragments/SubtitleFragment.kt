@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentEditVideoSubtitleBinding
 import com.example.slide.framework.texttovideo.VideoTextFloatingItem
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.adapter.SubTitleAdapter
 import com.example.slide.ui.video.video_preview.callback.HandleFloatItem
-import kotlinx.android.synthetic.main.fragment_edit_video_subtitle.*
 
-class SubtitleFragment : BaseFragment(), HandleFloatItem {
+class SubtitleFragment : BaseFragment<FragmentEditVideoSubtitleBinding>(), HandleFloatItem {
+    override fun bindingView(): FragmentEditVideoSubtitleBinding {
+        return FragmentEditVideoSubtitleBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() =
         InitViewTools({ R.layout.fragment_edit_video_subtitle })
@@ -40,13 +43,13 @@ class SubtitleFragment : BaseFragment(), HandleFloatItem {
             }, editListener = { textSticker ->
                 videoCreateActivity.editSubTitle(textSticker)
             })
-        rv_text.layoutManager = LinearLayoutManager(requireContext())
-        rv_text.adapter = subTitleAdapter
+        binding.rvText.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvText.adapter = subTitleAdapter
     }
 
     override fun initListener() {
         super.initListener()
-        btn_add_text.setOnClickListener {
+        binding.btnAddText.setOnClickListener {
             showKeyboard()
             videoCreateActivity.showAddTextFragment()
         }

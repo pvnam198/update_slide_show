@@ -6,12 +6,15 @@ import android.os.Bundle
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivityMoreAppBinding
 import com.example.slide.util.rateApp
-import kotlinx.android.synthetic.main.activity_more_app.*
 
-class MoreAppActivity : BaseActivity() {
+class MoreAppActivity : BaseActivity<ActivityMoreAppBinding>() {
 
     private lateinit var moreAppAdapter: MoreAppAdapter
+    override fun bindingView(): ActivityMoreAppBinding {
+        return ActivityMoreAppBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.activity_more_app
@@ -23,12 +26,12 @@ class MoreAppActivity : BaseActivity() {
             rateApp(it.vPackage)
         }
 
-        recycler_app.adapter = moreAppAdapter
+        binding.recyclerApp.adapter = moreAppAdapter
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { onBackPressed() }
+        binding.btnBack.setOnClickListener { onBackPressed() }
     }
 
     override fun releaseData() {

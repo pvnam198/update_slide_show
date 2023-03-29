@@ -24,6 +24,7 @@ import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
 import com.example.slide.data.SharkVideoDao
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.ActivityExportVideoBinding
 import com.example.slide.event.BeginSavingVideoEvent
 import com.example.slide.event.ExportErrorEvent
 import com.example.slide.event.VideoCreatedEvent
@@ -47,17 +48,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
-import kotlinx.android.synthetic.main.activity_export_video.*
-import kotlinx.android.synthetic.main.activity_export_video.btn_back
-import kotlinx.android.synthetic.main.activity_export_video.iv_toggle_video
-import kotlinx.android.synthetic.main.activity_export_video.layout_ads_parent
-import kotlinx.android.synthetic.main.activity_export_video.seek_bar
-import kotlinx.android.synthetic.main.activity_export_video.tv_end_time
-import kotlinx.android.synthetic.main.activity_export_video.tv_header_title
-import kotlinx.android.synthetic.main.activity_export_video.tv_start_time
-import kotlinx.android.synthetic.main.activity_video_create.*
-import kotlinx.android.synthetic.main.dialog_rename_video.view.*
-import kotlinx.android.synthetic.main.video_share.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
@@ -66,10 +56,15 @@ import java.util.*
 
 var currentNativeAd: NativeAd? = null
 
-class ExportVideoActivity : BaseActivity(), View.OnClickListener,
+class ExportVideoActivity : BaseActivity<ActivityExportVideoBinding>(), View.OnClickListener,
     SaveDraftAfterExportDialog.OnSaveDraftListener {
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_export_video }, { true })
+
+
+    override fun bindingView(): ActivityExportVideoBinding {
+        return ActivityExportVideoBinding.inflate(layoutInflater)
+    }
 
     private var mode = MODE_NEW_EDIT
 
@@ -120,9 +115,9 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
     private val tickRunnable = object : TimerTask() {
         override fun run() {
             runOnUiThread {
-                seek_bar.progress = video_view.currentPosition
-                tv_start_time.text =
-                    StringUtils.getDurationDisplayFromMillis(video_view.currentPosition)
+                binding.seekBar.progress = binding.videoView.currentPosition
+                binding.tvStartTime.text =
+                    StringUtils.getDurationDisplayFromMillis(binding.videoView.currentPosition)
             }
         }
     }
@@ -155,7 +150,7 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
 
     override fun releaseData() {
         timer.cancel()
-        video_view.stopPlayback()
+        binding.videoView.stopPlayback()
         currentNativeAd?.destroy()
         currentNativeAd = null
     }
@@ -193,47 +188,47 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
         super.initConfiguration(savedInstanceState)
         isVip = PreferencesHelper(this).isVip()
         draftRepository = DraftRepository(this)
-        Glide.with(this).load(VideoCreateActivity.getFirstImage()).into(iv_saving)
+        Glide.with(this).load(VideoCreateActivity.getFirstImage()).into(binding.ivSaving)
         initProgressState()
         loadNativeAds()
         if (Utils.isScopeStorage()) {
-            frame_rename.visibility = View.GONE
+            binding.frameRename.visibility = View.GONE
         } else {
-            frame_rename.visibility = View.VISIBLE
+            binding.frameRename.visibility = View.VISIBLE
         }
         Log.d(TAG, "initConfiguration: ")
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener(this)
-        btn_home.setOnClickListener(this)
-        btn_toggle_video.setOnClickListener(this)
-        btn_rename.setOnClickListener(this)
-        btn_delete.setOnClickListener(this)
-        btn_twitter.setOnClickListener(this)
-        btn_instagram.setOnClickListener(this)
-        btn_facebook.setOnClickListener(this)
-        btn_youtube.setOnClickListener(this)
-        btn_share_more.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.btnHome.setOnClickListener(this)
+        binding.btnToggleVideo.setOnClickListener(this)
+        binding.btnRename.setOnClickListener(this)
+        binding.btnDelete.setOnClickListener(this)
+        binding.videoShare.btnTwitter.setOnClickListener(this)
+        binding.videoShare.btnInstagram.setOnClickListener(this)
+        binding.videoShare.btnFacebook.setOnClickListener(this)
+        binding.videoShare.btnYoutube.setOnClickListener(this)
+        binding.videoShare.btnShareMore.setOnClickListener(this)
 
-        video_view.setOnPreparedListener { mediaPlayer ->
-            seek_bar.max = mediaPlayer.duration
-            tv_end_time.text = StringUtils.getDurationDisplayFromMillis(mediaPlayer.duration)
-            video_view.start()
-            iv_toggle_video.setImageResource(R.drawable.ic_pause)
+        binding.videoView.setOnPreparedListener { mediaPlayer ->
+            binding.seekBar.max = mediaPlayer.duration
+            binding.tvEndTime.text = StringUtils.getDurationDisplayFromMillis(mediaPlayer.duration)
+            binding.videoView.start()
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
         }
 
-        video_view.setOnCompletionListener {
-            iv_toggle_video.setImageResource(R.drawable.ic_play)
+        binding.videoView.setOnCompletionListener {
+            binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
         }
 
-        seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, process: Int, fromUser: Boolean) {
                 if (fromUser) {
                     Timber.d("hehehez: $process")
                     Timber.d("hehehez: ${video!!.duration}")
-                    video_view.seekTo(process)
+                    binding.videoView.seekTo(process)
                 }
             }
 
@@ -277,8 +272,8 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
             val adView = layoutInflater
                 .inflate(R.layout.item_ads_1, null) as NativeAdView
             populateUnifiedNativeAdView(nativeAd, adView)
-            layout_ads_parent.removeAllViews()
-            layout_ads_parent.addView(adView)
+            binding.layoutAdsParent.removeAllViews()
+            binding.layoutAdsParent.addView(adView)
         }
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdFailedToLoad(loadAdError: LoadAdError) {
@@ -299,15 +294,15 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onInitFileName(event: BeginSavingVideoEvent) {
-        tv_header_title.text = event.fileName
+        binding.tvHeaderTitle.text = event.fileName
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onVideoCreated(event: VideoCreatedEvent) {
         RateDialogFragment.show(this, preferencesHelper)
         initVideo(event.video)
-        iv_home.visibility = View.VISIBLE
-        btn_home.visibility = View.VISIBLE
+        binding.ivHome.visibility = View.VISIBLE
+        binding.btnHome.visibility = View.VISIBLE
     }
 
 
@@ -315,27 +310,27 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
     private fun initProgressState(process: Int = 0) {
         when (myApplication.videoDataState.state) {
             VideoDataState.STATE_NONE -> {
-                tv_state.text = "${this.resources.getText(R.string.preparing_images)}: 00%"
+                binding.tvState.text = "${this.resources.getText(R.string.preparing_images)}: 00%"
             }
             VideoDataState.STATE_CREATE_IMAGE -> {
-                tv_state.text = "${this.resources.getText(R.string.preparing_images)}: ${process}%"
+                binding.tvState.text = "${this.resources.getText(R.string.preparing_images)}: ${process}%"
             }
             else -> {
-                tv_state.text = "${this.resources.getText(R.string.exporting)}: ${process}%"
+                binding.tvState.text = "${this.resources.getText(R.string.exporting)}: ${process}%"
             }
         }
     }
 
     private fun initVideo(video: MyVideo) {
         this.video = video
-        video_view.setVideoPath(video.url)
-        btn_home.visibility = View.VISIBLE
-        iv_home.visibility = View.VISIBLE
-        layout_block.visibility = View.GONE
-        iv_saving.visibility = View.INVISIBLE
-        saving_block.visibility = View.INVISIBLE
-        progress.visibility = View.INVISIBLE
-        tv_state.visibility = View.INVISIBLE
+        binding.videoView.setVideoPath(video.url)
+        binding.btnHome.visibility = View.VISIBLE
+        binding.ivHome.visibility = View.VISIBLE
+        binding.layoutBlock.visibility = View.GONE
+        binding.ivSaving.visibility = View.INVISIBLE
+        binding.savingBlock.visibility = View.INVISIBLE
+        binding.progress.visibility = View.INVISIBLE
+        binding.tvState.visibility = View.INVISIBLE
     }
 
     override fun onBackPressed() {
@@ -372,12 +367,12 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
                 }
             }
             R.id.btn_toggle_video -> {
-                if (video_view.isPlaying) {
-                    iv_toggle_video.setImageResource(R.drawable.ic_play)
-                    video_view.pause()
+                if (binding.videoView.isPlaying) {
+                    binding.ivToggleVideo.setImageResource(R.drawable.ic_play)
+                    binding.videoView.pause()
                 } else {
-                    iv_toggle_video.setImageResource(R.drawable.ic_pause)
-                    video_view.start()
+                    binding.ivToggleVideo.setImageResource(R.drawable.ic_pause)
+                    binding.videoView.start()
                 }
             }
             R.id.btn_rename -> {
@@ -516,7 +511,7 @@ class ExportVideoActivity : BaseActivity(), View.OnClickListener,
                                 video!!.url = url
                                 video!!.name = title
                                 VideoTagUtils.updateTag(this, video!!)
-                                tv_header_title.text = video!!.name
+                                binding.tvHeaderTitle.text = video!!.name
                             } else {
                                 Toast.makeText(
                                     this,

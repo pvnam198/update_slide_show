@@ -12,18 +12,18 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentStickerVideoBinding
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.adapter.VideoStickerAdapter
 import com.example.slide.ui.video.video_preview.adapter.VideoStickerContentAdapter
 import com.example.slide.framework.texttovideo.DrawableVideoFloatingItem
 import com.example.slide.ui.edit_image.VipEmojiDialogFragment
 import com.example.slide.util.EmojiProvider
-import kotlinx.android.synthetic.main.fragment_sticker_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
+class EmojiVideoFragment : BaseFragment<FragmentStickerVideoBinding>(), View.OnClickListener {
 
     private lateinit var videoStickerAdapter: VideoStickerAdapter
 
@@ -39,6 +39,10 @@ class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         const val TAG = "VideoStickerFragment"
+    }
+
+    override fun bindingView(): FragmentStickerVideoBinding {
+        return FragmentStickerVideoBinding.inflate(layoutInflater)
     }
 
     override fun initViewTools() = InitViewTools({
@@ -60,9 +64,9 @@ class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
                     videoStickerAdapter = VideoStickerAdapter(emojiStickers, onEmojiSelected = {
                         videoStickerContentAdapter.setupData(it)
                     })
-                    recycler_view_list_emoji.layoutManager =
+                    binding.recyclerViewListEmoji.layoutManager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                    recycler_view_list_emoji.adapter = videoStickerAdapter
+                    binding.recyclerViewListEmoji.adapter = videoStickerAdapter
 
                     videoStickerContentAdapter =
                         VideoStickerContentAdapter(
@@ -94,11 +98,11 @@ class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
                                 VipEmojiDialogFragment.createInstance()
                                     .show(parentFragmentManager, VipEmojiDialogFragment.TAG)
                             })
-                    emojis_contents.layoutManager =
+                    binding.emojisContents.layoutManager =
                         GridLayoutManager(requireContext(), 5, GridLayoutManager.VERTICAL, false)
-                    emojis_contents.adapter = videoStickerContentAdapter
+                    binding.emojisContents.adapter = videoStickerContentAdapter
 
-                    progress_bar.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
                 }
 
             }
@@ -107,8 +111,8 @@ class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
 
     override fun initListener() {
         super.initListener()
-        iv_check.setOnClickListener(this)
-        iv_close.setOnClickListener(this)
+        binding.ivCheck.setOnClickListener(this)
+        binding.ivClose.setOnClickListener(this)
     }
 
     override fun releaseData() {
@@ -119,7 +123,7 @@ class EmojiVideoFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view) {
-            iv_check, iv_close ->
+            binding.ivCheck, binding.ivClose ->
                 (requireActivity() as VideoCreateActivity).onBackPressed()
         }
     }

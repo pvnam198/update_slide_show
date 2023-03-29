@@ -13,10 +13,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivityMyStudioBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_my_studio.*
 
-class MyStudioActivity : BaseActivity() {
+class MyStudioActivity : BaseActivity<ActivityMyStudioBinding>() {
 
     companion object {
 
@@ -37,6 +37,11 @@ class MyStudioActivity : BaseActivity() {
         }
 
     }
+
+    override fun bindingView(): ActivityMyStudioBinding {
+        return ActivityMyStudioBinding.inflate(layoutInflater)
+    }
+
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_my_studio })
 
@@ -60,18 +65,18 @@ class MyStudioActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        btn_back.setOnClickListener { finish() }
-        viewPager.adapter = StudioViewPagerAdapter(supportFragmentManager, lifecycle)
-        viewPager.offscreenPageLimit = 2
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        binding.btnBack.setOnClickListener { finish() }
+        binding.viewPager.adapter = StudioViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.offscreenPageLimit = 2
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.txt_video)
                 1 -> tab.text = getString(R.string.txt_drafts)
             }
-            viewPager.setCurrentItem(tab.position, true)
+            binding.viewPager.setCurrentItem(tab.position, true)
         }.attach()
         with(intent.getIntExtra(EXTRA_MODE, 0)) {
-            viewPager.setCurrentItem(this, false)
+            binding.viewPager.setCurrentItem(this, false)
         }
         setUpTabLayout()
     }
@@ -80,8 +85,8 @@ class MyStudioActivity : BaseActivity() {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-        for (i in 0 until tabLayout.tabCount) {
-            val tab: View = (tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
+        for (i in 0 until binding.tabLayout.tabCount) {
+            val tab: View = (binding.tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             (tab.layoutParams as ViewGroup.MarginLayoutParams).setMargins(
                     displayMetrics.widthPixels / 8,
                     0,

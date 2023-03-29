@@ -6,29 +6,29 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import com.example.photo_video_maker_with_song.network.NetworkHelper
 import com.example.slide.R
 import com.example.slide.ads.AdLoadingDialog
 import com.example.slide.ads.OnRewardAdCallback
 import com.example.slide.ads.RewardHelper
-import com.example.slide.base.BaseDialogFragment
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogVipFunctionsBinding
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import com.example.slide.ui.vip.FailedConnectDialogFragment
 import com.example.slide.ui.vip.VipActivity
 import com.example.slide.videolib.VideoConfig
 import com.google.android.gms.ads.rewarded.RewardItem
-import kotlinx.android.synthetic.main.dialog_vip_functions.*
 
-class VipFunctionsDialogFragment : BaseDialogFragment(), View.OnClickListener, OnRewardAdCallback {
+class VipFunctionsDialogFragment : BaseBindingDialog<DialogVipFunctionsBinding>(), View.OnClickListener, OnRewardAdCallback {
 
     override val layoutId: Int = R.layout.dialog_vip_functions
+    override fun bindingView(): DialogVipFunctionsBinding {
+        return DialogVipFunctionsBinding.inflate(layoutInflater)
+    }
 
     private var adLoadingDialog: AdLoadingDialog? = null
 
@@ -81,16 +81,16 @@ class VipFunctionsDialogFragment : BaseDialogFragment(), View.OnClickListener, O
         isViewCreated = true
         RewardHelper.initFullScreenContentCallback()
         RewardHelper.onRewardAdCallback = this
-        btn_cancel.setOnClickListener(this)
-        btn_watch_ads.setOnClickListener(this)
-        btn_become_vip.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnWatchAds.setOnClickListener(this)
+        binding.btnBecomeVip.setOnClickListener(this)
         val bundle = savedInstanceState ?: requireArguments()
 
         isVipFeature = bundle.getBoolean(ARG_VIP_FEATURE)
         videoQuality = bundle.getInt(ARG_RESOLUTION, VideoConfig.VIDEO_QUALITY_480)
         task = bundle.getInt(ARG_TASK, TASK_UNLOCK)
         if (isVipFeature) {
-            layout_vip_transitions.visibility = View.VISIBLE
+            binding.layoutVipTransitions.visibility = View.VISIBLE
         }
         if (videoQuality != VideoConfig.VIDEO_QUALITY_480) {
             showResolution(videoQuality)
@@ -115,10 +115,10 @@ class VipFunctionsDialogFragment : BaseDialogFragment(), View.OnClickListener, O
     }
 
     private fun showResolution(resolution: Int) {
-        layout_resolution.visibility = View.VISIBLE
+        binding.layoutResolution.visibility = View.VISIBLE
         when (resolution) {
-            VideoConfig.VIDEO_QUALITY_1080 -> tv_resolution.text = getString(R.string.full_hd_1080p)
-            VideoConfig.VIDEO_QUALITY_720 -> tv_resolution.text = getString(R.string.hd_720p)
+            VideoConfig.VIDEO_QUALITY_1080 -> binding.tvResolution.text = getString(R.string.full_hd_1080p)
+            VideoConfig.VIDEO_QUALITY_720 -> binding.tvResolution.text = getString(R.string.hd_720p)
         }
     }
 
@@ -136,13 +136,13 @@ class VipFunctionsDialogFragment : BaseDialogFragment(), View.OnClickListener, O
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> {
+            binding.btnCancel -> {
                 dismiss()
             }
-            btn_watch_ads -> {
+            binding.btnWatchAds -> {
                 loadRewardedAds()
             }
-            btn_become_vip -> {
+            binding.btnBecomeVip -> {
                 startActivity(Intent(requireActivity(), VipActivity::class.java))
             }
         }

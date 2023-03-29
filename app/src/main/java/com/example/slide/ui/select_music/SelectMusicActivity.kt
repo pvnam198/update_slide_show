@@ -8,6 +8,7 @@ import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
 import com.example.slide.database.entities.Draft
+import com.example.slide.databinding.ActivitySelectMusicBinding
 import com.example.slide.music_engine.DefaultMusic
 import com.example.slide.ui.select_music.album.AudioAlbumFragment
 import com.example.slide.ui.select_music.artist.AudioArtistFragment
@@ -18,13 +19,12 @@ import com.example.slide.ui.select_music.model.Track
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
 import com.example.slide.ui.select_music.track.AudioAllTrackFragment
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import kotlinx.android.synthetic.main.activity_select_music.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SelectMusicActivity : BaseActivity() {
+class SelectMusicActivity : BaseActivity<ActivitySelectMusicBinding>() {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
@@ -39,6 +39,10 @@ class SelectMusicActivity : BaseActivity() {
     lateinit var draft: Draft
 
     override fun initViewTools() = InitViewTools({ R.layout.activity_select_music })
+    override fun bindingView(): ActivitySelectMusicBinding {
+        return ActivitySelectMusicBinding.inflate(layoutInflater)
+    }
+
 
     companion object {
 
@@ -73,35 +77,35 @@ class SelectMusicActivity : BaseActivity() {
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
-        btn_all_tracks.setOnClickListener {
+        binding.btnAllTracks.setOnClickListener {
             fileFragment = null
             supportFragmentManager.beginTransaction().replace(R.id.content, AudioAllTrackFragment())
                     .addToBackStack(null).commit()
         }
-        btn_artists.setOnClickListener {
+        binding.btnArtists.setOnClickListener {
             fileFragment = null
             supportFragmentManager.beginTransaction().replace(R.id.content, AudioArtistFragment())
                     .addToBackStack(null).commit()
         }
-        btn_album.setOnClickListener {
+        binding.btnAlbum.setOnClickListener {
             fileFragment = null
             supportFragmentManager.beginTransaction().replace(R.id.content, AudioAlbumFragment())
                     .addToBackStack(null).commit()
         }
-        btn_folders.setOnClickListener {
+        binding.btnFolders.setOnClickListener {
             fileFragment = null
             supportFragmentManager.beginTransaction().replace(R.id.content, AudioFoldersFragment())
                     .addToBackStack(null).commit()
         }
-        btn_files.setOnClickListener {
+        binding.btnFiles.setOnClickListener {
             fileFragment = AudioFilesFragment()
             supportFragmentManager.beginTransaction().replace(R.id.content, fileFragment!!)
                     .addToBackStack(null).commit()
         }
-        btn_default_music.setOnClickListener {
+        binding.btnDefaultMusic.setOnClickListener {
             supportFragmentManager.beginTransaction().replace(R.id.content, DefaultMusicFragment())
                     .addToBackStack(null).commit()
         }

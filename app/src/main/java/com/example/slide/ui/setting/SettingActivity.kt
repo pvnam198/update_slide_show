@@ -7,6 +7,7 @@ import android.view.View
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivitySettingBinding
 import com.example.slide.framework.thirdparty.ThirdPartyRequest
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.about.AboutActivity
@@ -15,11 +16,13 @@ import com.example.slide.ui.privacy.PrivacyPolicyActivity
 import com.example.slide.ui.privacy.TermOfUseActivity
 import com.example.slide.ui.vip.VipActivity
 import com.example.slide.util.rateApp
-import kotlinx.android.synthetic.main.activity_setting.*
 
-class SettingActivity : BaseActivity(), View.OnClickListener {
+class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickListener {
 
     private lateinit var moreAppAdapter: MoreAppAdapter
+    override fun bindingView(): ActivitySettingBinding {
+        return ActivitySettingBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.activity_setting
@@ -43,9 +46,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
 
     private fun initVipState() {
         if (isVip) {
-            layout_vip.visibility = View.GONE
+            binding.layoutVip.visibility = View.GONE
         } else {
-            layout_vip.visibility = View.VISIBLE
+            binding.layoutVip.visibility = View.VISIBLE
         }
     }
 
@@ -54,24 +57,24 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         moreAppAdapter = MoreAppAdapter {
             rateApp(it.vPackage)
         }
-        recycler_more_app.adapter = moreAppAdapter
+        binding.recyclerMoreApp.adapter = moreAppAdapter
 
         if (ThirdPartyRequest.apps.isEmpty()) {
-            layout_more_app.visibility = View.GONE
+            binding.layoutMoreApp.visibility = View.GONE
         }
     }
 
     override fun initListener() {
         super.initListener()
 
-        btn_back.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
         //btn_quality.setOnClickListener(this)
-        btn_become_vip.setOnClickListener(this)
-        btn_rate_us.setOnClickListener(this)
-        btn_about.setOnClickListener(this)
-        btn_term_of_use.setOnClickListener(this)
-        btn_privacy_policy.setOnClickListener(this)
-        btn_share_app.setOnClickListener(this)
+        binding.btnBecomeVip.setOnClickListener(this)
+        binding.btnRateUs.setOnClickListener(this)
+        binding.btnAbout.setOnClickListener(this)
+        binding.btnTermOfUse.setOnClickListener(this)
+        binding.btnPrivacyPolicy.setOnClickListener(this)
+        binding.btnShareApp.setOnClickListener(this)
     }
 
     override fun releaseData() {
