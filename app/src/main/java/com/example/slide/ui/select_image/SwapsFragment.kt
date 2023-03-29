@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentSwapsBinding
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager
-import kotlinx.android.synthetic.main.activity_swaps.btn_back
-import kotlinx.android.synthetic.main.activity_swaps.btn_submit
-import kotlinx.android.synthetic.main.fragment_swaps.*
 
-class SwapsFragment : BaseFragment(), View.OnClickListener {
+class SwapsFragment : BaseFragment<FragmentSwapsBinding>(), View.OnClickListener {
+    override fun bindingView(): FragmentSwapsBinding {
+        return FragmentSwapsBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({
         R.layout.fragment_swaps
@@ -44,8 +45,8 @@ class SwapsFragment : BaseFragment(), View.OnClickListener {
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener(this)
-        btn_submit.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.btnSubmit.setOnClickListener(this)
     }
 
     fun editImageDone() {
@@ -54,12 +55,12 @@ class SwapsFragment : BaseFragment(), View.OnClickListener {
 
     private fun initSelectedImages() {
         val dragDropManager = RecyclerViewDragDropManager()
-        recycler_selected_images.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerSelectedImages.layoutManager = LinearLayoutManager(requireContext())
         swapsAdapter?.let {
             adapter = dragDropManager.createWrappedAdapter(it)
         }
-        recycler_selected_images.adapter = adapter
-        dragDropManager.attachRecyclerView(recycler_selected_images)
+        binding.recyclerSelectedImages.adapter = adapter
+        dragDropManager.attachRecyclerView(binding.recyclerSelectedImages)
         swapsAdapter?.notifyDataSetChanged()
     }
 
@@ -84,10 +85,10 @@ class SwapsFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view) {
-            btn_back -> {
+            binding.btnBack -> {
                 (requireActivity() as SelectActivity).onBackPressed()
             }
-            btn_submit -> {
+            binding.btnSubmit -> {
                 (requireActivity() as SelectActivity).doneSwapImages(isImageEdit)
             }
         }

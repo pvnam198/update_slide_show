@@ -10,13 +10,13 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.example.slide.R
+import com.example.slide.base.BaseBottomBindingDialog
+import com.example.slide.databinding.DialogCustomDurationBinding
 import com.example.slide.ui.video.video_preview.fragments.DurationFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_custom_duration.*
 
-class CustomDurationDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class CustomDurationDialogFragment : BaseBottomBindingDialog<DialogCustomDurationBinding>(), View.OnClickListener {
 
     private var behavior: BottomSheetBehavior<View>? = null
 
@@ -42,6 +42,10 @@ class CustomDurationDialogFragment : BottomSheetDialogFragment(), View.OnClickLi
         process = requireArguments().getInt(ARG_PROCESS, 6)
     }
 
+    override fun bindingView(): DialogCustomDurationBinding {
+        return DialogCustomDurationBinding.inflate(layoutInflater)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,10 +62,10 @@ class CustomDurationDialogFragment : BottomSheetDialogFragment(), View.OnClickLi
             durationFragment = fragment
         }
 
-        edt_value.setText(process.toString())
-        btn_ok.setOnClickListener(this)
-        btn_decrease.setOnClickListener(this)
-        btn_increase.setOnClickListener(this)
+        binding.edtValue.setText(process.toString())
+        binding.btnOk.setOnClickListener(this)
+        binding.btnDecrease.setOnClickListener(this)
+        binding.btnIncrease.setOnClickListener(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -88,14 +92,14 @@ class CustomDurationDialogFragment : BottomSheetDialogFragment(), View.OnClickLi
 
     override fun onClick(view: View) {
         when (view) {
-            btn_ok -> {
-                process = edt_value.text.toString().toInt()
+            binding.btnOk -> {
+                process = binding.edtValue.text.toString().toInt()
                 if (process < DurationFragment.MIN_CUSTOM_PROCESS_SEEK_BAR || process > DurationFragment.MAX_CUSTOM_PROCESS_SEEK_BAR) {
 
                     if (process < DurationFragment.MIN_CUSTOM_PROCESS_SEEK_BAR) {
-                        edt_value.setText(DurationFragment.MIN_CUSTOM_PROCESS_SEEK_BAR.toString())
+                        binding.edtValue.setText(DurationFragment.MIN_CUSTOM_PROCESS_SEEK_BAR.toString())
                     } else {
-                        edt_value.setText(DurationFragment.MAX_CUSTOM_PROCESS_SEEK_BAR.toString())
+                        binding.edtValue.setText(DurationFragment.MAX_CUSTOM_PROCESS_SEEK_BAR.toString())
                     }
                     Toast.makeText(
                         requireContext(),
@@ -107,13 +111,13 @@ class CustomDurationDialogFragment : BottomSheetDialogFragment(), View.OnClickLi
                     dismiss()
                 }
             }
-            btn_decrease -> {
+            binding.btnDecrease -> {
                 if (process > 0)
-                    edt_value.setText((--process).toString())
+                    binding.edtValue.setText((--process).toString())
 
             }
-            btn_increase -> {
-                edt_value.setText((++process).toString())
+            binding.btnIncrease -> {
+                binding.edtValue.setText((++process).toString())
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentAudioSubTrackBinding
 import com.example.slide.ui.select_music.SelectMusicActivity
 import com.example.slide.ui.select_music.SubTrackAdapter
 import com.example.slide.ui.select_music.SubTrackContainer
@@ -16,11 +17,13 @@ import com.example.slide.ui.select_music.event.SongLoadingEvent
 import com.example.slide.ui.select_music.model.Folder
 import com.example.slide.ui.select_music.model.Track
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
-import kotlinx.android.synthetic.main.fragment_audio_sub_track.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class FolderTrackFragment : BaseFragment(), SubTrackContainer {
+class FolderTrackFragment : BaseFragment<FragmentAudioSubTrackBinding>(), SubTrackContainer {
+    override fun bindingView(): FragmentAudioSubTrackBinding {
+        return FragmentAudioSubTrackBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_audio_sub_track }, { true })
 
@@ -58,20 +61,21 @@ class FolderTrackFragment : BaseFragment(), SubTrackContainer {
         super.initConfiguration()
         initState()
         val layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        trackRecycleView.layoutManager = layoutManager
-        trackRecycleView.setHasFixedSize(true)
+        binding.trackRecycleView.layoutManager = layoutManager
+        binding.trackRecycleView.setHasFixedSize(true)
         adapter = SubTrackAdapter(requireActivity() as SelectMusicActivity)
-        trackRecycleView.adapter = adapter
+        binding.trackRecycleView.adapter = adapter
         folder ?: return
-        tv_title.text = folder!!.name
-        if (LocalMusicProvider.instance.isSongLoaded)
-            adapter?.updateData(LocalMusicProvider.getInstance().getSongsByFolder(folder!!.url))
+        binding.tvTitle.text = folder!!.name
+        if (LocalMusicProvider.instance.isSongLoaded) adapter?.updateData(
+            LocalMusicProvider.getInstance().getSongsByFolder(folder!!.url)
+        )
     }
 
     override fun initListener() {
         super.initListener()
 
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }
@@ -90,24 +94,25 @@ class FolderTrackFragment : BaseFragment(), SubTrackContainer {
 
     private fun initState() {
         if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADING) {
-                progress.visibility = View.VISIBLE
-                trackRecycleView.visibility = View.INVISIBLE
-                noSongLayout.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
+            binding.trackRecycleView.visibility = View.INVISIBLE
+            binding.noSongLayout.visibility = View.GONE
+        } else {
+            if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED && LocalMusicProvider.getInstance().albums.size == 0) {
+                binding.progress.visibility = View.GONE
+                binding.trackRecycleView.visibility = View.INVISIBLE
+                binding.noSongLayout.visibility = View.VISIBLE
             } else {
-                if (LocalMusicProvider.getInstance().state == LocalMusicProvider.LOADED && LocalMusicProvider.getInstance().albums.size == 0) {
-                    progress.visibility = View.GONE
-                    trackRecycleView.visibility = View.INVISIBLE
-                    noSongLayout.visibility = View.VISIBLE
-                } else {
-                    progress.visibility = View.GONE
-                    trackRecycleView.visibility = View.VISIBLE
-                    noSongLayout.visibility = View.GONE
-                }
+                binding.progress.visibility = View.GONE
+                binding.trackRecycleView.visibility = View.VISIBLE
+                binding.noSongLayout.visibility = View.GONE
+            }
         }
     }
 
     override fun onClicked(track: Track) {
     }
+
     override fun getCustomContext(): Context {
         return requireContext()
     }

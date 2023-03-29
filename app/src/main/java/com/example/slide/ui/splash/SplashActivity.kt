@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.example.slide.MyApplication
 import com.example.slide.R
 import com.example.slide.ads.Ads
+import com.example.slide.base.BaseActivity
+import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.ActivitySplashBinding
 import com.example.slide.event.AppOpenAdsCloseEvent
 import com.example.slide.framework.thirdparty.ThirdPartyRequest
 import com.example.slide.local.PreferencesHelper
@@ -25,14 +27,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_splash.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     companion object {
 
@@ -91,6 +92,10 @@ class SplashActivity : AppCompatActivity() {
         PreferencesHelper(this)
     }
 
+    override fun bindingView(): ActivitySplashBinding {
+        return ActivitySplashBinding.inflate(layoutInflater)
+    }
+
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +116,13 @@ class SplashActivity : AppCompatActivity() {
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
+    }
+
+    override fun initViewTools() = InitViewTools({
+        R.layout.activity_splash
+    })
+
+    override fun releaseData() {
     }
 
     override fun onStart() {
@@ -208,7 +220,7 @@ class SplashActivity : AppCompatActivity() {
 
         Glide.with(this)
             .load(Uri.parse("file:///android_asset/play.gif"))
-            .into(iv_play)
+            .into(binding.ivPlay)
     }
 
     override fun onStop() {

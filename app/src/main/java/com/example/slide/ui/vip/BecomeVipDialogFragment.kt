@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.slide.R
-import kotlinx.android.synthetic.main.dialog_vip_comfirm_exit.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogVipComfirmExitBinding
 
-class BecomeVipDialogFragment: DialogFragment(), View.OnClickListener {
+class BecomeVipDialogFragment: BaseBindingDialog<DialogVipComfirmExitBinding>(), View.OnClickListener {
 
     companion object {
 
@@ -21,6 +22,10 @@ class BecomeVipDialogFragment: DialogFragment(), View.OnClickListener {
         fun newInstance(): BecomeVipDialogFragment {
             return BecomeVipDialogFragment()
         }
+    }
+
+    override fun bindingView(): DialogVipComfirmExitBinding {
+        return DialogVipComfirmExitBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -55,17 +60,17 @@ class BecomeVipDialogFragment: DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_give_up.setOnClickListener(this)
-        btn_become_vip.setOnClickListener(this)
-        tv_price.text = ""
+        binding.btnGiveUp.setOnClickListener(this)
+        binding.btnBecomeVip.setOnClickListener(this)
+        binding.tvPrice.text = ""
     }
 
     override fun onClick(view: View?) {
         when(view){
-            btn_give_up->{
+            binding.btnGiveUp->{
                 dismiss()
             }
-            btn_become_vip->{
+            binding.btnBecomeVip->{
                 (requireActivity() as VipActivity).tryPurchaseAgain()
                 dismiss()
             }

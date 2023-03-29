@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.slide.R
-import kotlinx.android.synthetic.main.dialog_vip_member.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogVipMemberBinding
 
-class VipMemberDialogFragment : DialogFragment() {
+class VipMemberDialogFragment : BaseBindingDialog<DialogVipMemberBinding>() {
 
     companion object {
 
@@ -22,6 +22,10 @@ class VipMemberDialogFragment : DialogFragment() {
         fun show(fragmentManager: FragmentManager){
             VipMemberDialogFragment().show(fragmentManager, TAG)
         }
+    }
+
+    override fun bindingView(): DialogVipMemberBinding {
+        return DialogVipMemberBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -50,7 +54,7 @@ class VipMemberDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = false
-        btn_ok.setOnClickListener {
+        binding.btnOk.setOnClickListener {
             dismiss()
             requireActivity().finish()
         }

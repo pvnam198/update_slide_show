@@ -1,5 +1,6 @@
 package com.example.slide.ui.video.video_preview.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -21,6 +22,8 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.MyApplication
 import com.example.slide.R
+import com.example.slide.base.BaseBottomBindingDialog
+import com.example.slide.databinding.DialogVideoAddTextBinding
 import com.example.slide.framework.cutter.myrangeseekbar.AudioCutterView
 import com.example.slide.framework.texttovideo.VideoTextFloatingItem
 import com.example.slide.lib.keyboardheightprovider.KeyboardHeightProvider
@@ -34,11 +37,9 @@ import com.example.slide.util.StringUtils
 import com.example.slide.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_video_add_text.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 
-class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class AddTextToVideoBottomDialogFragment : BaseBottomBindingDialog<DialogVideoAddTextBinding>(), View.OnClickListener {
 
     private var heightKeyboard = 0
 
@@ -104,9 +105,9 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
             } else if ((height + topHeightKeyboard) > 250 && (height + topHeightKeyboard) != heightKeyboard) {
                 heightKeyboard = height + topHeightKeyboard
                 handler.postDelayed({
-                    val layoutParams = layout_bottom.layoutParams
+                    val layoutParams = binding.layoutBottom.layoutParams
                     layoutParams.height = heightKeyboard
-                    layout_bottom.layoutParams = layoutParams
+                    binding.layoutBottom.layoutParams = layoutParams
                 }, 100)
 
             }
@@ -116,6 +117,10 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(ARG_EDIT_MODE, isEditMode)
+    }
+
+    override fun bindingView(): DialogVideoAddTextBinding {
+        return DialogVideoAddTextBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -141,7 +146,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
         if (!isEditMode) {
             showQueryTab()
         } else {
-            edt_text.requestFocus()
+            binding.edtText.requestFocus()
             showTextSubTitleTimeTab()
         }
     }
@@ -154,7 +159,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
         initTextFonts()
 
         videoTextSticker?.let {
-            edt_text.setText(it.addTextProperties.text)
+            binding.edtText.setText(it.addTextProperties.text)
             colorPickerAdapter.updateSelectedColor(it.addTextProperties.textColor)
             isFullTime = it.isFullTime
             if (isFullTime) {
@@ -164,12 +169,12 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
                 startSubtitleTime = it.startTime
                 endSubtitleTime = it.endTime
             }
-            seek_bar_subtitle.minProgress = startSubtitleTime
-            seek_bar_subtitle.maxProgress = endSubtitleTime
-            tv_total_time.text =
+            binding.seekBarSubtitle.minProgress = startSubtitleTime
+            binding.seekBarSubtitle.maxProgress = endSubtitleTime
+            binding.tvTotalTime.text =
                 StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-            tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
-            tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
+            binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
+            binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
             currentTextFont = it.addTextProperties.fontName
             fontPickerAdapter.setCurrentTextFont(currentTextFont)
         }
@@ -178,77 +183,78 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     private fun initTextDuration() {
         duration =
             (requireActivity() as VideoCreateActivity).myApplication.videoDataState.totalSecond
-        seek_bar_subtitle.setIsHideActiveLinePaint(true)
-        seek_bar_subtitle.count = duration
-        seek_bar_subtitle.maxProgress = duration
+        binding.seekBarSubtitle.setIsHideActiveLinePaint(true)
+        binding.seekBarSubtitle.count = duration
+        binding.seekBarSubtitle.maxProgress = duration
         endSubtitleTime = duration
-        tv_total_time.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
-        tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
-        tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
+        binding.tvTotalTime.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
+        binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
+        binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
     }
 
     private fun initTextSize() {
-        seek_bar_text_size.progress = textSizePreView
-        seek_bar_text_size.max = 100
+        binding.seekBarTextSize.progress = textSizePreView
+        binding.seekBarTextSize.max = 100
     }
 
+    @SuppressLint("WrongConstant")
     private fun initPreviewText() {
         val addTextProperties =
             this.videoTextSticker?.addTextProperties ?: AddTextProperties.getDefaultProperties()
 
-        Utils.setTypeface(requireContext(), tv_preview, defaultFont)
-        tv_preview.setTextColor(Color.parseColor("#000000"))
+        Utils.setTypeface(requireContext(), binding.tvPreview, defaultFont)
+        binding.tvPreview.setTextColor(Color.parseColor("#000000"))
 
-        tv_preview.text = addTextProperties.text
-        tv_preview.typeface = addTextProperties.getTypeface(requireContext())
-        tv_preview.setTextColor(addTextProperties.textColor)
+        binding.tvPreview.text = addTextProperties.text
+        binding.tvPreview.typeface = addTextProperties.getTypeface(requireContext())
+        binding.tvPreview.setTextColor(addTextProperties.textColor)
 
         if (addTextProperties.paddingHeight > 0) {
-            tv_preview.setPadding(
-                tv_preview.paddingLeft,
+            binding.tvPreview.setPadding(
+                binding.tvPreview.paddingLeft,
                 addTextProperties.paddingHeight,
-                tv_preview.paddingRight,
+                binding.tvPreview.paddingRight,
                 addTextProperties.paddingHeight
             )
         }
         if (addTextProperties.paddingWidth > 0) {
-            tv_preview.setPadding(
+            binding.tvPreview.setPadding(
                 addTextProperties.paddingWidth,
-                tv_preview.paddingTop,
+                binding.tvPreview.paddingTop,
                 addTextProperties.paddingWidth,
-                tv_preview.paddingBottom
+                binding.tvPreview.paddingBottom
             )
         }
         if (addTextProperties.textShader != null) {
-            tv_preview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            tv_preview.paint.shader = addTextProperties.textShader
+            binding.tvPreview.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            binding.tvPreview.paint.shader = addTextProperties.textShader
         }
 
-        tv_preview.setPadding(
+        binding.tvPreview.setPadding(
             SystemUtil.dpToPx(requireContext(), addTextProperties.paddingWidth),
-            tv_preview.paddingTop,
+            binding.tvPreview.paddingTop,
             SystemUtil.dpToPx(requireContext(), addTextProperties.paddingWidth),
-            tv_preview.paddingBottom
+            binding.tvPreview.paddingBottom
         )
-        //tv_preview.setTextColor(addTextProperties.textColor)
-        tv_preview.textAlignment = addTextProperties.textAlign
-        tv_preview.textSize = addTextProperties.textSize.toFloat()
+        //binding.tvPreview.setTextColor(addTextProperties.textColor)
+        binding.tvPreview.textAlignment = addTextProperties.textAlign
+        binding.tvPreview.textSize = addTextProperties.textSize.toFloat()
         textSizePreView = addTextProperties.textSize
-        tv_preview.invalidate()
+        binding.tvPreview.invalidate()
     }
 
     private fun initTextFonts() {
-        tv_size.text = textSizePreView.toString()
-        recycler_view_font.layoutManager =
+        binding.tvSize.text = textSizePreView.toString()
+        binding.recyclerViewFont.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         fontPickerAdapter = FontPickerAdapter(FontProvider.fonts(), requireContext()) { font ->
             setTextFont(font)
         }
-        recycler_view_font.adapter = fontPickerAdapter
+        binding.recyclerViewFont.adapter = fontPickerAdapter
     }
 
     private fun initTextColors() {
-        recycler_view_color.layoutManager = LinearLayoutManager(
+        binding.recyclerViewColor.layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.HORIZONTAL,
             false
@@ -256,7 +262,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
         colorPickerAdapter = ColorPickerAdapter(onColorSelected = { color ->
             setTextColor(color)
         })
-        recycler_view_color.adapter = colorPickerAdapter
+        binding.recyclerViewColor.adapter = colorPickerAdapter
     }
 
     override fun onResume() {
@@ -270,30 +276,30 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     }
 
     private fun initListener() {
-        btn_decrease.setOnClickListener(this)
-        btn_increase.setOnClickListener(this)
+        binding.btnDecrease.setOnClickListener(this)
+        binding.btnIncrease.setOnClickListener(this)
         keyboardHeightTest = KeyboardHeightProvider(requireActivity())
         keyboardHeightTest!!.addKeyboardListener(keyboardListener)
-        edt_text.addTextChangedListener(textPreviewListener)
-        btn_submit.setOnClickListener(this)
-        btn_close.setOnClickListener(this)
-        btn_color.setOnClickListener(this)
-        btn_font.setOnClickListener(this)
-        btn_subtitle.setOnClickListener(this)
-        btn_increase_start.setOnClickListener(this)
-        btn_text_decrease_start.setOnClickListener(this)
-        btn_increase_end.setOnClickListener(this)
-        btn_text_decrease_end.setOnClickListener(this)
-        btn_qwerty.setOnClickListener(this)
+        binding.edtText.addTextChangedListener(textPreviewListener)
+        binding.btnSubmit.setOnClickListener(this)
+        binding.btnClose.setOnClickListener(this)
+        binding.btnColor.setOnClickListener(this)
+        binding.btnFont.setOnClickListener(this)
+        binding.btnSubtitle.setOnClickListener(this)
+        binding.btnIncreaseStart.setOnClickListener(this)
+        binding.btnTextDecreaseStart.setOnClickListener(this)
+        binding.btnIncreaseEnd.setOnClickListener(this)
+        binding.btnTextDecreaseEnd.setOnClickListener(this)
+        binding.btnQwerty.setOnClickListener(this)
         timeSubtitleListener()
         onSeekerListener()
-        edt_text.setOnFocusChangeListener { v, hasFocus ->
+        binding.edtText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) showQueryTab()
         }
     }
 
     private fun onSeekerListener() {
-        seek_bar_text_size.setOnProgressChangeListener(object :
+        binding.seekBarTextSize.setOnProgressChangeListener(object :
             DiscreteSeekBar.OnProgressChangeListener {
 
             override fun onProgressChanged(
@@ -317,7 +323,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     }
 
     private fun timeSubtitleListener() {
-        seek_bar_subtitle.setOnValueChangedListener(object :
+        binding.seekBarSubtitle.setOnValueChangedListener(object :
             AudioCutterView.OnValueChangedListener() {
             override fun onValueChanged(progress: Int, fromUser: Boolean) {
             }
@@ -327,9 +333,9 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
                 if (fromUser) {
                     startSubtitleTime = minProgress
                     updateIsFullTime()
-                    tv_total_time.text =
+                    binding.tvTotalTime.text =
                         StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                    tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(minProgress)
+                    binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(minProgress)
                     isFullTime =
                         startSubtitleTime == 0 && endSubtitleTime == MyApplication.getInstance().videoDataState.totalSecond
                 }
@@ -340,9 +346,9 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
                 if (fromUser) {
                     endSubtitleTime = maxProgress
                     updateIsFullTime()
-                    tv_total_time.text =
+                    binding.tvTotalTime.text =
                         StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                    tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(maxProgress)
+                    binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(maxProgress)
                     isFullTime =
                         startSubtitleTime == 0 && endSubtitleTime == MyApplication.getInstance().videoDataState.totalSecond
                 }
@@ -357,12 +363,12 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
         super.onDestroyView()
         handler.removeCallbacksAndMessages(null)
         keyboardHeightTest?.removeKeyboardListener(keyboardListener)
-        edt_text.removeTextChangedListener(textPreviewListener)
+        binding.edtText.removeTextChangedListener(textPreviewListener)
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_submit -> {
+            binding.btnSubmit -> {
                 closeKeyboard(view)
                 if (isEditMode)
                     updateText()
@@ -370,86 +376,86 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
                     addText()
                 dismiss()
             }
-            btn_qwerty -> {
+            binding.btnQwerty -> {
                 toggleQueryTab()
             }
-            btn_subtitle -> {
+            binding.btnSubtitle -> {
                 showTextSubTitleTimeTab()
             }
-            btn_color -> {
+            binding.btnColor -> {
                 showTextColorTab(view)
                 Handler(Looper.myLooper()!!).postDelayed({
-                    recycler_view_color?.smoothScrollToPosition(colorPickerAdapter.getSelectedPos())
+                    binding.recyclerViewColor?.smoothScrollToPosition(colorPickerAdapter.getSelectedPos())
                 }, 300)
             }
-            btn_font -> {
+            binding.btnFont -> {
                 showTextFontTab(view)
                 Handler(Looper.myLooper()!!).postDelayed({
-                    recycler_view_font?.smoothScrollToPosition(fontPickerAdapter.getSelectedPos())
+                    binding.recyclerViewFont?.smoothScrollToPosition(fontPickerAdapter.getSelectedPos())
                 }, 300)
             }
-            btn_close -> {
+            binding.btnClose -> {
                 closeKeyboard(view)
                 videoTextSticker?.isShow = true
                 dismiss()
             }
-            btn_increase_start -> {
+            binding.btnIncreaseStart -> {
                 if (endSubtitleTime - startSubtitleTime > 1)
-                    seek_bar_subtitle.minProgress = ++startSubtitleTime
-                tv_total_time.text =
+                    binding.seekBarSubtitle.minProgress = ++startSubtitleTime
+                binding.tvTotalTime.text =
                     StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
+                binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
                 updateIsFullTime()
             }
-            btn_text_decrease_start -> {
+            binding.btnTextDecreaseStart -> {
                 if (startSubtitleTime > 0)
-                    seek_bar_subtitle.minProgress = --startSubtitleTime
-                tv_total_time.text =
+                    binding.seekBarSubtitle.minProgress = --startSubtitleTime
+                binding.tvTotalTime.text =
                     StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
+                binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(startSubtitleTime)
                 updateIsFullTime()
             }
-            btn_increase_end -> {
+            binding.btnIncreaseEnd -> {
                 if (endSubtitleTime < duration)
-                    seek_bar_subtitle.maxProgress = ++endSubtitleTime
-                tv_total_time.text =
+                    binding.seekBarSubtitle.maxProgress = ++endSubtitleTime
+                binding.tvTotalTime.text =
                     StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
+                binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
                 updateIsFullTime()
             }
-            btn_text_decrease_end -> {
+            binding.btnTextDecreaseEnd -> {
                 if (endSubtitleTime - startSubtitleTime > 1)
-                    seek_bar_subtitle.maxProgress = --endSubtitleTime
-                tv_total_time.text =
+                    binding.seekBarSubtitle.maxProgress = --endSubtitleTime
+                binding.tvTotalTime.text =
                     StringUtils.getDurationDisplayFromSeconds(endSubtitleTime - startSubtitleTime)
-                tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
+                binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(endSubtitleTime)
                 updateIsFullTime()
             }
-            btn_decrease -> {
+            binding.btnDecrease -> {
                 updateViewsControl((--textSizePreView).toString())
-                updatePreviewTextSize(tv_size.text.toString().toInt())
+                updatePreviewTextSize(binding.tvSize.text.toString().toInt())
             }
-            btn_increase -> {
+            binding.btnIncrease -> {
                 updateViewsControl((++textSizePreView).toString())
-                updatePreviewTextSize(tv_size.text.toString().toInt())
+                updatePreviewTextSize(binding.tvSize.text.toString().toInt())
             }
         }
     }
 
     private fun updateViewsControl(previewSize: String) {
-        tv_size.text = previewSize
-        seek_bar_text_size.progress = previewSize.toInt()
+        binding.tvSize.text = previewSize
+        binding.seekBarTextSize.progress = previewSize.toInt()
     }
 
     private fun addText() {
-        val previewText = tv_preview.text.toString()
+        val previewText = binding.tvPreview.text.toString()
         if (TextUtils.isEmpty(previewText)) return
         val addTextProperties = AddTextProperties.getDefaultProperties()
         addTextProperties.textSize = textSizePreView
         addTextProperties.text = previewText
-        addTextProperties.textWidth = tv_preview.width
-        addTextProperties.textHeight = tv_preview.height
-        addTextProperties.textColor = tv_preview.currentTextColor
+        addTextProperties.textWidth = binding.tvPreview.width
+        addTextProperties.textHeight = binding.tvPreview.height
+        addTextProperties.textColor = binding.tvPreview.currentTextColor
         addTextProperties.fontName = currentTextFont
 
         val videoTextSticker =
@@ -471,14 +477,14 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
             it.endTime = endSubtitleTime
             it.addTextProperties.fontName = currentTextFont
             it.addTextProperties.textColor =
-                tv_preview.currentTextColor
+                binding.tvPreview.currentTextColor
             it.addTextProperties.textSize = textSizePreView
             it.isShow = true
             it.setHandling(true)
             it.updateConfig(
-                tv_preview.text.toString(),
-                tv_preview.width,
-                tv_preview.height
+                binding.tvPreview.text.toString(),
+                binding.tvPreview.width,
+                binding.tvPreview.height
             )
             (requireActivity() as VideoCreateActivity).updateSub(it)
         }
@@ -487,46 +493,46 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     private fun toggleQueryTab() {
         activeTab(R.id.btn_qwerty)
         toggleKeyboard()
-        edt_text.requestFocus()
-        subtitle_layout.visibility = View.GONE
-        recycler_view_color.visibility = View.GONE
-        font_layout.visibility = View.GONE
+        binding.edtText.requestFocus()
+        binding.subtitleLayout.visibility = View.GONE
+        binding.recyclerViewColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.GONE
     }
 
     private fun showQueryTab() {
         Log.d(TAG, "showQueryTab: ")
         activeTab(R.id.btn_qwerty)
         showKeyboard()
-        edt_text.requestFocus()
-        subtitle_layout.visibility = View.GONE
-        recycler_view_color.visibility = View.GONE
-        font_layout.visibility = View.GONE
+        binding.edtText.requestFocus()
+        binding.subtitleLayout.visibility = View.GONE
+        binding.recyclerViewColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.GONE
     }
 
     private fun showTextSubTitleTimeTab() {
         activeTab(R.id.btn_subtitle)
-        closeKeyboard(btn_subtitle)
-        subtitle_layout.visibility = View.VISIBLE
-        recycler_view_color.visibility = View.GONE
-        font_layout.visibility = View.GONE
+        closeKeyboard(binding.btnSubtitle)
+        binding.subtitleLayout.visibility = View.VISIBLE
+        binding.recyclerViewColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.GONE
     }
 
     private fun showTextFontTab(view: View) {
-        edt_text.clearFocus()
+        binding.edtText.clearFocus()
         activeTab(R.id.btn_font)
         closeKeyboard(view)
-        subtitle_layout.visibility = View.GONE
-        recycler_view_color.visibility = View.GONE
-        font_layout.visibility = View.VISIBLE
+        binding.subtitleLayout.visibility = View.GONE
+        binding.recyclerViewColor.visibility = View.GONE
+        binding.fontLayout.visibility = View.VISIBLE
     }
 
     private fun showTextColorTab(view: View) {
-        edt_text.clearFocus()
+        binding.edtText.clearFocus()
         activeTab(R.id.btn_color)
         closeKeyboard(view)
-        subtitle_layout.visibility = View.GONE
-        recycler_view_color.visibility = View.VISIBLE
-        font_layout.visibility = View.GONE
+        binding.subtitleLayout.visibility = View.GONE
+        binding.recyclerViewColor.visibility = View.VISIBLE
+        binding.fontLayout.visibility = View.GONE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -558,7 +564,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
         }
 
         override fun onTextChanged(charSequence: CharSequence, p1: Int, p2: Int, p3: Int) {
-            tv_preview.text = charSequence
+            binding.tvPreview.text = charSequence
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -586,7 +592,7 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     private fun showKeyboard() {
         val inputMethodManager: InputMethodManager =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(edt_text, InputMethodManager.SHOW_IMPLICIT)
+        inputMethodManager.showSoftInput(binding.edtText, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun closeKeyboard(v: View) {
@@ -596,23 +602,23 @@ class AddTextToVideoBottomDialogFragment : BottomSheetDialogFragment(), View.OnC
     }
 
     private fun activeTab(id: Int) {
-        btn_qwerty.isSelected = R.id.btn_qwerty == id
-        btn_subtitle.isSelected = R.id.btn_subtitle == id
-        btn_color.isSelected = R.id.btn_color == id
-        btn_font.isSelected = R.id.btn_font == id
+        binding.btnQwerty.isSelected = R.id.btn_qwerty == id
+        binding.btnSubtitle.isSelected = R.id.btn_subtitle== id
+        binding.btnColor.isSelected = R.id.btn_color == id
+        binding.btnFont.isSelected = R.id.btn_font == id
     }
 
     fun setTextFont(font: String) {
-        Utils.setTypeface(requireContext(), tv_preview, font)
+        Utils.setTypeface(requireContext(), binding.tvPreview, font)
         currentTextFont = font
     }
 
     fun setTextColor(color: Int) {
-        tv_preview.setTextColor(color)
+        binding.tvPreview.setTextColor(color)
     }
 
     fun updatePreviewTextSize(textSize: Int) {
-        tv_preview.textSize = textSize.toFloat()
+        binding.tvPreview.textSize = textSize.toFloat()
         textSizePreView = textSize
     }
 

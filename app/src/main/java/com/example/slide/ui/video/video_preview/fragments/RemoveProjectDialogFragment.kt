@@ -8,17 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
 import com.example.slide.R
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogRemoveProjectBinding
 import com.example.slide.ui.home.MainActivity
-import kotlinx.android.synthetic.main.dialog_remove_project.*
 
-class RemoveProjectDialogFragment : DialogFragment(), View.OnClickListener {
+class RemoveProjectDialogFragment : BaseBindingDialog<DialogRemoveProjectBinding>(), View.OnClickListener {
 
     companion object {
         fun getInstance(): RemoveProjectDialogFragment {
             return RemoveProjectDialogFragment()
         }
+    }
+
+    override fun bindingView(): DialogRemoveProjectBinding {
+        return DialogRemoveProjectBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -52,16 +56,16 @@ class RemoveProjectDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_cancel.setOnClickListener(this)
-        btn_ok.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnOk.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> {
+            binding.btnCancel -> {
                 dismiss()
             }
-            btn_ok -> {
+            binding.btnOk -> {
                 dismiss()
                 requireContext().startActivity(MainActivity.getCallingIntent(requireContext()))
             }

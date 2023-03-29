@@ -4,13 +4,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slide.R
 import com.example.slide.base.BaseFragment
 import com.example.slide.base.InitViewTools
+import com.example.slide.databinding.FragmentDefaultMusicBinding
 import com.example.slide.ui.select_music.SelectMusicActivity
 import com.example.slide.ui.video.video_preview.MusicProvider
-import kotlinx.android.synthetic.main.fragment_default_music.*
 
-class DefaultMusicFragment : BaseFragment() {
+class DefaultMusicFragment : BaseFragment<FragmentDefaultMusicBinding>() {
 
     private lateinit var defaultMusicAdapter: DefaultMusicAdapter
+    override fun bindingView(): FragmentDefaultMusicBinding {
+        return FragmentDefaultMusicBinding.inflate(layoutInflater)
+    }
 
     override fun initViewTools() = InitViewTools({ R.layout.fragment_default_music })
 
@@ -22,13 +25,13 @@ class DefaultMusicFragment : BaseFragment() {
             onItemClick = { defaultMusic ->
                 (requireActivity() as SelectMusicActivity).onDefaultMusicSelected(defaultMusic)
             })
-        rv_default_music.adapter = defaultMusicAdapter
-        rv_default_music.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDefaultMusic.adapter = defaultMusicAdapter
+        binding.rvDefaultMusic.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener { requireActivity().onBackPressed() }
+        binding.btnBack.setOnClickListener { requireActivity().onBackPressed() }
     }
 
     override fun releaseData() {

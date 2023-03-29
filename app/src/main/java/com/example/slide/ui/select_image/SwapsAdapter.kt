@@ -18,7 +18,6 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.android.synthetic.main.item_swaps_layout.view.*
 
 class SwapsAdapter(
     val activity: SelectActivity,
@@ -35,14 +34,14 @@ class SwapsAdapter(
     }
 
     class SwapsViewHolder(view: View) : AbstractDraggableItemViewHolder(view) {
-        val buttonStt: Button = view.button_stt
-        val ivSwap: ImageView = view.iv_swap
-        val btnEdit: View = view.btn_edit
-        val btnZoom: View = view.btn_zoom
-        val ivImageDisplay: ImageView = view.iv_image_display
-        val imageBlur: AppCompatImageView = view.image_blur
-        val btnRemove: View = view.btn_remove
-        val itemRootView: FrameLayout = view.item_root_view
+        val buttonStt: Button = view.findViewById(R.id.button_stt)
+        val ivSwap: ImageView = view.findViewById(R.id.iv_swap)
+        val btnEdit: View = view.findViewById(R.id.btn_edit)
+        val btnZoom: View = view.findViewById(R.id.btn_zoom)
+        val ivImageDisplay: ImageView = view.findViewById(R.id.iv_image_display)
+        val imageBlur: AppCompatImageView = view.findViewById(R.id.image_blur)
+        val btnRemove: View = view.findViewById(R.id.btn_remove)
+        val itemRootView: FrameLayout = view.findViewById(R.id.item_root_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwapsViewHolder {

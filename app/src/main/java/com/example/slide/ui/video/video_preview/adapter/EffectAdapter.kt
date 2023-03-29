@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.ui.video.video_preview.ThemeProvider
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
-import kotlinx.android.synthetic.main.item_video_theme.view.*
 
 class EffectAdapter(val activity: VideoCreateActivity) :
     RecyclerView.Adapter<EffectAdapter.ViewHolder>() {
@@ -85,22 +84,22 @@ class EffectAdapter(val activity: VideoCreateActivity) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val btnTheme: View = view.btn_theme
+        val btnTheme: View = view.findViewById(R.id.btn_theme)
 
-        val viewSelected: View = view.view_selected
+        val viewSelected: View = view.findViewById(R.id.view_selected)
 
-        val imageLogo: AppCompatImageView = view.image_logo
+        val imageLogo: AppCompatImageView = view.findViewById(R.id.image_logo)
 
-        val tvEffectName: AppCompatTextView = view.tv_effect_name
+        val tvEffectName: AppCompatTextView = view.findViewById(R.id.tv_effect_name)
 
-        val ivEffectTag3d: AppCompatImageView = view.iv_effect_tag_3d
+        val ivEffectTag3d: AppCompatImageView = view.findViewById(R.id.iv_effect_tag_3d)
 
-        val ivEffectTagRandom: AppCompatImageView = view.iv_effect_tag_random
+        val ivEffectTagRandom: AppCompatImageView = view.findViewById(R.id.iv_effect_tag_random)
 
-        val ivEffectVip: AppCompatImageView = view.iv_effect_vip
+        val ivEffectVip: AppCompatImageView = view.findViewById(R.id.iv_effect_vip)
 
-        val tvNone: AppCompatTextView = view.tvNone
+        val tvNone: AppCompatTextView = view.findViewById(R.id.tvNone)
 
-        val layoutContent: ConstraintLayout = view.layoutContent
+        val layoutContent: ConstraintLayout = view.findViewById(R.id.layoutContent)
     }
 }

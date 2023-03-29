@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.framework.texttovideo.DrawableVideoFloatingItem
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.item_sticker_in_video.view.*
 
 class StickerInVideoAdapter(
     private val removeItem: (DrawableVideoFloatingItem) -> Unit,
@@ -32,11 +31,11 @@ class StickerInVideoAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivEmoji: AppCompatImageView = view.iv_emoji
-        val tvEndTime: AppCompatTextView = view.tv_end_time
-        val tvStartTime: AppCompatTextView = view.tv_start_time
-        val btnEdit: View = view.btn_edit
-        val btnRemove: View = view.btn_remove
+        val ivEmoji: AppCompatImageView = view.findViewById(R.id.iv_emoji)
+        val tvEndTime: AppCompatTextView = view.findViewById(R.id.tv_end_time)
+        val tvStartTime: AppCompatTextView = view.findViewById(R.id.tv_start_time)
+        val btnEdit: View = view.findViewById(R.id.btn_edit)
+        val btnRemove: View = view.findViewById(R.id.btn_remove)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

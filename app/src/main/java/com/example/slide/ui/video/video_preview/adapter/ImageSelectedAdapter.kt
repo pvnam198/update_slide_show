@@ -3,7 +3,9 @@ package com.example.slide.ui.video.video_preview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,7 +15,6 @@ import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder
-import kotlinx.android.synthetic.main.item_selected.view.*
 import java.util.*
 
 class ImageSelectedAdapter(val activity: VideoCreateActivity) :
@@ -104,10 +105,10 @@ class ImageSelectedAdapter(val activity: VideoCreateActivity) :
 
     class ViewHolder(view: View) : AbstractDraggableItemViewHolder(view) {
 
-        val image_view = view.btn_icon
+        val image_view = view.findViewById<ImageView>(R.id.btn_icon)
 
-        val image_unselected = view.image_unselected
+        val image_unselected = view.findViewById<AppCompatImageView>(R.id.image_unselected)
 
-        val iv_swap = view.iv_swap
+        val iv_swap = view.findViewById<AppCompatImageView>(R.id.iv_swap)
     }
 }

@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.music_engine.DefaultMusic
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.activity_select_music.view.*
-import kotlinx.android.synthetic.main.item_audio_track.view.*
 
 class DefaultMusicAdapter(private val tracks: ArrayList<DefaultMusic>, private val context: Context, private val onItemClick:(DefaultMusic) -> Unit) :
     RecyclerView.Adapter<DefaultMusicAdapter.TrackHolder>() {
@@ -33,9 +31,9 @@ class DefaultMusicAdapter(private val tracks: ArrayList<DefaultMusic>, private v
     override fun getItemCount() = tracks.size
 
     class TrackHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.title
-        val artist: TextView = view.artist
-        val tvDuration: TextView = view.tv_duration
+        val title: TextView = view.findViewById(R.id.title)
+        val artist: TextView = view.findViewById(R.id.artist)
+        val tvDuration: TextView = view.findViewById(R.id.tv_duration)
     }
 
 }

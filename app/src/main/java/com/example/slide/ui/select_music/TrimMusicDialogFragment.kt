@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.example.slide.R
+import com.example.slide.base.BaseBottomBindingDialog
+import com.example.slide.databinding.DialogTrimMusicBinding
 import com.example.slide.framework.cutter.CheapSoundFile
 import com.example.slide.framework.cutter.myrangeseekbar.AudioCutterView
 import com.example.slide.ui.select_music.model.Track
@@ -21,8 +23,6 @@ import com.example.slide.util.FileUtils
 import com.example.slide.util.StringUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_trim_music.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,8 +33,13 @@ import java.io.FileOutputStream
 import java.util.*
 
 
-class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPreparedListener,
+class TrimMusicDialogFragment : BaseBottomBindingDialog<DialogTrimMusicBinding>(), MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener, MediaPlayer.OnSeekCompleteListener {
+
+    override fun bindingView(): DialogTrimMusicBinding {
+        return DialogTrimMusicBinding.inflate(layoutInflater)
+    }
+    
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
@@ -138,15 +143,15 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
     private fun initView() {
         track?.let { track ->
             val duration = track.duration / 1000
-            seek_bar.count = duration
-            seek_bar.maxProgress = duration
-            tv_song_name.text = track.title
+            binding.seekBar.count = duration
+            binding.seekBar.maxProgress = duration
+            binding.tvSongName.text = track.title
             start = 0
             end = duration
             this.duration = duration
-            tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(start)
-            tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(end)
-            tv_time_center.text = StringUtils.getDurationDisplayFromSeconds(end)
+            binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(start)
+            binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(end)
+            binding.tvTimeCenter.text = StringUtils.getDurationDisplayFromSeconds(end)
         }
     }
 
@@ -168,21 +173,21 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
     }
 
     private fun initListener() {
-        btn_play.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             togglePlayButton()
         }
 
-        btn_check.setOnClickListener {
+        binding.btnCheck.setOnClickListener {
             track?.let {
 
                 pauseMusic()
 
                 if (start == 0 && end == it.duration / 1000) {
-                    btn_progress_bar.visibility = View.VISIBLE
+                    binding.btnProgressBar.visibility = View.VISIBLE
                     cuttingMusicJob = saveMusic(it)
                     cuttingMusicJob?.start()
                 } else {
-                    btn_progress_bar.visibility = View.VISIBLE
+                    binding.btnProgressBar.visibility = View.VISIBLE
                     isCancelable = false
                     cuttingMusicJob = trimMusic(it, start, end)
                     cuttingMusicJob?.start()
@@ -190,7 +195,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
             }
         }
 
-        seek_bar.setOnValueChangedListener(object : AudioCutterView.OnValueChangedListener() {
+        binding.seekBar.setOnValueChangedListener(object : AudioCutterView.OnValueChangedListener() {
             override fun onValueChanged(progress: Int, fromUser: Boolean) {
                 if (fromUser)
                     mediaPlayer?.seekTo(progress * 1000)
@@ -200,11 +205,11 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
                 super.onStartChanged(minProgress, fromUser)
                 if (fromUser) {
                     start = minProgress
-                    tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(start)
-                    tv_time_center.text = StringUtils.getDurationDisplayFromSeconds(end - start)
+                    binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(start)
+                    binding.tvTimeCenter.text = StringUtils.getDurationDisplayFromSeconds(end - start)
                     if (position() < minProgress * 1000) {
                         mediaPlayer?.seekTo(minProgress * 1000)
-                        seek_bar?.progress = minProgress
+                        binding.seekBar?.progress = minProgress
                     }
                 }
             }
@@ -213,44 +218,44 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
                 super.onEndChanged(maxProgress, fromUser)
                 if (fromUser) {
                     end = maxProgress
-                    tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(end)
-                    tv_time_center.text = StringUtils.getDurationDisplayFromSeconds(end - start)
+                    binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(end)
+                    binding.tvTimeCenter.text = StringUtils.getDurationDisplayFromSeconds(end - start)
                     if (position() > maxProgress * 1000) {
                         mediaPlayer?.seekTo(maxProgress * 1000)
-                        seek_bar?.progress = maxProgress
+                        binding.seekBar?.progress = maxProgress
                     }
                 }
             }
 
         })
 
-        btn_decrease_start.setOnClickListener {
+        binding.btnDecreaseStart.setOnClickListener {
             if (start > 0) {
                 start--
-                tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(start)
-                seek_bar.minProgress = start
+                binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(start)
+                binding.seekBar.minProgress = start
             }
         }
-        btn_increase_start.setOnClickListener {
+        binding.btnIncreaseStart.setOnClickListener {
             if (start < end - 5) {
                 start++
-                tv_start_time.text = StringUtils.getDurationDisplayFromSeconds(start)
-                seek_bar.minProgress = start
+                binding.tvStartTime.text = StringUtils.getDurationDisplayFromSeconds(start)
+                binding.seekBar.minProgress = start
             }
         }
 
-        btn_decrease_end.setOnClickListener {
+        binding.btnDecreaseEnd.setOnClickListener {
             if (end > start + 5) {
                 end--
-                tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(end)
-                seek_bar.maxProgress = end
+                binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(end)
+                binding.seekBar.maxProgress = end
             }
         }
-        btn_increase_end.setOnClickListener {
+        binding.btnIncreaseEnd.setOnClickListener {
             if (end < duration) {
                 end++
-                tv_end_time.text = StringUtils.getDurationDisplayFromSeconds(end)
-                seek_bar.maxProgress = end
+                binding.tvEndTime.text = StringUtils.getDurationDisplayFromSeconds(end)
+                binding.seekBar.maxProgress = end
             }
         }
 
@@ -277,7 +282,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
                 try {
                     it.setDataSource(track.url)
                     it.prepare()
-                    iv_toggle_play.setImageResource(R.drawable.ic_play)
+                    binding.ivTogglePlay.setImageResource(R.drawable.ic_play)
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
@@ -291,7 +296,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
 
     override fun onDestroyView() {
         isBind = false
-        seek_bar?.setOnValueChangedListener(null)
+        binding.seekBar?.setOnValueChangedListener(null)
         timer?.cancel()
         timer?.purge()
         timer = null
@@ -331,9 +336,9 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
 
     private fun initPlayingState() {
         if (isPlaying()) {
-            iv_toggle_play.setImageResource(R.drawable.ic_pause)
+            binding.ivTogglePlay.setImageResource(R.drawable.ic_pause)
         } else {
-            iv_toggle_play.setImageResource(R.drawable.ic_play)
+            binding.ivTogglePlay.setImageResource(R.drawable.ic_play)
         }
     }
 
@@ -386,7 +391,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
             }
             CoroutineScope(Dispatchers.Main).launch {
                 if (isBind) {
-                    btn_progress_bar?.visibility = View.INVISIBLE
+                    binding.btnProgressBar.visibility = View.INVISIBLE
                     val newTrack = Track()
                     newTrack.title = musicFile.name
                     newTrack.url = musicFile.absolutePath
@@ -410,7 +415,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
             val newTrack = saveTrackToStorage(track)
             CoroutineScope(Dispatchers.Main).launch {
                 if (isBind) {
-                    btn_progress_bar?.visibility = View.INVISIBLE
+                    binding.btnProgressBar.visibility = View.INVISIBLE
                     (requireActivity() as SelectMusicActivity).trimMMusicDone(newTrack)
                 }
             }
@@ -427,7 +432,7 @@ class TrimMusicDialogFragment : BottomSheetDialogFragment(), MediaPlayer.OnPrepa
         override fun run() {
             if (isPlaying() && isViewVisible)
                 uiScope.launch {
-                    seek_bar?.progress = position() / 1000
+                    binding.seekBar?.progress = position() / 1000
                 }
         }
     }

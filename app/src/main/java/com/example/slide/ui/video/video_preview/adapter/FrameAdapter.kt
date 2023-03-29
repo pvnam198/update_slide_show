@@ -1,5 +1,6 @@
 package com.example.slide.ui.video.video_preview.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import com.example.slide.R
 import com.example.slide.ui.video.video_preview.FrameProvider
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.ui.video.video_preview.model.VideoFrame
-import kotlinx.android.synthetic.main.item_frame_view.view.*
 
 class FrameAdapter(private val activity: VideoCreateActivity) :
         RecyclerView.Adapter<FrameAdapter.FrameHolder>() {
@@ -27,7 +27,7 @@ class FrameAdapter(private val activity: VideoCreateActivity) :
 
     override fun getItemCount() = videoFrames.size
 
-    override fun onBindViewHolder(holder: FrameHolder, position: Int) {
+    override fun onBindViewHolder(holder: FrameHolder, @SuppressLint("RecyclerView") position: Int) {
         val frame = videoFrames[position]
         Glide.with(activity).load(frame.getUri()).into(holder.frameImage)
         holder.frameImage.isSelected = currentPosition == position
@@ -54,6 +54,6 @@ class FrameAdapter(private val activity: VideoCreateActivity) :
     }
 
     class FrameHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val frameImage: AppCompatImageView = view.iv_item_image
+        val frameImage: AppCompatImageView = view.findViewById(R.id.iv_item_image)
     }
 }

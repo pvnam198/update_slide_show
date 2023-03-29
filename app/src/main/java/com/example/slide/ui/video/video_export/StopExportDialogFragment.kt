@@ -8,21 +8,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
 import com.example.slide.R
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogStopExportBinding
 import com.example.slide.event.VideoCreatedEvent
-import com.example.slide.util.FileUtils
-import kotlinx.android.synthetic.main.dialog_stop_export.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class StopExportDialogFragment : DialogFragment(), View.OnClickListener {
+class StopExportDialogFragment : BaseBindingDialog<DialogStopExportBinding>(), View.OnClickListener {
 
     companion object {
         fun getInstance(): StopExportDialogFragment {
             return StopExportDialogFragment()
         }
+    }
+
+    override fun bindingView(): DialogStopExportBinding {
+        return DialogStopExportBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -57,8 +60,8 @@ class StopExportDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         EventBus.getDefault().register(this)
-        btn_cancel.setOnClickListener(this)
-        btn_ok.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
+        binding.btnOk.setOnClickListener(this)
     }
 
     override fun onDestroyView() {
@@ -73,10 +76,10 @@ class StopExportDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view) {
-            btn_cancel -> {
+            binding.btnCancel -> {
                 dismiss()
             }
-            btn_ok -> {
+            binding.btnOk -> {
                 dismiss()
                 (requireActivity() as ExportVideoActivity).cancelExport()
             }

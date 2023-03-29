@@ -11,7 +11,6 @@ import com.example.slide.music_engine.CropMusic
 import com.example.slide.ui.video.video_preview.MultiMusicPlayingActivity
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.item_selected_music.view.*
 
 class CropMusicAdapter(val activity: MultiMusicPlayingActivity) :
     RecyclerView.Adapter<CropMusicAdapter.ViewHolder>() {

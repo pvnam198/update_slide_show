@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.slide.R
@@ -474,7 +475,7 @@ class ExportVideoActivity : BaseActivity<ActivityExportVideoBinding>(), View.OnC
                 R.string.cancel
             ) { dialog, whichButton -> dialog.cancel() }.create()
 
-        val titleEditText = view.edt_name
+        val titleEditText = view.findViewById<AppCompatEditText>(R.id.edt_name)
         titleEditText.setText(video!!.name)
 
         dialog.setCancelable(true)

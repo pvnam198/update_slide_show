@@ -29,6 +29,7 @@ import com.example.slide.database.entities.Draft
 import com.example.slide.database.entities.FloatingAddedEntity
 import com.example.slide.database.entities.FloatingStickerEntity
 import com.example.slide.database.entities.FloatingTextEntity
+import com.example.slide.databinding.ActivityVideoCreateBinding
 import com.example.slide.event.VideoProgressStateChanged
 import com.example.slide.framework.texttovideo.DrawableVideoFloatingItem
 import com.example.slide.framework.texttovideo.TextListToVideoView
@@ -54,10 +55,6 @@ import com.example.slide.ui.video.video_preview.model.VideoFrame
 import com.example.slide.util.StringUtils
 import com.example.slide.videolib.VideoConfig
 import com.google.android.gms.ads.*
-import kotlinx.android.synthetic.main.activity_video_create.*
-import kotlinx.android.synthetic.main.activity_video_create.btn_subtitle
-import kotlinx.android.synthetic.main.activity_video_create.tv_end_time
-import kotlinx.android.synthetic.main.dialog_video_add_text.*
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -329,9 +326,9 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         super.initConfiguration(savedInstanceState)
         isVip = PreferencesHelper(this).isVip()
         if (isHideButtonSave) {
-            btn_check.visibility = View.INVISIBLE
+            binding.btnCheck.visibility = View.INVISIBLE
         } else {
-            btn_check.visibility = View.VISIBLE
+            binding.btnCheck.visibility = View.VISIBLE
         }
         initLoadingDialog()
         initVideoFrame()
@@ -339,38 +336,38 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         initBanner()
         tabControl = TabController(supportFragmentManager, arrayOf(
             TabInfo(
-                frame_video_effect,
-                btn_transition,
+                binding.frameVideoEffect,
+                binding.btnTransition,
                 TransitionFragment::class.java.name
             ) { TransitionFragment() },
             TabInfo(
-                frame_video_frame,
-                btn_select_frame,
+                binding.frameVideoFrame,
+                binding.btnSelectFrame,
                 FrameFragment::class.java.name
             ) { FrameFragment() },
             TabInfo(
-                frame_video_edit,
-                btn_edit_images,
+                binding.frameVideoEdit,
+                binding.btnEditImages,
                 EditImageFragment::class.java.name
             ) { editImageFragment },
             TabInfo(
-                frame_video_music,
-                btn_add_music,
+                binding.frameVideoMusic,
+                binding.btnAddMusic,
                 EditMusicFragment::class.java.name
             ) { EditMusicFragment() },
             TabInfo(
-                frame_video_subtitle,
-                btn_subtitle,
+                binding.frameVideoSubtitle,
+                binding.btnSubtitle,
                 SubtitleFragment::class.java.name
             ) { subtitleFragment },
             TabInfo(
-                frame_video_duration,
-                btn_duration,
+                binding.frameVideoDuration,
+                binding.btnDuration,
                 DurationFragment::class.java.name
             ) { DurationFragment() },
             TabInfo(
-                frame_sticker_video,
-                btn_emoji,
+                binding.frameStickerVideo,
+                binding.btnEmoji,
                 StickerInVideoFragment::class.java.name
             ) { StickerInVideoFragment() }
         ))
@@ -386,35 +383,35 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     private fun initVideoFrame() {
         dataPreview.videoFrame?.let {
             Glide.with(this).load(it.getUri())
-                .into(iv_bg_frame)
+                .into(binding.ivBgFrame)
         }
     }
 
     override fun initVideoState() {
         myApplication.videoDataState.initBaseWithImageNumber(dataPreview.images.size)
         firstImage = dataPreview.images[0].url
-        seek_bar.max = myApplication.videoDataState.totalImageFrame
-        tv_end_time.text =
+        binding.seekBar.max = myApplication.videoDataState.totalImageFrame
+        binding.tvEndTime.text =
             StringUtils.getDurationDisplayFromSeconds(myApplication.videoDataState.totalSecond)
-        seek_bar?.secondaryProgress = myApplication.videoDataState.outputImages.size
+        binding.seekBar.secondaryProgress = myApplication.videoDataState.outputImages.size
         super.initVideoState()
     }
 
     override fun initListener() {
         super.initListener()
-        seek_bar.setOnSeekBarChangeListener(this)
-        btn_transition.setOnClickListener(this)
-        btn_select_frame.setOnClickListener(this)
-        btn_edit_images.setOnClickListener(this)
-        btn_add_music.setOnClickListener(this)
-        btn_duration.setOnClickListener(this)
-        btn_subtitle.setOnClickListener(this)
-        btn_emoji.setOnClickListener(this)
-        iv_toggle_video.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
-        btn_check.setOnClickListener(this)
-        btn_vip.setOnClickListener(this)
-        text_list_to_video_view.onStickerOperationListener = onStickerOperationListener
+        binding.seekBar.setOnSeekBarChangeListener(this)
+        binding.btnTransition.setOnClickListener(this)
+        binding.btnSelectFrame.setOnClickListener(this)
+        binding.btnEditImages.setOnClickListener(this)
+        binding.btnAddMusic.setOnClickListener(this)
+        binding.btnDuration.setOnClickListener(this)
+        binding.btnSubtitle.setOnClickListener(this)
+        binding.btnEmoji.setOnClickListener(this)
+        binding.ivToggleVideo.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+        binding.btnCheck.setOnClickListener(this)
+        binding.btnVip.setOnClickListener(this)
+        binding.textListToVideoView.onStickerOperationListener = onStickerOperationListener
     }
 
     override fun initTask() {
@@ -431,7 +428,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
                     draft
                 )
             }
-            seek_bar.secondaryProgress = myApplication.videoDataState.outputImages.size
+            binding.seekBar.secondaryProgress = myApplication.videoDataState.outputImages.size
             if (canChangeFragmentManagerState()) {
                 tabControl.openTab(currentTab)
                 loadingDialog?.dismiss()
@@ -444,20 +441,20 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         if (isVip) return
         if (!Ads.isShowAds) return
         banner = AdView(this)
-        BannerHelper.loadAdaptiveBanner(this, banner!!, layout_ads_parent, layout_ads, tv_loading)
+        BannerHelper.loadAdaptiveBanner(this, banner!!, binding.layoutAdsParent, binding.layoutAds, binding.tvLoading)
     }
 
     fun addTextToVideo(
         videoTextSticker: VideoTextFloatingItem
     ) {
-        text_list_to_video_view.addSticker(videoTextSticker)
-        text_list_to_video_view.setHandlingFloatingItem(videoTextSticker)
+        binding.textListToVideoView.addSticker(videoTextSticker)
+        binding.textListToVideoView.setHandlingFloatingItem(videoTextSticker)
         handleFloatingItem?.onFloatingItemChangedEvent()
     }
 
     fun updateSub(videoTextSticker: VideoTextFloatingItem) {
         if (videoTextSticker.addTextProperties.text.isNotEmpty()) {
-            text_list_to_video_view.setHandlingFloatingItem(videoTextSticker)
+            binding.textListToVideoView.setHandlingFloatingItem(videoTextSticker)
         } else {
             removeSub(videoTextSticker)
         }
@@ -468,8 +465,12 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     override fun releaseData() {
         super.releaseData()
         loadingDialog?.dismiss()
-        text_list_to_video_view.onStickerOperationListener = null
+        binding.textListToVideoView.onStickerOperationListener = null
         banner?.destroy()
+    }
+
+    override fun bindingView(): ActivityVideoCreateBinding {
+        return ActivityVideoCreateBinding.inflate(layoutInflater)
     }
 
     private fun setIsVipFeature(isVip: Boolean) {
@@ -479,27 +480,27 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_transition -> {
-                text_list_to_video_view.setHandlingFloatingItem(null)
+                binding.textListToVideoView.setHandlingFloatingItem(null)
                 currentTab = POS_TRANSITION
                 tabControl.openTab(POS_TRANSITION)
             }
             R.id.btn_select_frame -> {
-                text_list_to_video_view.setHandlingFloatingItem(null)
+                binding.textListToVideoView.setHandlingFloatingItem(null)
                 currentTab = POS_FRAME
                 tabControl.openTab(POS_FRAME)
             }
             R.id.btn_edit_images -> {
-                text_list_to_video_view.setHandlingFloatingItem(null)
+                binding.textListToVideoView.setHandlingFloatingItem(null)
                 currentTab = POS_EDIT_IMAGE
                 tabControl.openTab(POS_EDIT_IMAGE)
             }
             R.id.btn_add_music -> {
-                text_list_to_video_view.setHandlingFloatingItem(null)
+                binding.textListToVideoView.setHandlingFloatingItem(null)
                 currentTab = POS_MUSIC
                 tabControl.openTab(POS_MUSIC)
             }
             R.id.btn_duration -> {
-                text_list_to_video_view.setHandlingFloatingItem(null)
+                binding.textListToVideoView.setHandlingFloatingItem(null)
                 currentTab = POS_DURATION
                 tabControl.openTab(POS_DURATION)
             }
@@ -515,7 +516,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
                 toggleVideo()
             }
             R.id.btn_back -> {
-                text_list_to_video_view.floatingTextItems.forEach {
+                binding.textListToVideoView.floatingTextItems.forEach {
                     Timber.d(it.text ?: "Not Text")
                 }
 
@@ -541,7 +542,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     }
 
     override fun onBackPressed() {
-        btn_check.visibility = View.VISIBLE
+        binding.btnCheck.visibility = View.VISIBLE
         isHideButtonSave = false
         when {
             supportFragmentManager.backStackEntryCount > 0 -> super.onBackPressed()
@@ -575,7 +576,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         isVip = PreferencesHelper(this).isVip()
         super.onStart()
         if (isVip) {
-            layout_ads_parent.visibility = View.GONE
+            binding.layoutAdsParent.visibility = View.GONE
             requestToUseNormalFeature()
         } else {
         }
@@ -656,7 +657,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         if (isNeedUpdateImages) {
             editImageFragment.notifyAdapter()
         }
-        progress_loading.visibility = View.VISIBLE
+        binding.progressLoading.visibility = View.VISIBLE
         initVideoState()
         PrepareVideoService.enqueueCreateImage(this, dataPreview, draft)
         playVideo()
@@ -668,9 +669,9 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
             dataPreview.selectedTheme = newTheme
             setIsVipFeature(newTheme.isPremium)
             if (PreferencesHelper(this).isVipOrVipTrialMember())
-                layout_vip.visibility = View.INVISIBLE
+                binding.layoutVip.visibility = View.INVISIBLE
             else
-                layout_vip.visibility = if (newTheme.isPremium) View.VISIBLE else View.INVISIBLE
+                binding.layoutVip.visibility = if (newTheme.isPremium) View.VISIBLE else View.INVISIBLE
             val cropMusic = onMusicThemeChanged(oldTheme, newTheme)
             if (cropMusic != null) {
                 dataPreview.synchronizedListFromTheme(cropMusic)
@@ -692,7 +693,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
             dataPreview.videoFrame = null
         }
         Glide.with(this).load(uriFrame)
-            .into(iv_bg_frame)
+            .into(binding.ivBgFrame)
     }
 
     fun getFrameSelectedPosition(): Int {
@@ -739,7 +740,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     }
 
     fun requestToUseNormalFeature() {
-        layout_vip.visibility = View.INVISIBLE
+        binding.layoutVip.visibility = View.INVISIBLE
     }
 
     fun saveVideoPreview(videoQuality: Int): Boolean {
@@ -769,33 +770,33 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onProgressChanged(event: VideoProgressStateChanged) {
-        seek_bar?.secondaryProgress = myApplication.videoDataState.outputImages.size
+        binding.seekBar?.secondaryProgress = myApplication.videoDataState.outputImages.size
     }
 
 
     fun editSubTitle(videoTextSticker: VideoTextFloatingItem) {
         videoTextSticker.isShow = false
-        text_list_to_video_view.setHandlingFloatingItem(null)
+        binding.textListToVideoView.setHandlingFloatingItem(null)
         val dialog = AddTextToVideoBottomDialogFragment.getInstance(videoTextSticker)
         dialog.show(supportFragmentManager, AddTextToVideoBottomDialogFragment.TAG)
     }
 
     fun removeSub(videoTextSticker: VideoTextFloatingItem) {
-        text_list_to_video_view.removeSticker(videoTextSticker.id)
+        binding.textListToVideoView.removeSticker(videoTextSticker.id)
     }
 
     fun getVideoTextStickers(): ArrayList<VideoTextFloatingItem> {
-        return text_list_to_video_view.floatingTextItems
+        return binding.textListToVideoView.floatingTextItems
     }
 
     fun getDrawableVideoStickers(): ArrayList<DrawableVideoFloatingItem> {
-        return text_list_to_video_view.drawableVideoSticker
+        return binding.textListToVideoView.drawableVideoSticker
     }
 
     fun launchSaveVideoActivity(videoQuality: Int) = ioScope.launch {
         uiScope.launch { loadingDialog?.show() }
         VideoConfig.setupVideoQuality(videoQuality)
-        dataPreview.texts = text_list_to_video_view.getVideoTextExports(videoQuality)
+        dataPreview.texts = binding.textListToVideoView.getVideoTextExports(videoQuality)
         uiScope.launch {
             myApplication.videoDataState.isCancel = false
             loadingDialog?.dismiss()
@@ -818,16 +819,16 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     }
 
     fun setEmoji(drawableVideoSticker: DrawableVideoFloatingItem) {
-        text_list_to_video_view.addSticker(drawableVideoSticker)
+        binding.textListToVideoView.addSticker(drawableVideoSticker)
         handleFloatingItem?.onFloatingItemChangedEvent()
     }
 
     fun openStickerFragment() {
-        btn_check.visibility = View.INVISIBLE
+        binding.btnCheck.visibility = View.INVISIBLE
         isHideButtonSave = true
         val videoStickerFragment = EmojiVideoFragment()
         supportFragmentManager.beginTransaction()
-            .add(frame_emoji_video.id, videoStickerFragment, EmojiVideoFragment.TAG)
+            .add(binding.frameEmojiVideo, videoStickerFragment, EmojiVideoFragment.TAG)
             .addToBackStack(null).commit()
     }
 
@@ -837,7 +838,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
     }
 
     fun removeDrawableVideoSticker(drawableVideoSticker: DrawableVideoFloatingItem) {
-        text_list_to_video_view.removeDrawableVideoSicker(drawableVideoSticker.id)
+        binding.textListToVideoView.removeDrawableVideoSicker(drawableVideoSticker.id)
         handleFloatingItem?.onFloatingItemChangedEvent()
     }
 
@@ -910,7 +911,7 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
                 draft.videoFrame = dataPreview.videoFrame
                 draft.themeId = dataPreview.selectedTheme.id
                 draft.floatingItemsAdded =
-                    buildFloatingAddedList(text_list_to_video_view.floatingItems)
+                    buildFloatingAddedList(binding.textListToVideoView.floatingItems)
                 draft.cropMusic = dataPreview.cropMusics
                 draftRepository.saveAsDraft(draft)
                 Timber.d("Saved Draft: $draft")

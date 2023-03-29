@@ -12,8 +12,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatEditText
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
@@ -119,7 +121,7 @@ class ShareVideoActivity : BaseActivity<ActivityVideoShareBinding>(), SeekBar.On
                 R.string.cancel
             ) { dialog, whichButton -> dialog.cancel() }.create()
 
-        val titleEditText = view.edt_name
+        val titleEditText = view.findViewById<AppCompatEditText>(R.id.edt_name)
         titleEditText.setText(video.name)
 
         dialog.setCancelable(true)

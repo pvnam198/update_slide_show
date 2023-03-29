@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.slide.R
-import kotlinx.android.synthetic.main.dialog_failed_connect_internet.*
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogFailedConnectInternetBinding
 
-class FailedConnectDialogFragment : DialogFragment() {
+class FailedConnectDialogFragment : BaseBindingDialog<DialogFailedConnectInternetBinding>() {
 
     companion object {
 
@@ -22,6 +22,10 @@ class FailedConnectDialogFragment : DialogFragment() {
         fun show(fragmentManager: FragmentManager){
             FailedConnectDialogFragment().show(fragmentManager, TAG)
         }
+    }
+
+    override fun bindingView(): DialogFailedConnectInternetBinding {
+        return DialogFailedConnectInternetBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -54,7 +58,7 @@ class FailedConnectDialogFragment : DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btn_ok.setOnClickListener {
+        binding.btnOk.setOnClickListener {
             (requireActivity() as VipActivity).connectToPlayBillingService()
             dismiss()
         }

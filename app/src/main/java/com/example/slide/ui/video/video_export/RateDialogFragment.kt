@@ -10,16 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.ads.Ads
+import com.example.slide.base.BaseBindingDialog
+import com.example.slide.databinding.DialogRateAppV2Binding
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.util.rateApp
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.android.synthetic.main.dialog_rate_app_v2.*
-
-class RateDialogFragment : DialogFragment(), View.OnClickListener {
+class RateDialogFragment : BaseBindingDialog<DialogRateAppV2Binding>(), View.OnClickListener {
 
     companion object {
 
@@ -51,6 +50,9 @@ class RateDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private var preferencesHelper: PreferencesHelper? = null
+    override fun bindingView(): DialogRateAppV2Binding {
+        return DialogRateAppV2Binding.inflate(layoutInflater)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,31 +83,31 @@ class RateDialogFragment : DialogFragment(), View.OnClickListener {
         }
         Glide.with(requireContext())
             .load(Uri.parse("file:///android_asset/dialog_vote.gif"))
-            .into(iv_rate)
+            .into(binding.ivRate)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_later.setOnClickListener(this)
-        btn_rate.setOnClickListener(this)
-        btn_never.setOnClickListener(this)
+        binding.btnLater.setOnClickListener(this)
+        binding.btnRate.setOnClickListener(this)
+        binding.btnNever.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         when (view) {
-            btn_later -> {
+            binding.btnLater -> {
                 FirebaseAnalytics.getInstance(requireContext()).logEvent("rate_later", null)
                 preferencesHelper?.rateLater()
                 dismiss()
             }
-            btn_rate -> {
+            binding.btnRate -> {
                 FirebaseAnalytics.getInstance(requireContext()).logEvent("rate", null)
                 preferencesHelper?.setAppRated()
                 requireContext().rateApp(requireActivity().packageName)
                 dismiss()
             }
-            btn_never -> {
+            binding.btnNever -> {
                 FirebaseAnalytics.getInstance(requireContext()).logEvent("rate_never", null)
                 preferencesHelper?.neverRateApp()
                 dismiss()

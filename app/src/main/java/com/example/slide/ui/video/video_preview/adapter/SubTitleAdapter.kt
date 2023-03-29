@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.framework.texttovideo.VideoTextFloatingItem
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.item_sub_title.view.*
 
 class SubTitleAdapter(
     private var totalTime: Int,
@@ -55,11 +54,11 @@ class SubTitleAdapter(
     ) :
         RecyclerView.ViewHolder(view) {
 
-        private val tvSubTitleName: AppCompatTextView = view.tv_sub_title_name
-        private val tvStartTime: AppCompatTextView = view.tv_start_time
-        private val tvEndTime: AppCompatTextView = view.tv_end_time
-        private val btnRemove = view.btn_remove
-        private val btnEdit = view.btn_edit
+        private val tvSubTitleName: AppCompatTextView = view.findViewById(R.id.tv_sub_title_name)
+        private val tvStartTime: AppCompatTextView = view.findViewById(R.id.tv_start_time)
+        private val tvEndTime: AppCompatTextView = view.findViewById(R.id.tv_end_time)
+        private val btnRemove = view.findViewById<View>(R.id.btn_remove)
+        private val btnEdit = view.findViewById<View>(R.id.btn_edit)
 
         private lateinit var currentVideoTextSticker: VideoTextFloatingItem
 

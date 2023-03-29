@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
 import com.example.slide.ui.select_music.model.Track
 import com.example.slide.util.StringUtils
-import kotlinx.android.synthetic.main.item_audio_track.view.*
 
 class SubTrackAdapter(val activity: SelectMusicActivity) :
     RecyclerView.Adapter<SubTrackAdapter.TrackItemHolder>() {
@@ -48,13 +47,13 @@ class SubTrackAdapter(val activity: SelectMusicActivity) :
 
     class TrackItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var title: TextView = itemView.title
+        var title: TextView = itemView.findViewById(R.id.title)
 
-        var artist: TextView = itemView.artist
+        var artist: TextView = itemView.findViewById(R.id.artist)
 
-        var duration: TextView = itemView.tv_duration
+        var duration: TextView = itemView.findViewById(R.id.tv_duration)
 
-        var trackLayout: CardView = itemView.trackLayout
+        var trackLayout: CardView = itemView.findViewById(R.id.trackLayout)
 
     }
 }

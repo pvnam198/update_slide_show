@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
-import kotlinx.android.synthetic.main.item_audio_artist.view.*
 
 class ArtistAdapter(val fragment: AudioArtistFragment) :
     RecyclerView.Adapter<ArtistAdapter.TrackItemHolder>() {
@@ -45,10 +44,10 @@ class ArtistAdapter(val fragment: AudioArtistFragment) :
 
 
     class TrackItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var iv_artist: ImageView = itemView.iv_artist
-        var card: CardView = itemView.card
-        var artistName: TextView = itemView.tv_artist_name
-        var songNumber: TextView = itemView.songNumber
+        var iv_artist: ImageView = itemView.findViewById(R.id.iv_artist)
+        var card: CardView = itemView.findViewById(R.id.card)
+        var artistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+        var songNumber: TextView = itemView.findViewById(R.id.songNumber)
 
     }
 }

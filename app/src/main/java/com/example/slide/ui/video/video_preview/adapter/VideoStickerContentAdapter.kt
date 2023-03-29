@@ -2,17 +2,15 @@ package com.example.slide.ui.video.video_preview.adapter
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slide.R
 import com.example.slide.local.PreferencesHelper
 import com.example.slide.ui.edit_image.model.EmojiSticker
-import kotlinx.android.synthetic.main.item_emoji.view.iv_emoji
-import kotlinx.android.synthetic.main.item_emoji_content.view.*
 
 class VideoStickerContentAdapter(
     private val context: Context,
@@ -33,8 +31,8 @@ class VideoStickerContentAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iv_emoji = view.iv_emoji
-        val btn_emoji = view.btn_emoji
+        val iv_emoji = view.findViewById<AppCompatImageView>(R.id.iv_emoji)
+        val btn_emoji = view.findViewById<View>(R.id.btn_emoji)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
