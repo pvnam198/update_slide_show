@@ -95,14 +95,6 @@ class TrimMusicDialogFragment : BaseBottomBindingDialog<DialogTrimMusicBinding>(
         super.onSaveInstanceState(outState)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_trim_music, container, false)
-    }
-
     var isViewVisible = false
 
     override fun onStart() {

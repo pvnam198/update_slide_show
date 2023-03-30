@@ -28,14 +28,6 @@ class FailedConnectDialogFragment : BaseBindingDialog<DialogFailedConnectInterne
         return DialogFailedConnectInternetBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_failed_connect_internet, container)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

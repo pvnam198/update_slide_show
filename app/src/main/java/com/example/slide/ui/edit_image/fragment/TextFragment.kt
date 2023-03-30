@@ -547,6 +547,7 @@ class TextFragment : BaseFragment<FragmentTextBinding>(), View.OnClickListener {
         if (TextUtils.isEmpty(previewText)) return
 
         addTextProperties?.let {
+            it.textSize = textSizePreView
             it.textWidth = binding.tvPreview.width
             it.textHeight = binding.tvPreview.height
             if (currentMode == ADD_MODE)

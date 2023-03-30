@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 
 import com.example.slide.R;
 import com.example.slide.ui.edit_image.events.DeleteIconEvent;

@@ -28,14 +28,6 @@ class BecomeVipDialogFragment: BaseBindingDialog<DialogVipComfirmExitBinding>(),
         return DialogVipComfirmExitBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_vip_comfirm_exit, container)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

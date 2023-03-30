@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn
+-ignorewarnings
+-keepattributes *Annotation*
+-keep public class * extends java.lang.Exception
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+-keep class org.wysaid.nativePort.** { *; }
+-keepattributes Signature
+-keepattributes LineNumberTable
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

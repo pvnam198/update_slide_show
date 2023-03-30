@@ -138,9 +138,9 @@ class SelectActivity : BaseActivity<ActivitySelectBinding>(), SaveDraftDialog.On
         super.extractData(bundle)
         mode = bundle.getInt(EXTRA_START_MODE)
         isFirstTime = bundle.getBoolean(EXTRA_FIRST_TIME, true)
-        bundle.getParcelable<Draft>(EXTRA_DRAFT)?.let { draft = it }
-        bundle.getSerializable(EXTRA_IMAGES)?.let {
-            selectedImages = it as ArrayList<Image>
+        bundle.parcelable<Draft>(EXTRA_DRAFT)?.let { draft = it }
+        bundle.serializable<ArrayList<Image>>(EXTRA_IMAGES)?.let {
+            selectedImages = it
         }
         if (mode != MODE_START) {
             imageListSize = selectedImages.size
@@ -467,6 +467,7 @@ class SelectActivity : BaseActivity<ActivitySelectBinding>(), SaveDraftDialog.On
                 // Get values of columns for a given video.
                 val id = cursor.getLong(idIndex)
                 val name: String? = cursor.getString(nameImage)
+                Log.d("hehe1231312", "scanImageFolders: ${name}")
                 val albumIdString: String? = cursor.getString(albumId)
                 val albumNames: String? = cursor.getString(albumNamehihi)
                 val url = cursor.getString(urlImage)

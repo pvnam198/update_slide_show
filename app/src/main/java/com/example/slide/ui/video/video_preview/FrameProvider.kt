@@ -144,8 +144,6 @@ object FrameProvider {
         FRAME_59,
         FRAME_60,
         FRAME_61,
-        FRAME_62,
-        FRAME_63,
         FRAME_52,
         FRAME_53,
         FRAME_54,
@@ -200,6 +198,8 @@ object FrameProvider {
         FRAME_48,
         FRAME_49,
         FRAME_50,
-        FRAME_51
+        FRAME_51,
+        FRAME_62,
+        FRAME_63,
     )
 }

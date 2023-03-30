@@ -128,7 +128,7 @@ class VipActivity : BaseActivity<ActivitySubBinding>(), View.OnClickListener, On
 
             override fun onListProductDetails(listProductDetails: List<ProductInfo>) {
                 super.onListProductDetails(listProductDetails)
-                loading.visibility = View.GONE
+                binding.loading.visibility = View.GONE
                 lifecycleScope.launchWhenResumed {
                     if (listProductDetails.isEmpty()) {
                         binding.layoutBilling.visibility = View.GONE

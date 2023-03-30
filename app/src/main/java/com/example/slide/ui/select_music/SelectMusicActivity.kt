@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import com.example.slide.R
 import com.example.slide.base.BaseActivity
 import com.example.slide.base.InitViewTools
@@ -19,6 +20,7 @@ import com.example.slide.ui.select_music.model.Track
 import com.example.slide.ui.select_music.provider.impl.LocalMusicProvider
 import com.example.slide.ui.select_music.track.AudioAllTrackFragment
 import com.example.slide.ui.video.video_preview.VideoCreateActivity
+import com.example.slide.util.parcelable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -62,13 +64,9 @@ class SelectMusicActivity : BaseActivity<ActivitySelectMusicBinding>() {
         outState.putParcelable(EXTRA_DRAFT, draft)
     }
 
-    override fun initConfiguration(savedInstanceState: Bundle?) {
-        super.initConfiguration(savedInstanceState)
-    }
-
     override fun extractData(bundle: Bundle) {
         super.extractData(bundle)
-        draft = intent.getParcelableExtra<Draft>(EXTRA_DRAFT) as Draft
+        draft = intent.parcelable<Draft>(EXTRA_DRAFT) as Draft
     }
 
     override fun releaseData() {

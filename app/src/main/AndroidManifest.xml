@@ -2,10 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.slide"
-    android:versionCode="70"
-    android:versionName="1.7.5">
+    android:versionCode="72"
+    android:versionName="1.7.8">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -88,9 +94,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.musiclibrary.showmusic.ShowMucsicActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.select_image.SelectActivity"
             android:screenOrientation="portrait" />

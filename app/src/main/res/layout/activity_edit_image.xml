@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBG"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.edit_image.EditImageActivity">
+    android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_back"
@@ -63,7 +62,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/linear_action"
+        app:layout_constraintBottom_toTopOf="@+id/editImageAction"
         app:layout_constraintDimensionRatio="9:6"
         app:layout_constraintTop_toBottomOf="@+id/tv_about">
 
@@ -126,9 +125,16 @@
 
     <FrameLayout
         android:id="@+id/frame_full"
+        tools:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/linear_action" />
+        app:layout_constraintTop_toTopOf="@id/editImageAction" />
+
+    <FrameLayout
+        android:id="@+id/frame_full_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,14 +32,6 @@ class ImageDialog : DialogFragment() {
         outState.putSerializable(EXTRA_DIALOG, dialogApp)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.dialog_image, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments ?: savedInstanceState

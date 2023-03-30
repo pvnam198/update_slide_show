@@ -54,14 +54,6 @@ class RateDialogFragment : BaseBindingDialog<DialogRateAppV2Binding>(), View.OnC
         return DialogRateAppV2Binding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_rate_app_v2, container)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

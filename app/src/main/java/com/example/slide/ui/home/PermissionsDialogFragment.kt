@@ -31,15 +31,6 @@ class PermissionsDialogFragment : BaseBindingDialog<DialogPermissionBinding>(), 
     override fun bindingView(): DialogPermissionBinding {
         return DialogPermissionBinding.inflate(layoutInflater)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_permission, container)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

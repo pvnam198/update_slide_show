@@ -27,6 +27,7 @@ import com.example.slide.ui.my_studio.MyStudioActivity
 import com.example.slide.ui.privacy.PrivacyPolicyActivity
 import com.example.slide.ui.select_image.SelectActivity
 import com.example.slide.ui.setting.SettingActivity
+import com.example.slide.ui.video.video_export.RateDialogFragment
 import com.example.slide.ui.vip.VipActivity
 import com.example.slide.ui.vip.VipMemberActivity
 import com.example.slide.util.*
@@ -127,6 +128,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
 
     override fun initTask() {
         super.initTask()
+
         val overtime = preferencesHelper.isOverTime()
         val overHomeAdsGap = preferencesHelper.isOverHomeAdsGap()
 

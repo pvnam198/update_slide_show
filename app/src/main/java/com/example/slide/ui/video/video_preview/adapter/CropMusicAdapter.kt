@@ -4,6 +4,8 @@ import android.graphics.drawable.AnimationDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slide.R
@@ -62,13 +64,13 @@ class CropMusicAdapter(val activity: MultiMusicPlayingActivity) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val btn_delete = view.btn_delete
+        val btn_delete = view.findViewById<View>(R.id.btn_delete)
 
-        val playing_state = view.playing_state
+        val playing_state = view.findViewById<ImageView>(R.id.playing_state)
 
-        val tv_duration = view.tv_duration
+        val tv_duration = view.findViewById<TextView>(R.id.tv_duration)
 
-        val tv_title = view.tv_title
+        val tv_title = view.findViewById<TextView>(R.id.tv_title)
 
     }
 }

@@ -44,8 +44,6 @@ public class BitmapUtil {
     public static Bitmap loadFullBitmapForVideo(String url, int videoWidth, int videoHeight, Context context) {
         Bitmap front;
         Bitmap bg;
-        Timber.d("loadFullBitmapForVideo width: %s", videoWidth);
-        Timber.d("loadFullBitmapForVideo height: %s", videoHeight);
         try {
             front = Glide.with(context).asBitmap().fitCenter().load(url).submit(videoWidth, videoHeight).get();
         } catch (Exception e) {

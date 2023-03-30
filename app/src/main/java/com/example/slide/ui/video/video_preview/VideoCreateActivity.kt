@@ -827,8 +827,9 @@ class VideoCreateActivity : MultiMusicPlayingActivity(), View.OnClickListener,
         binding.btnCheck.visibility = View.INVISIBLE
         isHideButtonSave = true
         val videoStickerFragment = EmojiVideoFragment()
+
         supportFragmentManager.beginTransaction()
-            .add(binding.frameEmojiVideo, videoStickerFragment, EmojiVideoFragment.TAG)
+            .add(binding.frameEmojiVideo.id, videoStickerFragment, EmojiVideoFragment.TAG)
             .addToBackStack(null).commit()
     }
 

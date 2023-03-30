@@ -181,7 +181,7 @@ class EditImageActivity : BaseActivity<ActivityEditImageBinding>(), View.OnClick
         binding.photoEditorView.setHandlingFloatingItem(null)
         binding.photoEditorView.setLocked(false)
         supportFragmentManager.beginTransaction()
-            .add(R.id.root_view, TextFragment(), TextFragment::class.java.name)
+            .add(R.id.frame_full_screen, TextFragment(), TextFragment::class.java.name)
             .addToBackStack(null)
             .commit()
     }
@@ -272,7 +272,7 @@ class EditImageActivity : BaseActivity<ActivityEditImageBinding>(), View.OnClick
 
     private fun editTextContents(sticker: TextFloatingItem) {
         supportFragmentManager.beginTransaction()
-            .add(R.id.root_view, TextFragment.getInstance(sticker), TextFragment::class.java.name)
+            .add(R.id.frame_full_screen, TextFragment.getInstance(sticker), TextFragment::class.java.name)
             .addToBackStack(null)
             .commit()
     }
@@ -560,7 +560,7 @@ class EditImageActivity : BaseActivity<ActivityEditImageBinding>(), View.OnClick
     private fun openCropTab() {
         binding.photoEditorView.setHandlingFloatingItem(null)
         supportFragmentManager.beginTransaction().replace(
-            R.id.root_view,
+            binding.frameFullScreen.id,
             CropImageFragment(),
             CropImageFragment::class.java.name
         ).addToBackStack(null).commit()

@@ -57,7 +57,6 @@ public class CropperGridView extends View {
         super.onDraw(canvas);
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        Log.d("kimkaka", "ondraw" + width + " " + height);
         gridPath.reset();
         gridPath.moveTo(0, 0);
         gridPath.lineTo(width, 0);
